@@ -1,0 +1,335 @@
+JobKaart
+Feature Specification v2.0
+"5 Features Done Damn Good"
+Simple Job Management for South African Tradespeople
+THE OPPORTUNITY
+Average tradie loses 2-3 quotes per month they forget to follow up
+At R4,000 average = R8,000 - R12,000 lost monthly = R96,000 - R144,000 per year
+JobKaart helps recover that money for R299/month
+1. Executive Summary
+Target Customer
+Solo tradespeople and teams of 1-3 people
+Plumbers, electricians, painters, handymen, pool services, pest control
+Currently using WhatsApp + notebook + Excel (or wife doing invoices)
+Want to look professional but don't have time for complex software
+Value Proposition
+"Stop losing jobs. Get paid faster. Look professional."
+Why Not Free Tools?
+WhatsApp + Notebook
+JobKaart
+Customer numbers buried in chat
+Find anyone in 2 seconds
+Quote on paper goes through wash
+Professional PDF, never lost
+Forget to follow up on quotes
+Auto-reminder after 3 days
+No idea who owes money
+"R23,400 outstanding" in red
+Wife can't invoice without calling you
+Wife has her own login, sees everything
+Why Not ServCraft / Tradify?
+Aspect
+ServCraft / Tradify
+JobKaart
+Price
+R299-600 PER USER
+R299 FLAT (whole team)
+3-person team
+R897-1,800/month
+R299/month
+Features
+20+ features, complex
+5 features, simple
+Setup
+Training required
+10 minutes, figure it out
+Target
+Teams of 3-10+
+Solo to 3 people
+2. Feature 1: Customer Database
+Pain it solves: "I can't find Tannie Maria's number — she's somewhere in WhatsApp from 6 months ago"
+Core Functionality
+Search by name, phone number, OR address
+One tap to call or WhatsApp customer
+See EVERYTHING you've ever done for them (quotes, jobs, invoices)
+Add new customer in 10 seconds (name + phone = done)
+Data Fields
+Field
+Required
+Notes
+Name
+Yes
+Searchable
+Phone
+Yes
+Click-to-call, click-to-WhatsApp
+Email
+No
+For invoice sending
+Address
+No
+Searchable, tap for Google Maps
+Notes
+No
+"Gate code 4532" / "Difficult customer"
+The "Damn Good" Feature
+Customer Lifetime Summary:
+When you tap a customer, you see: "Tannie Maria has paid you R47,000 over 3 years. She has R2,400 outstanding."
+Total lifetime value (all paid invoices)
+Outstanding balance (unpaid invoices)
+Number of jobs completed
+Last job date
+Why This Matters
+When a customer calls asking for a discount, you immediately know: "This customer has given me R47,000 in business. I can afford to give them 10% off." Or: "This customer has R2,400 outstanding. I should ask about that before starting new work."
+3. Feature 2: Quote Builder
+Pain it solves: "I wrote a quote on paper, it went through the wash, R8,000 job gone"
+Core Functionality
+Create professional quote in under 2 minutes
+Send via WhatsApp with ONE tap
+Know when they've VIEWED it
+Auto-reminder after 3 days if no response
+Convert accepted quote to job with one tap
+Quote Data
+Field
+Details
+Quote Number
+Auto-generated: QUO-2025-001
+Customer
+Select from database or quick-add new
+Job Address
+Default to customer address, can change
+Description
+Free text: "Replace geyser and install new pipes"
+Line Items
+Description + Amount (e.g., "Labour: R2,500")
+Total
+Auto-calculated from line items
+Valid Until
+Default 30 days, adjustable
+Status
+Draft → Sent → Viewed → Accepted/Declined
+Quote Templates
+Pre-saved templates for common jobs — tap, customize, send in 30 seconds:
+"Geyser replacement" — R6,500 (labour R2,500, geyser R3,500, materials R500)
+"DB board upgrade" — R4,200 (labour R1,800, board R2,000, materials R400)
+"House painting - 3 bed" — R18,000 (labour R12,000, paint R5,000, materials R1,000)
+"Call-out fee" — R450
+Users can create and save their own templates.
+The "Damn Good" Features
+1. View Tracking:
+When customer clicks the quote link, you get notified: "🔔 Tannie Maria just viewed your quote!" — This is your signal to call them while it's fresh in their mind.
+2. Auto Follow-Up:
+After 3 days with no response, dashboard shows: "Quote #42 - Tannie Maria - R6,500 - Sent 3 days ago, no response". One tap to send follow-up WhatsApp: "Hi Tannie Maria, just checking if you had any questions about the quote I sent?"
+3. Professional PDF:
+Customer sees beautiful branded PDF with:
+Your logo and business name
+Professional layout with line items
+Valid until date
+Your contact details
+Not a scruffy WhatsApp text message!
+4. Feature 3: Job Tracker
+Pain it solves: "I can't remember which jobs I've finished but haven't invoiced"
+Simple 6-Status Pipeline
+Status
+Color
+Meaning
+Quoted
+Yellow
+Quote sent, waiting for acceptance
+Scheduled
+Blue
+Accepted, date booked
+In Progress
+Orange
+Currently working on it
+Complete
+Green
+Work done, ready to invoice
+Invoiced
+Purple
+Invoice sent, waiting for payment
+Paid
+Grey
+Money received, job complete
+Job Data
+All quote information carries over automatically
+Scheduled date and time
+Private notes ("Customer wants Plascon, not Dulux. Gate code 4532.")
+Photos: before, during, after (proof of work)
+The "Damn Good" Feature
+Jobs to Invoice Alert:
+Dashboard prominently shows: "You have 3 jobs marked COMPLETE that you haven't invoiced yet — R12,400 sitting there."
+One tap on any job → Create Invoice → All details pre-filled → Send.
+Photo Proof of Work
+Take photos directly in app, attached to job. When customer disputes work:
+"Here's the before photo showing the leak"
+"Here's the after photo showing the repair"
+"Both timestamped and attached to job #247"
+5. Feature 4: Simple Invoicing
+Pain it solves: "My wife can't invoice because all the details are in my head"
+Core Functionality
+One-click invoice from completed job (all details carry over)
+Auto-calculated VAT (if registered)
+Professional PDF with your logo and banking details
+Send via WhatsApp or Email
+Track: Sent → Viewed → Paid
+Invoice Status Tracking
+Status
+Visual
+Action
+Sent
+Normal
+Wait
+Viewed
+Eye icon
+They've seen it
+Overdue
+RED, prominent
+Send reminder
+Paid
+Green checkmark
+Done
+The "Damn Good" Features
+1. One-Tap Payment Reminder:
+Invoice overdue? One tap sends WhatsApp: "Hi Tannie Maria, just a friendly reminder that Invoice #247 for R6,500 was due on 15 Nov. Banking details: [auto-filled]. Thanks!"
+2. Wife-Friendly Design:
+Your wife/partner has their own login. They see:
+List of jobs marked "Complete" ready to invoice
+All job details (no need to call you)
+One-click to create and send invoice
+No confusion, no phone calls, no frustration
+3. Partial Payments:
+Invoice for R10,000. Customer pays R6,000. Mark partial payment → System shows: "R4,000 still outstanding"
+6. Feature 5: Dashboard
+Pain it solves: "I have no idea if I'm actually making money this month"
+Dashboard Sections
+TODAY
+Jobs scheduled for today
+Click any job → see address, notes, customer phone
+ACTION NEEDED
+Quotes waiting for response (sent 3+ days ago)
+Jobs to invoice (complete but not invoiced)
+Overdue invoices (past due date) — in RED
+THIS MONTH
+Revenue collected
+Jobs completed
+Quotes sent
+Quote acceptance rate (%)
+The "Damn Good" Features
+1. The Money Number:
+Front and center on dashboard: "Customers owe you: R23,400"
+Tap it → See list of every outstanding invoice, sorted by oldest first.
+2. Morning SMS (Optional, Phase 2):
+7am SMS: "Good morning! You have 2 jobs today, R4,200 overdue, 3 quotes awaiting response. Have a great day! - JobKaart"
+3. Month Comparison:
+"You're R8,000 ahead of last month 📈" or "You're R3,000 behind last month — send more quotes!"
+7. WhatsApp Integration
+Critical for SA market: WhatsApp is how tradies communicate with customers.
+Approach: Click-to-Chat (No API Pain)
+Instead of complex WhatsApp Business API integration, we use smart linking:
+How it works:
+User taps "Send via WhatsApp"
+App generates public link to quote/invoice (e.g., jobkaart.co.za/q/abc123)
+WhatsApp opens with pre-filled message containing link
+User taps Send in WhatsApp
+When customer clicks link, JobKaart tracks: "Quote viewed at 14:32"
+Benefits of This Approach
+Click-to-Chat ✓
+Full WhatsApp API ✗
+Zero setup time
+10-40 hours setup
+No META verification needed
+Facebook Business verification required
+FREE (no cost per message)
+R0.30-0.80 per message
+Works on user's existing WhatsApp
+Requires separate business number
+User must tap Send (2 seconds)
+Fully automatic
+Track quote views via link clicks ✓
+Full delivery tracking
+The trade-off (user taps Send) is worth it for zero complexity and zero cost.
+8. Pricing Strategy
+Pricing Tiers
+Plan
+Starter
+Pro ⭐
+Team
+Price
+R299/month
+R499/month
+R799/month
+Users
+1
+3
+10
+Jobs/month
+50
+Unlimited
+Unlimited
+Quote templates
+5
+Unlimited
+Unlimited
+Support
+Email
+WhatsApp
+Priority + Phone
+ROI Justification
+The question isn't "Is R299 expensive?" — it's "Is R299 worth it compared to free?"
+Average tradie loses 2-3 quotes/month they forget to follow up
+Average quote value: R4,000
+Lost per month: R8,000 - R12,000
+JobKaart cost: R299/month
+If JobKaart helps recover ONE quote = R3,701 net profit that month
+ROI: 1,238%
+9. Technical Overview
+Recommended Stack
+Layer
+Technology
+Frontend
+React/Next.js (responsive web, mobile-first)
+Backend
+Python (FastAPI) or Node.js
+Database
+PostgreSQL (via Supabase for easy start)
+Hosting
+Vercel (frontend) + Supabase (backend) — starts FREE
+Payments
+PayFast (SA card payments, EFT)
+Email
+SendGrid (100/day free)
+PDF Generation
+React-PDF or Puppeteer
+WhatsApp
+Click-to-chat links (no API needed)
+Multi-Tenant Architecture
+All customers share ONE application, with data separated by user_id:
+One domain: jobkaart.co.za
+One database (customers can never see each other's data)
+One codebase (update once, everyone benefits)
+Hosting cost: R0-200/month to start, scales with customers
+10. Success Metrics
+Launch Targets (First 6 Months)
+Metric
+Target
+Paying customers (Month 3)
+10
+Paying customers (Month 6)
+50
+MRR (Month 6)
+R15,000+
+Monthly churn rate
+< 10%
+Time to first quote (new user)
+< 5 minutes
+NPS score
+> 40
+Key Feature Usage Metrics
+Quotes created per user per month
+Quote-to-job conversion rate
+Average days from invoice to payment
+% of users logging in weekly
+— End of Specification —
+JobKaart — Simple Job Management for SA Tradespeople
+Document Version 2.0 | November 2025

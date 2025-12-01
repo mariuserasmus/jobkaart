@@ -1,0 +1,392 @@
+Customer Case Studies
+Who Benefits from JobTrack SA — And Who Doesn't
+A practical guide to identifying your ideal customers
+Quick Reference: Customer Fit Summary
+Use this table to quickly assess whether a potential customer is a good fit:
+Business Type
+Fit Score
+Priority
+Key Reason
+Solo Plumber (quote-based)
+★★★★★ EXCELLENT
+HIGH
+Perfect match - quotes, follow-ups, invoices
+Electrician (1-3 people)
+★★★★★ EXCELLENT
+HIGH
+Quote-heavy, compliance docs, team coordination
+Handyman / Multi-trade
+★★★★★ EXCELLENT
+HIGH
+Many small jobs, easy invoicing, customer records
+Painter / Decorator
+★★★★☆ GREAT
+HIGH
+Larger quotes, before/after photos, deposits
+Pool Service
+★★★★☆ GREAT
+MEDIUM
+Mix of contracts + once-off repairs
+Pest Control
+★★★★☆ GREAT
+MEDIUM
+Quote-based + annual contracts
+Garden Service (contracts)
+★★★☆☆ PARTIAL
+LOW
+Needs recurring billing (Phase 2 feature)
+Cleaning Service (regular)
+★★★☆☆ PARTIAL
+LOW
+Needs scheduling focus, recurring jobs
+Home Baker / Crafter
+★★☆☆☆ WEAK
+AVOID
+Needs inventory, orders, not quotes
+Online Shop / E-commerce
+★☆☆☆☆ POOR
+AVOID
+Needs cart, shipping, inventory - not our market
+Restaurant / Cafe
+★☆☆☆☆ POOR
+AVOID
+Needs POS, table mgmt, kitchen display
+Case Study 1: Johan — Solo Plumber
+  ★★★★★ EXCELLENT FIT — This is our IDEAL customer  
+Business Profile
+Business
+Johan's Plumbing Services
+Location
+Cape Town Northern Suburbs
+Team Size
+Just Johan (solo operator)
+Jobs per Month
+25-35 jobs
+Average Job Value
+R1,500 - R8,000
+Monthly Revenue
+R60,000 - R90,000
+Current Tools
+WhatsApp, notebook, wife helps with invoices in Excel
+A Day in Johan's Life (Before JobTrack)
+7:00 AM: Johan checks WhatsApp. 47 unread messages across various customer chats. He scrolls trying to find the address for today's first job.
+9:30 AM: Customer asks for a quote on a geyser replacement. Johan writes notes on a piece of paper, stuffs it in his pocket.
+12:00 PM: A customer calls asking about a quote Johan sent 2 weeks ago. Johan can't remember what he quoted. Awkward.
+5:00 PM: Johan tells his wife about 3 jobs he finished. She asks for details to create invoices. He can't remember exact amounts.
+8:00 PM: The piece of paper with the geyser quote details has gone through the wash. Customer never gets quoted.
+Johan's Pain Points
+Loses track of quotes sent — forgets to follow up
+Customer details scattered across WhatsApp, notebook, wife's phone
+No idea who owes him money at any given time
+Quotes look unprofessional (plain WhatsApp messages)
+Wife frustrated with incomplete info for invoicing
+How JobTrack Helps Johan
+Problem
+JobTrack Solution
+Forgets to follow up on quotes
+Dashboard shows "Quotes to follow up" — auto-reminder after 3 days
+Can't find customer phone numbers
+All customers searchable, click-to-call
+Doesn't know who owes money
+"Overdue invoices" section on dashboard, highlighted in red
+Unprofessional quotes
+Branded PDF quotes with his logo, sent via WhatsApp
+Wife can't create invoices
+One-click invoice from completed job, wife has login access
+Financial Impact for Johan
+Metric
+Value
+Quotes forgotten/lost per month (estimated)
+3
+Average quote value
+R4,000
+Potential lost revenue per month
+R12,000
+JobTrack monthly cost
+R299
+ROI if recovers just 1 extra job
+1,238%
+✓ Why Johan is a PERFECT fit:
+Quote-based work (exactly what JobTrack is built for)
+Variable job values (needs proper tracking)
+Solo operator (simple needs, willing to pay for time savings)
+Clear ROI story (lost quotes = lost money)
+Case Study 2: Sipho — Electrician with Small Team
+  ★★★★★ EXCELLENT FIT — Ideal for teams of 2-5  
+Business Profile
+Business
+Sipho Electrical Solutions
+Location
+Johannesburg East Rand
+Team Size
+Sipho + 2 qualified electricians + 1 apprentice
+Jobs per Month
+60-80 jobs across the team
+Average Job Value
+R2,000 - R25,000
+Monthly Revenue
+R150,000 - R250,000
+Current Tools
+WhatsApp group, shared Google Sheet, paper job cards
+Sipho's Specific Challenges
+Team members update the shared spreadsheet inconsistently
+Sipho quotes, but doesn't know if his guys completed the work
+Compliance certificates (COCs) get lost in WhatsApp photos
+No visibility into which jobs are profitable vs. losing money
+Invoices delayed because he doesn't know jobs are complete
+How JobTrack Helps Sipho's Team
+Each team member has login — updates job status from their phone
+Job photos (including COCs) attached to job record, not lost in chat
+Dashboard shows jobs by status — Sipho sees what's happening in real-time
+When a job moves to "Complete", Sipho gets notified to invoice
+Quote vs. actual tracking shows job profitability (Phase 2)
+Recommended Plan: Pro (R499/month)
+3 users included (Sipho + 2 electricians)
+Unlimited jobs
+Quote templates for common jobs (DB board, geyser connection, COC inspection)
+Case Study 3: Thandi — Garden Service with Monthly Contracts
+  ★★★☆☆ PARTIAL FIT — Works, but needs workarounds  
+Business Profile
+Business
+Thandi's Garden Care
+Location
+Pretoria East
+Team Size
+Thandi + 3 garden workers
+Business Model
+Monthly contracts — visit each client weekly or bi-weekly
+Number of Clients
+45 residential clients on monthly contracts
+Monthly Fee per Client
+R800 - R2,500 depending on garden size
+Monthly Revenue
+~R65,000 (mostly predictable)
+Current Tools
+Paper schedule on clipboard, invoices in Word document
+Why Thandi is Only a PARTIAL Fit
+Thandi's business is different from Johan's plumbing work:
+What Thandi Needs
+JobTrack MVP Status
+Recurring monthly invoices (same amount each month)
+NOT in MVP — manual workaround required
+Weekly schedule template (same clients, same days)
+NOT in MVP — Phase 2 feature
+Route planning for workers
+NOT planned — use Google Maps separately
+Track which gardens were serviced this week
+YES — mark jobs as complete
+Customer contact details
+YES — customer database
+Once-off jobs (tree removal, new installation)
+YES — quote and invoice like plumber
+Workaround for Thandi (MVP)
+Thandi CAN use JobTrack, but she'll need to:
+Create a new "job" each month for each client (instead of auto-recurring)
+Manually create monthly invoices (instead of auto-generate)
+Use the system mainly for customer records and once-off work
+When Thandi WOULD Be a Great Fit
+After Phase 2 features are added:
+Recurring jobs (set up once, auto-creates monthly)
+Recurring invoices (auto-generate on the 1st of each month)
+Weekly schedule view (see all visits for the week)
+  RECOMMENDATION: Don't actively target garden services for MVP launch. Add to waiting list for Phase 2.  
+Case Study 4: Peter — Multi-Skilled Handyman
+  ★★★★★ EXCELLENT FIT — High volume, high chaos  
+Business Profile
+Business
+Peter's Property Maintenance
+Location
+Durban North Coast
+Team Size
+Just Peter
+Services
+Painting, tiling, drywall, minor plumbing, carpentry, general repairs
+Jobs per Month
+40-60 small jobs
+Average Job Value
+R500 - R5,000 (mostly under R2,000)
+Monthly Revenue
+R40,000 - R70,000
+Why Peter is an EXCELLENT Fit
+HIGH VOLUME of small jobs = high chaos potential
+Every job is different = can't use a simple schedule
+Lots of repeat customers = customer database is valuable
+Quick quotes needed = templates save time ("Drywall repair - small", "Door hanging", etc.)
+Often forgets small jobs = dashboard "To Invoice" section catches these
+Peter's Quote Templates (Examples)
+Template Name
+Default Price
+Typical Scope
+Drywall patch - small
+R450
+Up to 30cm, includes paint touch-up
+Drywall patch - large
+R850
+Up to 1m², includes sanding
+Door hanging
+R600
+Standard internal door, door supplied by client
+Tap washer replacement
+R250
+Parts included, single tap
+Call-out fee
+R350
+Inspection/assessment only
+These templates let Peter quote in 30 seconds instead of 5 minutes. Over 50 jobs/month, that's hours saved.
+Case Study 5: Sarah — Home Baker & Cake Decorator
+  ★★☆☆☆ WEAK FIT — Different business model entirely  
+Business Profile
+Business
+Sarah's Sweet Creations
+Location
+Works from home in Sandton
+Products
+Custom cakes, cupcakes, cake pops for events
+Orders per Month
+15-25 orders
+Average Order Value
+R800 - R3,500
+Monthly Revenue
+R25,000 - R45,000
+Why Sarah is NOT a Good Fit
+Sarah's business is fundamentally different from a tradesperson:
+What Sarah Needs
+JobTrack Status
+Order management (not quotes)
+NO — built for quotes, not orders
+Ingredient/inventory tracking
+NO — no inventory features
+Recipe costing
+NO — not designed for this
+Deposit tracking (50% upfront)
+PARTIAL — can track partial payments
+Delivery scheduling
+NO — job scheduling is different
+Photo gallery of past work
+NO — not a portfolio feature
+Customer contact details
+YES — this works
+What Sarah Actually Needs
+Order management system (like CakeBoss, Bakesy)
+Recipe costing calculator
+Instagram/Facebook integration for bookings
+Calendar with delivery/collection times
+  RECOMMENDATION: Politely decline. Explain that JobTrack is built for tradespeople, not product-based businesses. Refer to bakery-specific software.  
+Case Study 6: Willem — Pool Maintenance & Repairs
+  ★★★★☆ GREAT FIT — Hybrid model works well  
+Business Profile
+Business
+Crystal Clear Pools
+Location
+Bloemfontein
+Team Size
+Willem + 1 assistant
+Services - Recurring
+Weekly pool cleaning contracts (35 clients)
+Services - Once-off
+Pump repairs, filter replacements, green pool recovery, new installations
+Revenue Split
+60% contracts, 40% once-off repairs
+Why Willem is a GREAT Fit
+Willem has BOTH recurring contracts AND once-off quote work:
+Once-off repairs (pump replacement, leak detection) = perfect for quote-job-invoice flow
+Customer database = knows which client has which pump model, last service date
+Photo records = before/after of green pool recovery (great for disputes)
+40% of revenue is quote-based = clear ROI from not losing quotes
+Handling Willem's Recurring Contracts (MVP)
+For the weekly cleaning contracts, Willem can:
+Store all contract clients in customer database with notes ("Weekly Monday, uses Kreepy Krauly")
+Create monthly invoices manually (35 invoices, one-click each = 15 minutes)
+Use JobTrack mainly for the repair/quote side of the business
+Unlike the garden service, Willem's quote-based work is substantial enough to justify the subscription on its own. The contract side is a bonus.
+Case Study 7: Ravi — Pest Control Services
+  ★★★★☆ GREAT FIT — Quote-heavy with compliance needs  
+Business Profile
+Business
+Ravi's Pest Solutions
+Location
+Port Elizabeth / Gqeberha
+Team Size
+Ravi + 2 technicians
+Services
+Residential & commercial pest control, fumigation, bird proofing
+Jobs per Month
+80-100 jobs
+Job Mix
+70% once-off callouts, 30% annual contracts
+Why Pest Control Works Well
+Mostly quote-based: "We have rats" → Quote → Job → Invoice
+Compliance documentation: Needs to record what chemicals used, where applied
+Photo evidence: Before/after photos important for commercial clients
+Quote templates: Standard pricing for common pests (cockroaches, rats, ants)
+Customer history: "Last treated 6 months ago for X" — valuable for callbacks
+Case Study 8: Blessing — Painting Contractor
+  ★★★★☆ GREAT FIT — Larger quotes, deposit tracking  
+Business Profile
+Business
+Blessing Painters
+Location
+Polokwane
+Team Size
+Blessing + 4 painters (casual, paid per job)
+Services
+Interior/exterior painting, waterproofing, roof painting
+Jobs per Month
+8-12 jobs (larger projects)
+Average Job Value
+R8,000 - R45,000
+Blessing's Specific Use Cases
+Detailed quotes with line items: Labour, paint, primer, equipment, scaffolding hire
+Deposit collection: Typically 50% upfront for materials — track partial payments
+Before/after photos: Essential for disputes and testimonials
+Job notes: "Client wants Plascon Cashmere in Stormy Sea for master bedroom"
+Quote follow-up: Large quotes often take weeks to decide — reminders critical
+Financial Impact for Blessing
+Blessing's jobs are larger, so ONE recovered quote has massive ROI:
+Average quote value
+R20,000
+Quotes sent per month
+15
+Estimated forgotten/lost quotes
+2
+Potential lost revenue per month
+R40,000
+JobTrack Pro cost (3 users for team)
+R499
+ROI if recovers ONE job
+3,907%
+Targeting Guide: Who to Pursue
+🎯 PRIORITY 1: Actively Target These
+  These customers have clear ROI and their business model matches JobTrack perfectly  
+Solo plumbers and small plumbing teams
+Electricians (1-5 people)
+Handymen / general maintenance
+Painters and decorators
+HVAC / aircon technicians
+Appliance repair technicians
+Locksmiths
+Tilers and floor installers
+🟡 PRIORITY 2: Accept If They Come, Don't Chase
+  These customers can use JobTrack but may need workarounds or Phase 2 features  
+Pool services (hybrid contract + repairs)
+Pest control
+Garden services with significant once-off work (landscaping, tree felling)
+Security installers (CCTV, alarms)
+IT support / computer repair
+Automotive mobile mechanics
+🛑 PRIORITY 3: Politely Decline / Refer Elsewhere
+  These businesses need different software — taking them will lead to churn and bad reviews  
+Pure contract/schedule businesses (weekly cleaning, garden maintenance only)
+Home bakers, crafters, makers (need order/inventory management)
+E-commerce / online shops (need cart, shipping, inventory)
+Restaurants / food service (need POS, table management)
+Salons / spas (need appointment booking focus)
+Tutors / coaches (need scheduling, not quotes)
+Large construction companies (need project management, not job tracking)
+The Key Question to Ask
+When talking to a potential customer, ask this question:
+  "What percentage of your work involves giving quotes to customers and waiting for them to say yes?"  
+If > 50% = GREAT FIT
+If 20-50% = PARTIAL FIT (might work)
+If < 20% = NOT A FIT (politely decline)
+— End of Case Studies —

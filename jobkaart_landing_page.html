@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobKaart — Simple Job Management for SA Tradespeople</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1E3A5F;
+            --primary-light: #2D4A6F;
+            --accent: #F97316;
+            --accent-hover: #EA580C;
+            --success: #22C55E;
+            --danger: #EF4444;
+            --cream: #FFFBF5;
+            --cream-dark: #FEF3E2;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--gray-700);
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Fraunces', serif;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            padding: 16px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Fraunces', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .header-cta {
+            background: var(--accent);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .header-cta:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 140px 0 80px;
+            text-align: center;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--cream-dark);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-600);
+            margin-bottom: 24px;
+        }
+        
+        .hero h1 {
+            font-size: clamp(36px, 6vw, 56px);
+            margin-bottom: 20px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero h1 .highlight {
+            color: var(--accent);
+        }
+        
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto 16px;
+        }
+        
+        .hero-price {
+            font-size: 18px;
+            color: var(--gray-500);
+            margin-bottom: 32px;
+        }
+        
+        .hero-price strong {
+            color: var(--primary);
+            font-size: 24px;
+        }
+        
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.3);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            border: 2px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .social-proof {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+        
+        .avatars {
+            display: flex;
+        }
+        
+        .avatars span {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gray-200);
+            border: 2px solid white;
+            margin-left: -8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .avatars span:first-child {
+            margin-left: 0;
+        }
+        
+        /* Pain Points Section */
+        .pain-points {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        .section-header h2 {
+            font-size: clamp(28px, 4vw, 40px);
+            margin-bottom: 16px;
+        }
+        
+        .section-header p {
+            font-size: 18px;
+            color: var(--gray-500);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+        
+        .pain-card {
+            background: var(--cream);
+            padding: 32px;
+            border-radius: 16px;
+            border-left: 4px solid var(--danger);
+        }
+        
+        .pain-card .icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+        
+        .pain-card h3 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--gray-900);
+        }
+        
+        .pain-card p {
+            font-size: 15px;
+            color: var(--gray-600);
+        }
+        
+        /* Solution Section */
+        .solution {
+            padding: 80px 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card .icon {
+            width: 56px;
+            height: 56px;
+            background: var(--cream-dark);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--gray-900);
+        }
+        
+        .feature-card p {
+            font-size: 15px;
+            color: var(--gray-600);
+        }
+        
+        /* ROI Calculator */
+        .roi-section {
+            padding: 80px 0;
+            background: var(--primary);
+            color: white;
+        }
+        
+        .roi-section h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .roi-item {
+            text-align: center;
+        }
+        
+        .roi-item .number {
+            font-family: 'Fraunces', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+        }
+        
+        .roi-item .label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .roi-result {
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            margin-top: 48px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .roi-result h3 {
+            color: var(--success);
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .roi-result p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        /* Comparison Table */
+        .comparison {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 32px;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .comparison-table th {
+            background: var(--gray-50);
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+        
+        .comparison-table th:last-child,
+        .comparison-table td:last-child {
+            background: var(--cream-dark);
+        }
+        
+        .comparison-table th:last-child {
+            color: var(--accent);
+        }
+        
+        .check {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .x {
+            color: var(--danger);
+        }
+        
+        /* Case Studies */
+        .case-studies {
+            padding: 80px 0;
+        }
+        
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        
+        .case-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        
+        .case-card-header {
+            padding: 24px;
+            background: var(--primary);
+            color: white;
+        }
+        
+        .case-card-header .trade {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+        
+        .case-card-header h3 {
+            color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        
+        .case-card-header .fit {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .fit-excellent {
+            background: var(--success);
+        }
+        
+        .fit-great {
+            background: #84CC16;
+        }
+        
+        .fit-partial {
+            background: #FBBF24;
+            color: var(--gray-900);
+        }
+        
+        .case-card-body {
+            padding: 24px;
+        }
+        
+        .case-card-body .problem {
+            margin-bottom: 16px;
+        }
+        
+        .case-card-body .label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            margin-bottom: 4px;
+        }
+        
+        .case-card-body .problem p {
+            font-size: 15px;
+            color: var(--danger);
+            font-style: italic;
+        }
+        
+        .case-card-body .solution p {
+            font-size: 15px;
+            color: var(--gray-700);
+        }
+        
+        .case-card-footer {
+            padding: 16px 24px;
+            background: var(--cream);
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .case-card-footer .roi {
+            font-weight: 600;
+            color: var(--success);
+        }
+        
+        /* Not For Section */
+        .not-for {
+            background: var(--gray-50);
+            padding: 48px 0;
+        }
+        
+        .not-for-content {
+            text-align: center;
+        }
+        
+        .not-for h3 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 20px;
+            margin-bottom: 24px;
+            color: var(--gray-700);
+        }
+        
+        .not-for-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .not-for-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            color: var(--gray-600);
+        }
+        
+        .not-for-item span {
+            font-size: 18px;
+        }
+        
+        .not-for p {
+            font-size: 15px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+        
+        /* Pricing */
+        .pricing {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            background: var(--cream);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .pricing-card.featured {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .pricing-card.featured h3,
+        .pricing-card.featured .price {
+            color: white;
+        }
+        
+        .pricing-card .popular {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .pricing-card h3 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--gray-900);
+        }
+        
+        .pricing-card .price {
+            font-family: 'Fraunces', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        
+        .pricing-card .price span {
+            font-size: 18px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
+        }
+        
+        .pricing-card .period {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin-bottom: 24px;
+        }
+        
+        .pricing-card.featured .period {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .pricing-card ul {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+        
+        .pricing-card li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+        
+        .pricing-card li::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .pricing-card.featured li::before {
+            color: var(--accent);
+        }
+        
+        .pricing-card .btn-primary {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .pricing-card.featured .btn-primary {
+            background: var(--accent);
+        }
+        
+        /* Testimonial */
+        .testimonial {
+            padding: 80px 0;
+            background: var(--cream);
+        }
+        
+        .testimonial-card {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .testimonial-card blockquote {
+            font-size: 24px;
+            font-style: italic;
+            color: var(--gray-700);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        
+        .testimonial-card cite {
+            font-style: normal;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .testimonial-card cite span {
+            display: block;
+            font-weight: 400;
+            font-size: 14px;
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+        
+        /* Signup Form */
+        .signup {
+            padding: 80px 0;
+            background: var(--primary);
+            color: white;
+        }
+        
+        .signup h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .signup .subtitle {
+            text-align: center;
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        
+        .signup-form {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'DM Sans', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .signup-form .btn-primary {
+            width: 100%;
+            justify-content: center;
+            padding: 18px;
+            font-size: 18px;
+        }
+        
+        .form-note {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 16px;
+        }
+        
+        /* FAQ */
+        .faq {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            padding: 24px;
+            background: var(--cream);
+            border-radius: 12px;
+        }
+        
+        .faq-item h3 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+        
+        .faq-item p {
+            font-size: 15px;
+            color: var(--gray-600);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 48px 0;
+            background: var(--gray-900);
+            color: white;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        
+        .footer-logo {
+            font-family: 'Fraunces', serif;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .footer-logo span {
+            color: var(--accent);
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-contact {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .footer-contact a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-cta {
+                display: none;
+            }
+            
+            .hero {
+                padding: 120px 0 60px;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero-ctas {
+                flex-direction: column;
+            }
+            
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+            
+            .roi-item .number {
+                font-size: 36px;
+            }
+            
+            .comparison-table {
+                font-size: 14px;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                padding: 12px 8px;
+            }
+            
+            .pricing-card.featured {
+                transform: none;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">Job<span>Kaart</span></a>
+                <a href="#signup" class="header-cta">Get Early Access</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                🇿🇦 Built for South African Tradespeople
+            </div>
+            <h1>Stop Losing Jobs.<br><span class="highlight">Get Paid Faster.</span></h1>
+            <p class="hero-subtitle">Replace WhatsApp chaos with one simple system for quotes, jobs, and invoices. Know who owes you money in 2 seconds.</p>
+            <p class="hero-price">From <strong>R299/month</strong> flat — not per user</p>
+            <div class="hero-ctas">
+                <a href="#signup" class="btn-primary">Get Early Access →</a>
+                <a href="#how-it-works" class="btn-secondary">See How It Works</a>
+            </div>
+            <div class="social-proof">
+                <div class="avatars">
+                    <span>👷</span>
+                    <span>🔧</span>
+                    <span>⚡</span>
+                    <span>🎨</span>
+                </div>
+                <span>Join 12+ tradies on the waiting list</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pain Points -->
+    <section class="pain-points">
+        <div class="container">
+            <div class="section-header">
+                <h2>Sound Familiar?</h2>
+                <p>These problems cost SA tradies thousands every month</p>
+            </div>
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <div class="icon">📱</div>
+                    <h3>WhatsApp Chaos</h3>
+                    <p>"I need to find Tannie Maria's number — it's somewhere in WhatsApp from 6 months ago..."</p>
+                </div>
+                <div class="pain-card">
+                    <div class="icon">📝</div>
+                    <h3>Lost Quotes</h3>
+                    <p>"I wrote a quote on paper, it went through the wash. There goes an R8,000 job."</p>
+                </div>
+                <div class="pain-card">
+                    <div class="icon">💸</div>
+                    <h3>Unpaid Invoices</h3>
+                    <p>"I have no idea who owes me money. It's all in my head... somewhere."</p>
+                </div>
+                <div class="pain-card">
+                    <div class="icon">👩‍💼</div>
+                    <h3>Wife Can't Help</h3>
+                    <p>"My wife wants to do invoicing but she needs to call me for every job detail."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution -->
+    <section class="solution" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>5 Features. Done Damn Good.</h2>
+                <p>Everything you need. Nothing you don't.</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="icon">👥</div>
+                    <h3>Customer Database</h3>
+                    <p>Find anyone in 2 seconds. See everything you've done for them. One tap to call or WhatsApp.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">✏️</div>
+                    <h3>Quick Quotes</h3>
+                    <p>Professional PDF quotes in 2 minutes. Know when they view it. Auto-reminder after 3 days.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🔧</div>
+                    <h3>Job Tracking</h3>
+                    <p>Simple pipeline: Quoted → Scheduled → Done → Invoiced → Paid. Never forget a job.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">💰</div>
+                    <h3>Easy Invoicing</h3>
+                    <p>One-click from completed job. Your wife can invoice without calling you.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📊</div>
+                    <h3>Dashboard</h3>
+                    <p>Today's jobs. Quotes to follow up. Who owes you money — <strong style="color: var(--danger);">R23,400 outstanding</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Calculator -->
+    <section class="roi-section">
+        <div class="container">
+            <h2>The Maths Makes Sense</h2>
+            <div class="roi-grid">
+                <div class="roi-item">
+                    <span class="number">2-3</span>
+                    <span class="label">Quotes forgotten per month</span>
+                </div>
+                <div class="roi-item">
+                    <span class="number">R4,000</span>
+                    <span class="label">Average quote value</span>
+                </div>
+                <div class="roi-item">
+                    <span class="number">R8,000+</span>
+                    <span class="label">Lost revenue monthly</span>
+                </div>
+            </div>
+            <div class="roi-result">
+                <h3>Recover ONE quote = R3,701 profit</h3>
+                <p>JobKaart costs R299/month. One recovered job pays for itself 12x over.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="comparison">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Switch from WhatsApp?</h2>
+            </div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>WhatsApp + Notebook</th>
+                        <th>ServCraft</th>
+                        <th>JobKaart ✓</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Price</td>
+                        <td>Free</td>
+                        <td>R299/user/month</td>
+                        <td><strong>R299 FLAT</strong></td>
+                    </tr>
+                    <tr>
+                        <td>3-person team</td>
+                        <td>Free</td>
+                        <td>R897/month</td>
+                        <td><strong>R299/month</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Find customer number</td>
+                        <td>Scroll... scroll... scroll...</td>
+                        <td class="check">✓ Easy</td>
+                        <td class="check">✓ 2 seconds</td>
+                    </tr>
+                    <tr>
+                        <td>Quote reminders</td>
+                        <td class="x">✗ Manual</td>
+                        <td class="check">✓ Auto</td>
+                        <td class="check">✓ After 3 days</td>
+                    </tr>
+                    <tr>
+                        <td>Who owes money</td>
+                        <td class="x">✗ "Somewhere in my head"</td>
+                        <td class="check">✓ Report</td>
+                        <td class="check">✓ Big red number</td>
+                    </tr>
+                    <tr>
+                        <td>Setup time</td>
+                        <td>N/A</td>
+                        <td>Training required</td>
+                        <td><strong>10 minutes</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Features</td>
+                        <td>None</td>
+                        <td>20+ (complex)</td>
+                        <td><strong>5 (simple)</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section class="case-studies">
+        <div class="container">
+            <div class="section-header">
+                <h2>Built For Tradies Like You</h2>
+                <p>See how JobKaart helps real businesses</p>
+            </div>
+            <div class="case-grid">
+                <div class="case-card">
+                    <div class="case-card-header">
+                        <div class="trade">Solo Plumber</div>
+                        <h3>Johan — Cape Town</h3>
+                        <span class="fit fit-excellent">★★★★★ EXCELLENT FIT</span>
+                    </div>
+                    <div class="case-card-body">
+                        <div class="problem">
+                            <div class="label">The Problem</div>
+                            <p>"Quoted a geyser install, paper went through the wash. R8k job — gone."</p>
+                        </div>
+                        <div class="solution">
+                            <div class="label">With JobKaart</div>
+                            <p>Creates quotes in 2 mins. Gets reminded after 3 days. Wife can invoice.</p>
+                        </div>
+                    </div>
+                    <div class="case-card-footer">
+                        <span class="roi">ROI: R4k saved vs R299 = 13x return</span>
+                    </div>
+                </div>
+                
+                <div class="case-card">
+                    <div class="case-card-header">
+                        <div class="trade">Electrician Team (3 people)</div>
+                        <h3>Sipho — Johannesburg</h3>
+                        <span class="fit fit-excellent">★★★★★ EXCELLENT FIT</span>
+                    </div>
+                    <div class="case-card-body">
+                        <div class="problem">
+                            <div class="label">The Problem</div>
+                            <p>"Don't know if my guys finished the job until days later when paperwork arrives."</p>
+                        </div>
+                        <div class="solution">
+                            <div class="label">With JobKaart</div>
+                            <p>Team updates jobs from phones. Notified when complete. COC photos attached.</p>
+                        </div>
+                    </div>
+                    <div class="case-card-footer">
+                        <span class="roi">Gets paid 5-7 days sooner</span>
+                    </div>
+                </div>
+                
+                <div class="case-card">
+                    <div class="case-card-header">
+                        <div class="trade">Handyman</div>
+                        <h3>Peter — Durban</h3>
+                        <span class="fit fit-excellent">★★★★★ EXCELLENT FIT</span>
+                    </div>
+                    <div class="case-card-body">
+                        <div class="problem">
+                            <div class="label">The Problem</div>
+                            <p>"50 small jobs a month. Can't remember who I need to invoice."</p>
+                        </div>
+                        <div class="solution">
+                            <div class="label">With JobKaart</div>
+                            <p>Quote templates = 30 seconds. Dashboard shows "Jobs to Invoice".</p>
+                        </div>
+                    </div>
+                    <div class="case-card-footer">
+                        <span class="roi">Saves 3+ hours per month on admin</span>
+                    </div>
+                </div>
+                
+                <div class="case-card">
+                    <div class="case-card-header">
+                        <div class="trade">Painter</div>
+                        <h3>Blessing — Polokwane</h3>
+                        <span class="fit fit-great">★★★★☆ GREAT FIT</span>
+                    </div>
+                    <div class="case-card-body">
+                        <div class="problem">
+                            <div class="label">The Problem</div>
+                            <p>"R20k+ quotes take weeks. I forget to follow up and lose the job."</p>
+                        </div>
+                        <div class="solution">
+                            <div class="label">With JobKaart</div>
+                            <p>Knows when quote viewed. Auto-reminder after a week. Tracks deposits.</p>
+                        </div>
+                    </div>
+                    <div class="case-card-footer">
+                        <span class="roi">One R20k quote pays for 5+ years</span>
+                    </div>
+                </div>
+                
+                <div class="case-card">
+                    <div class="case-card-header">
+                        <div class="trade">Pool Service</div>
+                        <h3>Willem — Bloemfontein</h3>
+                        <span class="fit fit-great">★★★★☆ GREAT FIT</span>
+                    </div>
+                    <div class="case-card-body">
+                        <div class="problem">
+                            <div class="label">The Problem</div>
+                            <p>"Weekly contracts are fine, but repair callouts get lost in the chaos."</p>
+                        </div>
+                        <div class="solution">
+                            <div class="label">With JobKaart</div>
+                            <p>Perfect for repair side. Customer notes track pump models. Before/after photos.</p>
+                        </div>
+                    </div>
+                    <div class="case-card-footer">
+                        <span class="roi">40% of revenue is quote-based = clear ROI</span>
+                    </div>
+                </div>
+                
+                <div class="case-card">
+                    <div class="case-card-header" style="background: var(--gray-600);">
+                        <div class="trade">Garden Service (contracts only)</div>
+                        <h3>Thandi — Pretoria</h3>
+                        <span class="fit fit-partial">★★★☆☆ PARTIAL FIT</span>
+                    </div>
+                    <div class="case-card-body">
+                        <div class="problem">
+                            <div class="label">Honest Assessment</div>
+                            <p>"45 weekly contracts, same schedule every week."</p>
+                        </div>
+                        <div class="solution">
+                            <div class="label">The Truth</div>
+                            <p>Works but needs workarounds. Best for once-off work. Recurring billing coming in Phase 2.</p>
+                        </div>
+                    </div>
+                    <div class="case-card-footer">
+                        <span style="color: var(--gray-500);">Advice: Wait for Phase 2 if mostly contracts</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Not For Section -->
+    <section class="not-for">
+        <div class="container">
+            <div class="not-for-content">
+                <h3>JobKaart is NOT built for:</h3>
+                <div class="not-for-grid">
+                    <div class="not-for-item"><span>🍰</span> Home bakers (need order/inventory)</div>
+                    <div class="not-for-item"><span>🛒</span> Online shops (need e-commerce)</div>
+                    <div class="not-for-item"><span>🍽️</span> Restaurants (need POS)</div>
+                    <div class="not-for-item"><span>💇</span> Salons (need appointment booking)</div>
+                </div>
+                <p>We focus on ONE thing well: helping tradespeople who quote for work.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple, Fair Pricing</h2>
+                <p>No per-user nonsense. Your whole team for one price.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <div class="price">R299<span>/mo</span></div>
+                    <div class="period">Perfect for solo tradies</div>
+                    <ul>
+                        <li>1 user</li>
+                        <li>50 jobs per month</li>
+                        <li>5 quote templates</li>
+                        <li>Email support</li>
+                        <li>All 5 core features</li>
+                    </ul>
+                    <a href="#signup" class="btn-primary">Get Started</a>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="popular">Most Popular</div>
+                    <h3>Pro</h3>
+                    <div class="price">R499<span>/mo</span></div>
+                    <div class="period">For you + your team</div>
+                    <ul>
+                        <li>3 users (you + wife + helper)</li>
+                        <li>Unlimited jobs</li>
+                        <li>Unlimited templates</li>
+                        <li>WhatsApp support</li>
+                        <li>Quote view tracking</li>
+                    </ul>
+                    <a href="#signup" class="btn-primary">Get Started</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Team</h3>
+                    <div class="price">R799<span>/mo</span></div>
+                    <div class="period">Growing businesses</div>
+                    <ul>
+                        <li>10 users</li>
+                        <li>Unlimited everything</li>
+                        <li>Priority phone support</li>
+                        <li>Free setup assistance</li>
+                        <li>Custom branding</li>
+                    </ul>
+                    <a href="#signup" class="btn-primary">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="testimonial">
+        <div class="container">
+            <div class="testimonial-card">
+                <blockquote>"Before JobKaart, I was losing at least R10-15k a month in quotes I forgot to follow up. Now I know exactly who needs a reminder and who owes me money. My wife handles all the invoicing without having to call me 10 times a day."</blockquote>
+                <cite>
+                    Johan P.
+                    <span>Plumber, Cape Town</span>
+                </cite>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signup Form -->
+    <section class="signup" id="signup">
+        <div class="container">
+            <h2>Join the Waiting List</h2>
+            <p class="subtitle">Be the first to know when JobKaart launches. Early birds get 30% off for life.</p>
+            <form class="signup-form" action="#" method="POST">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" placeholder="Johan van der Merwe" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="082 123 4567" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="johan@example.com" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="trade">Your Trade</label>
+                        <select id="trade" name="trade" required>
+                            <option value="">Select your trade</option>
+                            <option value="plumber">Plumber</option>
+                            <option value="electrician">Electrician</option>
+                            <option value="builder">Builder</option>
+                            <option value="painter">Painter</option>
+                            <option value="handyman">Handyman</option>
+                            <option value="hvac">HVAC / Aircon</option>
+                            <option value="pool">Pool Service</option>
+                            <option value="pest">Pest Control</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="team-size">Team Size</label>
+                        <select id="team-size" name="team-size" required>
+                            <option value="">Select size</option>
+                            <option value="solo">Just me (solo)</option>
+                            <option value="2-3">2-3 people</option>
+                            <option value="4-5">4-5 people</option>
+                            <option value="6+">6+ people</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Join the Waiting List →</button>
+                <p class="form-note">🔒 We'll never spam you. Just launch updates and early access.</p>
+            </form>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Questions?</h2>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>Why pay when WhatsApp is free?</h3>
+                    <p>WhatsApp is "free" but costs you money in lost quotes. If JobKaart helps you recover ONE R4,000 quote per month, you're up R3,701 after paying for the subscription.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>I'm not tech-savvy. Can I use this?</h3>
+                    <p>If you can use WhatsApp, you can use JobKaart. We built it for tradies, not IT managers. Most people figure it out in 10 minutes.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I cancel anytime?</h3>
+                    <p>Yes. No contracts, no lock-in. Cancel anytime. We'd rather earn your business every month than trap you.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is my data safe?</h3>
+                    <p>Yes. Your data is stored securely in South Africa. Daily backups. You can export your customer list anytime.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do I need to download an app?</h3>
+                    <p>No app needed — JobKaart works in your phone's browser. Just go to jobkaart.co.za and log in. Works on any device.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What about ServCraft / Tradify?</h3>
+                    <p>Great products for bigger teams. But if you're solo or 2-3 people, you don't need 20 features at R299/user. JobKaart gives you 5 features at R299 flat.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Job<span>Kaart</span></div>
+                <div class="footer-links">
+                    <a href="#how-it-works">Features</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="#signup">Get Early Access</a>
+                </div>
+                <div class="footer-contact">
+                    Questions? <a href="mailto:hello@jobkaart.co.za">hello@jobkaart.co.za</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Form submission (placeholder)
+        document.querySelector('.signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thanks for signing up! We\'ll be in touch soon.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
