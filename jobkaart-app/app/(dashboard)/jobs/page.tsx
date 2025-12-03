@@ -1,0 +1,199 @@
+import { createServerClient, getTenantId } from '@/lib/db/supabase-server'
+import Link from 'next/link'
+import { JobStatusBadge } from '@/components/features/jobs/JobStatusBadge'
+
+export default async function JobsPage() {
+  const tenantId = await getTenantId()
+  const supabase = await createServerClient()
+
+  // Fetch all jobs
+  const { data: jobs } = await supabase
+    .from('jobs')
+    .select(`
+      *,
+      customers!inner(id, name, phone, address)
+    `)
+    .eq('tenant_id', tenantId)
+    .order('created_at', { ascending: false })
+
+  const formatCurrency = (amount: number | null) => {
+    if (!amount) return 'R0.00'
+    return `R${amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+  }
+
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return '-'
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-ZA', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  }
+
+  // Group jobs by status for pipeline view
+  const jobsByStatus = {
+    quoted: jobs?.filter(j => j.status === 'quoted') || [],
+    scheduled: jobs?.filter(j => j.status === 'scheduled') || [],
+    in_progress: jobs?.filter(j => j.status === 'in_progress') || [],
+    complete: jobs?.filter(j => j.status === 'complete') || [],
+    invoiced: jobs?.filter(j => j.status === 'invoiced') || [],
+    paid: jobs?.filter(j => j.status === 'paid') || [],
+  }
+
+  const statusLabels = {
+    quoted: 'Quoted',
+    scheduled: 'Scheduled',
+    in_progress: 'In Progress',
+    complete: 'Complete',
+    invoiced: 'Invoiced',
+    paid: 'Paid',
+  }
+
+  return (
+    <div>
+      {/* Page Header */}
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Jobs</h1>
+          <p className="mt-2 text-sm text-gray-600">
+            Track your jobs from quote to payment
+          </p>
+        </div>
+      </div>
+
+      {jobs && jobs.length > 0 ? (
+        <>
+          {/* Stats Summary */}
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 mb-8">
+            {(Object.keys(jobsByStatus) as Array<keyof typeof jobsByStatus>).map((status) => (
+              <div key={status} className="bg-white rounded-lg shadow p-4">
+                <div className="text-2xl font-bold text-gray-900">
+                  {jobsByStatus[status].length}
+                </div>
+                <div className="text-xs text-gray-600 mt-1">
+                  {statusLabels[status]}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Pipeline View */}
+          <div className="space-y-8">
+            {(Object.keys(jobsByStatus) as Array<keyof typeof jobsByStatus>).map((status) => {
+              const statusJobs = jobsByStatus[status]
+              if (statusJobs.length === 0) return null
+
+              return (
+                <div key={status} className="bg-white rounded-lg shadow">
+                  <div className="px-6 py-4 border-b border-gray-200">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-lg font-semibold text-gray-900">
+                        {statusLabels[status]}
+                      </h2>
+                      <span className="text-sm text-gray-600">
+                        {statusJobs.length} {statusJobs.length === 1 ? 'job' : 'jobs'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="divide-y divide-gray-200">
+                    {statusJobs.map((job) => (
+                      <Link
+                        key={job.id}
+                        href={`/jobs/${job.id}`}
+                        className="block px-6 py-4 hover:bg-gray-50 transition-colors"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-3 mb-2">
+                              <p className="text-sm font-medium text-blue-600">
+                                {job.job_number}
+                              </p>
+                              <JobStatusBadge status={job.status} />
+                            </div>
+                            <p className="text-sm font-medium text-gray-900">
+                              {job.customers.name}
+                            </p>
+                            {job.title && (
+                              <p className="text-sm text-gray-600 mt-1">
+                                {job.title}
+                              </p>
+                            )}
+                            {job.customers.address && (
+                              <p className="text-xs text-gray-500 mt-1">
+                                {job.customers.address}
+                              </p>
+                            )}
+                            <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                              {job.scheduled_date && (
+                                <span>Scheduled: {formatDate(job.scheduled_date)}</span>
+                              )}
+                              {job.completed_date && (
+                                <span>Completed: {formatDate(job.completed_date)}</span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="ml-4 flex flex-col items-end gap-2">
+                            {job.total && (
+                              <span className="text-lg font-semibold text-gray-900">
+                                {formatCurrency(job.total)}
+                              </span>
+                            )}
+                            <svg
+                              className="w-5 h-5 text-gray-400"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </>
+      ) : (
+        /* Empty State */
+        <div className="bg-white shadow rounded-lg p-12 text-center">
+          <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+            <svg
+              className="w-12 h-12 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
+            </svg>
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            No Jobs Yet
+          </h3>
+          <p className="text-gray-600 mb-6">
+            Jobs are created when you convert accepted quotes. Start by creating a quote and accepting it.
+          </p>
+          <Link
+            href="/quotes"
+            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+          >
+            Go to Quotes
+          </Link>
+        </div>
+      )}
+    </div>
+  )
+}

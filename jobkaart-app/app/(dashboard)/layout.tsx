@@ -1,0 +1,63 @@
+import { createServerClient } from '@/lib/db/supabase-server'
+import { redirect } from 'next/navigation'
+import Link from 'next/link'
+import DashboardNav from './components/DashboardNav'
+
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const supabase = await createServerClient()
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser()
+
+  if (!user || error) {
+    redirect('/login')
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Top Navigation */}
+      <nav className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex items-center">
+              {/* Logo */}
+              <div className="flex-shrink-0 flex items-center">
+                <Link href="/dashboard" className="text-xl sm:text-2xl font-bold text-blue-600">
+                  JobKaart
+                </Link>
+              </div>
+
+              {/* Desktop Navigation Links */}
+              <DashboardNav />
+            </div>
+
+            {/* Right side - User info and logout */}
+            <div className="flex items-center gap-2 sm:gap-4">
+              <span className="hidden sm:inline text-sm text-gray-700">
+                {user.email}
+              </span>
+              <form action="/api/auth/logout" method="POST">
+                <button
+                  type="submit"
+                  className="text-sm text-gray-500 hover:text-gray-700 px-2 py-1"
+                >
+                  Sign out
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {children}
+      </main>
+    </div>
+  )
+}
