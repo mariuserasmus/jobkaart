@@ -8,10 +8,10 @@ const navLinks = [
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/customers', label: 'Customers' },
   { href: '/quotes', label: 'Quotes' },
-  { href: '/quote-templates', label: 'Templates' },
   { href: '/jobs', label: 'Jobs' },
   { href: '/invoices', label: 'Invoices' },
   { href: '/billing', label: 'Billing' },
+  { href: '/settings', label: 'Settings' },
 ]
 
 export default function DashboardNav() {

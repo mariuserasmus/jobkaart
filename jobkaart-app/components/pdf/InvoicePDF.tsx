@@ -1,5 +1,5 @@
 import React from 'react'
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
+import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer'
 
 // Define styles for PDF
 const styles = StyleSheet.create({
@@ -10,6 +10,17 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  headerLeft: {
+    flex: 1,
+  },
+  logo: {
+    maxHeight: 50,
+    maxWidth: 150,
+    objectFit: 'contain',
   },
   companyName: {
     fontSize: 24,
@@ -200,6 +211,7 @@ interface InvoicePDFProps {
     bank_name?: string | null
     bank_account_number?: string | null
     bank_branch_code?: string | null
+    logo_url?: string | null
   }
 }
 
@@ -234,15 +246,20 @@ export const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoice, tenant }) => {
 
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.companyName}>{tenant.company_name}</Text>
-          {tenant.phone && (
-            <Text style={styles.companyDetails}>Tel: {tenant.phone}</Text>
-          )}
-          {tenant.email && (
-            <Text style={styles.companyDetails}>Email: {tenant.email}</Text>
-          )}
-          {tenant.address && (
-            <Text style={styles.companyDetails}>{tenant.address}</Text>
+          <View style={styles.headerLeft}>
+            <Text style={styles.companyName}>{tenant.company_name}</Text>
+            {tenant.phone && (
+              <Text style={styles.companyDetails}>Tel: {tenant.phone}</Text>
+            )}
+            {tenant.email && (
+              <Text style={styles.companyDetails}>Email: {tenant.email}</Text>
+            )}
+            {tenant.address && (
+              <Text style={styles.companyDetails}>{tenant.address}</Text>
+            )}
+          </View>
+          {tenant.logo_url && (
+            <Image src={tenant.logo_url} style={styles.logo} />
           )}
         </View>
 

@@ -102,7 +102,7 @@ export default async function PublicInvoiceViewPage({ params }: PublicInvoiceVie
                 <img
                   src={tenant.logo_url}
                   alt={tenant.business_name}
-                  className="h-16 mb-4"
+                  className="max-h-64 max-w-[500px] object-contain mb-0"
                 />
               ) : (
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">
@@ -110,8 +110,21 @@ export default async function PublicInvoiceViewPage({ params }: PublicInvoiceVie
                 </h2>
               )}
               {tenant?.vat_number && (
-                <p className="text-sm text-gray-600">VAT: {tenant.vat_number}</p>
+                <p className="text-sm text-gray-600 mb-3">VAT: {tenant.vat_number}</p>
               )}
+              <div className="flex items-center gap-3">
+                <InvoiceStatusBadge status={invoice.status} />
+                {isOverdue && (
+                  <span className="text-sm text-red-600 font-medium">
+                    Payment Overdue
+                  </span>
+                )}
+                {isPaid && (
+                  <span className="text-sm text-green-600 font-medium">
+                    Paid in Full
+                  </span>
+                )}
+              </div>
             </div>
             <div className="text-right">
               <h1 className="text-3xl font-bold text-blue-600 mb-2">INVOICE</h1>
@@ -123,20 +136,6 @@ export default async function PublicInvoiceViewPage({ params }: PublicInvoiceVie
                 Due: {formatDate(invoice.due_date)}
               </p>
             </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <InvoiceStatusBadge status={invoice.status} />
-            {isOverdue && (
-              <span className="text-sm text-red-600 font-medium">
-                Payment Overdue
-              </span>
-            )}
-            {isPaid && (
-              <span className="text-sm text-green-600 font-medium">
-                Paid in Full
-              </span>
-            )}
           </div>
         </div>
 

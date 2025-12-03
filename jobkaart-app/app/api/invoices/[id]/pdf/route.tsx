@@ -82,6 +82,7 @@ export async function GET(
         bank_name: tenant.banking_details?.bank_name || null,
         bank_account_number: tenant.banking_details?.account_number || null,
         bank_branch_code: tenant.banking_details?.branch_code || null,
+        logo_url: tenant.logo_url,
       },
     }
 

@@ -75,6 +75,7 @@ export async function GET(
         phone: tenant.phone,
         email: tenant.email,
         address: tenant.address,
+        logo_url: tenant.logo_url,
       },
     }
 
