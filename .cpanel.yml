@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    # Deploy the Next.js app from jobkaart-app folder to public_html
-    - export DEPLOYPATH=/home/jobkaae5k2z4/public_html/
-    - /bin/cp -R jobkaart-app/* $DEPLOYPATH
-    - echo "Files deployed to $DEPLOYPATH"
+    - export DEPLOYPATH=/home/jobkaae5k2z4/public_html
+    - /bin/rm -rf $DEPLOYPATH
+    - /bin/cp -R jobkaart-app $DEPLOYPATH
+    - echo "Deployment complete"
