@@ -14,7 +14,7 @@ import { PLAN_DETAILS, type PlanType } from '@/lib/payfast';
 interface PricingPlansProps {
   currentPlan?: PlanType | null;
   isInTrial?: boolean;
-  subscriptionStatus?: 'trial' | 'active' | 'cancelled' | 'expired' | null;
+  subscriptionStatus?: 'trial' | 'active' | 'cancelled' | 'expired' | 'overdue' | null;
   onSelectPlan?: (plan: PlanType) => void;
 }
 

@@ -283,7 +283,7 @@ export default async function TenantDetailPage({ params }: PageProps) {
               activity.quotes.map((quote) => (
                 <div key={quote.id} className="px-6 py-3">
                   <div className="text-sm font-medium text-gray-900">{quote.quote_number}</div>
-                  <div className="text-xs text-gray-600">{quote.customers.name}</div>
+                  <div className="text-xs text-gray-600">{(quote.customers as any).name}</div>
                   <div className="text-xs text-gray-500 mt-1">
                     {formatShortDate(quote.created_at)}
                   </div>
@@ -305,7 +305,7 @@ export default async function TenantDetailPage({ params }: PageProps) {
               activity.jobs.map((job) => (
                 <div key={job.id} className="px-6 py-3">
                   <div className="text-sm font-medium text-gray-900">{job.job_number}</div>
-                  <div className="text-xs text-gray-600">{job.customers.name}</div>
+                  <div className="text-xs text-gray-600">{(job.customers as any).name}</div>
                   <div className="text-xs text-gray-500 mt-1">
                     {formatShortDate(job.created_at)}
                   </div>
@@ -329,7 +329,7 @@ export default async function TenantDetailPage({ params }: PageProps) {
                   <div className="text-sm font-medium text-gray-900">
                     {invoice.invoice_number}
                   </div>
-                  <div className="text-xs text-gray-600">{invoice.customers.name}</div>
+                  <div className="text-xs text-gray-600">{(invoice.customers as any).name}</div>
                   <div className="text-xs font-medium text-green-600 mt-1">
                     {formatCurrency(invoice.total)}
                   </div>

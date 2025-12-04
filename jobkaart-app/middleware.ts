@@ -88,8 +88,12 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
-  // Check subscription status for protected routes (but not billing pages)
-  if (user && !error && isProtectedPath && !isBillingPath) {
+  // Admin routes (bypass subscription check for super admins)
+  const adminPaths = ['/admin']
+  const isAdminPath = adminPaths.some(path => req.nextUrl.pathname.startsWith(path))
+
+  // Check subscription status for protected routes (but not billing pages or admin pages)
+  if (user && !error && isProtectedPath && !isBillingPath && !isAdminPath) {
     // Get user's tenant and subscription status
     const { data: userData, error: userError } = await supabase
       .from('users')
@@ -106,8 +110,15 @@ export async function middleware(req: NextRequest) {
       // Check if trial has expired
       const isTrialExpired = trialEndsAt && trialEndsAt < now
 
-      // Block access if subscription is not active or trial
-      if (subscriptionStatus === 'cancelled' && isTrialExpired) {
+      // Block access if subscription is cancelled (regardless of trial date)
+      if (subscriptionStatus === 'cancelled') {
+        const redirectUrl = req.nextUrl.clone()
+        redirectUrl.pathname = '/billing/expired'
+        return NextResponse.redirect(redirectUrl)
+      }
+
+      // Block access if trial has expired
+      if (subscriptionStatus === 'trial' && isTrialExpired) {
         const redirectUrl = req.nextUrl.clone()
         redirectUrl.pathname = '/billing/expired'
         return NextResponse.redirect(redirectUrl)

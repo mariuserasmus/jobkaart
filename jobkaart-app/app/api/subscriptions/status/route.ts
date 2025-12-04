@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
     // Calculate trial status
     const now = new Date();
     const trialEndsAt = tenant.trial_ends_at ? new Date(tenant.trial_ends_at) : null;
-    const isInTrial = trialEndsAt && trialEndsAt > now;
+    const isInTrial = tenant.subscription_status === 'trial' && trialEndsAt && trialEndsAt > now;
     const trialDaysRemaining = isInTrial
       ? Math.ceil((trialEndsAt!.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
       : 0;

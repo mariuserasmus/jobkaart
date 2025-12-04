@@ -61,9 +61,9 @@ export function CancelModal({
               </p>
             </div>
 
-            <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-6">
-              <p className="text-sm text-red-800">
-                <strong>Warning:</strong> This will cancel the tenant's subscription immediately.
+            <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-6 overflow-hidden">
+              <p className="text-sm text-red-800 break-words whitespace-normal w-full">
+                <strong className="font-semibold">Warning:</strong> This will cancel the tenant&apos;s subscription immediately.
               </p>
             </div>
 

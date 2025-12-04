@@ -91,7 +91,7 @@ export function SubscriptionActions({ tenant, onActionComplete }: SubscriptionAc
     await handleAction(
       '/api/admin/subscriptions/reset-trial',
       { tenantId: tenant.tenant_id },
-      'Trial reset to 30 days'
+      'Trial reset to 14 days'
     )
   }
 
@@ -132,8 +132,8 @@ export function SubscriptionActions({ tenant, onActionComplete }: SubscriptionAc
             <div
               className="fixed w-56 bg-white rounded-md shadow-lg border border-gray-200 z-20"
               style={{
-                top: `${document.getElementById(`actions-button-${tenant.tenant_id}`)?.getBoundingClientRect().bottom + 8}px`,
-                right: `${window.innerWidth - (document.getElementById(`actions-button-${tenant.tenant_id}`)?.getBoundingClientRect().right || 0)}px`
+                top: `${typeof document !== 'undefined' ? (document.getElementById(`actions-button-${tenant.tenant_id}`)?.getBoundingClientRect().bottom || 0) + 8 : 0}px`,
+                right: `${typeof window !== 'undefined' ? window.innerWidth - (document.getElementById(`actions-button-${tenant.tenant_id}`)?.getBoundingClientRect().right || 0) : 0}px`
               }}
             >
               <div className="py-1">
@@ -237,7 +237,7 @@ export function SubscriptionActions({ tenant, onActionComplete }: SubscriptionAc
         onClose={() => setShowResetTrial(false)}
         onConfirm={handleResetTrial}
         title="Reset to Trial"
-        message={`Reset ${tenant.business_name} to a 30-day trial period?`}
+        message={`Reset ${tenant.business_name} to a 14-day trial period?`}
         confirmText="Reset Trial"
         isLoading={isLoading}
       />

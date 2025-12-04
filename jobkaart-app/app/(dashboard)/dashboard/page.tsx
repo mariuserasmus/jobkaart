@@ -354,11 +354,11 @@ export default async function DashboardPage() {
                         {job.job_number}
                       </p>
                       <p className="text-sm text-gray-900 mt-1">
-                        {job.customers.name}
+                        {(job.customers as any).name}
                       </p>
-                      {job.customers.address && (
+                      {(job.customers as any).address && (
                         <p className="text-xs text-gray-500 mt-1">
-                          {job.customers.address}
+                          {(job.customers as any).address}
                         </p>
                       )}
                     </div>
@@ -401,11 +401,11 @@ export default async function DashboardPage() {
                         {job.job_number}
                       </p>
                       <p className="text-sm text-gray-900 mt-1">
-                        {job.customers.name}
+                        {(job.customers as any).name}
                       </p>
-                      {job.customers.address && (
+                      {(job.customers as any).address && (
                         <p className="text-xs text-gray-500 mt-1">
-                          {job.customers.address}
+                          {(job.customers as any).address}
                         </p>
                       )}
                       {job.scheduled_date && (
@@ -456,7 +456,7 @@ export default async function DashboardPage() {
                       >
                         <div>
                           <p className="text-sm font-medium text-gray-900">
-                            {quote.quote_number} - {quote.customers.name}
+                            {quote.quote_number} - {(quote.customers as any).name}
                           </p>
                           <p className="text-xs text-gray-600 mt-1">
                             Sent {formatDate(quote.created_at)} - Follow up now
@@ -496,7 +496,7 @@ export default async function DashboardPage() {
                       >
                         <div>
                           <p className="text-sm font-medium text-gray-900">
-                            {job.job_number} - {job.customers.name}
+                            {job.job_number} - {(job.customers as any).name}
                           </p>
                           <p className="text-xs text-gray-600 mt-1">
                             {formatCurrency(job.total)} - Create invoice
@@ -536,7 +536,7 @@ export default async function DashboardPage() {
                       >
                         <div>
                           <p className="text-sm font-medium text-gray-900">
-                            {invoice.invoice_number} - {invoice.customers.name}
+                            {invoice.invoice_number} - {(invoice.customers as any).name}
                           </p>
                           <p className="text-xs text-red-600 mt-1">
                             {formatCurrency(invoice.total - invoice.amount_paid)} outstanding - Due {formatDate(invoice.due_date)}
