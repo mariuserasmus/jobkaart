@@ -1,8 +1,4 @@
 export default function Hero() {
-  const scrollToWaitingList = () => {
-    document.getElementById('waiting-list')?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
     <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
@@ -43,16 +39,16 @@ export default function Hero() {
           </div>
 
           {/* CTA Button */}
-          <button
-            onClick={scrollToWaitingList}
-            className="bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold text-xl px-12 py-5 rounded-lg shadow-2xl transform transition hover:scale-105 hover:shadow-yellow-400/50"
+          <a
+            href="/signup"
+            className="inline-block bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold text-xl px-12 py-5 rounded-lg shadow-2xl transform transition hover:scale-105 hover:shadow-yellow-400/50"
           >
-            Join the Waiting List
-          </button>
+            Start Free Trial →
+          </a>
 
           {/* Trust indicator */}
           <p className="mt-6 text-blue-200 text-sm">
-            Built for SA tradespeople • Launching Soon
+            Built for SA tradespeople • 14-Day Free Trial • No Credit Card Required
           </p>
         </div>
       </div>
