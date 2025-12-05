@@ -14,6 +14,9 @@ interface PageProps {
 export default async function TenantDetailPage({ params }: PageProps) {
   const { id } = await params
 
+  // Add logging to debug 404 issues
+  console.log('Tenant detail page - ID received:', id)
+
   // Log admin action
   await logAdminAction({
     action: 'view_tenant_details',
@@ -25,6 +28,7 @@ export default async function TenantDetailPage({ params }: PageProps) {
   const tenantData = await getTenantDetails(id)
 
   if (!tenantData) {
+    console.error('Tenant not found for ID:', id)
     notFound()
   }
 

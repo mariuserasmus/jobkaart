@@ -21,12 +21,18 @@ export async function POST(request: NextRequest) {
     }
 
     // 1. Create tenant (business)
+    const trialStartDate = new Date()
+    const trialEndDate = new Date()
+    trialEndDate.setDate(trialEndDate.getDate() + 14) // 14-day trial
+
     const { data: tenant, error: tenantError } = await supabaseAdmin
       .from('tenants')
       .insert({
         business_name,
         subscription_tier: 'starter', // Default to Starter plan
-        subscription_status: 'active', // Start active (free trial)
+        subscription_status: 'trial', // Start with 14-day trial
+        subscription_started_at: trialStartDate.toISOString(),
+        subscription_ends_at: trialEndDate.toISOString(),
       })
       .select()
       .single()

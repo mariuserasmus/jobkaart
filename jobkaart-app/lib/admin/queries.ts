@@ -80,12 +80,23 @@ export async function getAllTenants({
 export async function getTenantDetails(tenantId: string) {
   const supabase = await createServerClient()
 
+  // Add logging to debug
+  console.log('getTenantDetails called with ID:', tenantId)
+
   // Get tenant info
   const { data: tenant, error: tenantError } = await supabase
     .from('tenants')
     .select('*')
     .eq('id', tenantId)
     .single()
+
+  if (tenantError) {
+    console.error('Error fetching tenant:', tenantError)
+  }
+
+  if (!tenant) {
+    console.error('No tenant found for ID:', tenantId)
+  }
 
   if (tenantError || !tenant) {
     return null
