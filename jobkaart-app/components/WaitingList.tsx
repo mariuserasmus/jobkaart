@@ -80,7 +80,7 @@ export default function WaitingList() {
   }
 
   return (
-    <section id="contact" className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
+    <section id="waiting-list" className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl shadow-2xl p-8 lg:p-12">
           {/* Header */}
