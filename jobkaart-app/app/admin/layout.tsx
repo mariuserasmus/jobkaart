@@ -4,6 +4,7 @@ import { isSuperAdmin } from '@/lib/admin/auth'
 import { AdminBanner } from './components/AdminBanner'
 import { AdminNav } from './components/AdminNav'
 import { createServerClient } from '@/lib/db/supabase-server'
+import LogoutButton from '../(dashboard)/components/LogoutButton'
 
 export default async function AdminLayout({
   children,
@@ -52,14 +53,7 @@ export default async function AdminLayout({
                 Exit Admin Mode
               </Link>
               <span className="text-sm text-gray-700">{user?.email}</span>
-              <form action="/api/auth/logout" method="POST">
-                <button
-                  type="submit"
-                  className="text-sm text-gray-500 hover:text-gray-700 px-2 py-1"
-                >
-                  Sign out
-                </button>
-              </form>
+              <LogoutButton />
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import { createServerClient } from '@/lib/db/supabase-server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import DashboardNav from './components/DashboardNav'
+import LogoutButton from './components/LogoutButton'
 
 export default async function DashboardLayout({
   children,
@@ -41,14 +42,7 @@ export default async function DashboardLayout({
               <span className="hidden sm:inline text-sm text-gray-700">
                 {user.email}
               </span>
-              <form action="/api/auth/logout" method="POST">
-                <button
-                  type="submit"
-                  className="text-sm text-gray-500 hover:text-gray-700 px-2 py-1"
-                >
-                  Sign out
-                </button>
-              </form>
+              <LogoutButton />
             </div>
           </div>
         </div>
