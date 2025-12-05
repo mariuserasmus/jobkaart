@@ -46,8 +46,16 @@ export default function Hero() {
             Start Free Trial →
           </a>
 
+          {/* Login link */}
+          <p className="mt-4 text-blue-100">
+            Already have an account?{' '}
+            <a href="/login" className="text-yellow-300 hover:text-yellow-200 font-semibold underline">
+              Sign in
+            </a>
+          </p>
+
           {/* Trust indicator */}
-          <p className="mt-6 text-blue-200 text-sm">
+          <p className="mt-4 text-blue-200 text-sm">
             Built for SA tradespeople • 14-Day Free Trial • No Credit Card Required
           </p>
         </div>
