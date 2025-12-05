@@ -45,14 +45,14 @@ export default async function AdminLayout({
             </div>
 
             {/* Right side - User info and links */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <Link
                 href="/dashboard"
-                className="text-sm text-blue-600 hover:text-blue-800"
+                className="hidden sm:inline text-sm text-blue-600 hover:text-blue-800"
               >
                 Exit Admin Mode
               </Link>
-              <span className="text-sm text-gray-700">{user?.email}</span>
+              <span className="hidden sm:inline text-sm text-gray-700">{user?.email}</span>
               <LogoutButton />
             </div>
           </div>

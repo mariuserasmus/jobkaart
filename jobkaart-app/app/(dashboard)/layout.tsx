@@ -19,6 +19,15 @@ export default async function DashboardLayout({
     redirect('/login')
   }
 
+  // Check if user is super admin
+  const { data: userData } = await supabase
+    .from('users')
+    .select('is_super_admin')
+    .eq('id', user.id)
+    .single()
+
+  const isSuperAdmin = userData?.is_super_admin || false
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Navigation */}
@@ -34,7 +43,7 @@ export default async function DashboardLayout({
               </div>
 
               {/* Desktop Navigation Links */}
-              <DashboardNav />
+              <DashboardNav isSuperAdmin={isSuperAdmin} />
             </div>
 
             {/* Right side - User info and logout */}

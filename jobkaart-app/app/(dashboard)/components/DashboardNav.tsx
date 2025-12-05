@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-const navLinks = [
+const baseNavLinks = [
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/customers', label: 'Customers' },
   { href: '/quotes', label: 'Quotes' },
@@ -14,9 +14,14 @@ const navLinks = [
   { href: '/settings', label: 'Settings' },
 ]
 
-export default function DashboardNav() {
+export default function DashboardNav({ isSuperAdmin = false }: { isSuperAdmin?: boolean }) {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // Add Admin link for super admins
+  const navLinks = isSuperAdmin
+    ? [...baseNavLinks, { href: '/admin', label: '⚙️ Admin' }]
+    : baseNavLinks
 
   return (
     <>
