@@ -67,7 +67,7 @@ export default function ROI() {
                   onClick={scrollToWaitingList}
                   className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl px-10 py-4 rounded-lg shadow-lg transform transition hover:scale-105"
                 >
-                  Join the Waiting List
+                  Questions Before You Join?
                 </button>
                 <p className="mt-4 text-sm text-gray-600">
                   Launching Soon • R299/month • Cancel anytime
