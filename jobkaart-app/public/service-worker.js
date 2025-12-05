@@ -1,7 +1,7 @@
 // JobKaart Service Worker
 // This enables offline functionality and makes the app feel native
 
-const CACHE_NAME = 'jobkaart-v2'
+const CACHE_NAME = 'jobkaart-v3'
 const urlsToCache = [
   '/',
   '/dashboard',
@@ -34,11 +34,14 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          // Optionally cache the response for offline fallback
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, response.clone())
-            return response
-          })
+          // Only cache GET requests (POST, PUT, DELETE cannot be cached)
+          if (event.request.method === 'GET') {
+            return caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, response.clone())
+              return response
+            })
+          }
+          return response
         })
         .catch(() => {
           // Network failed (offline) - serve from cache if available
