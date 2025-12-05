@@ -1,11 +1,10 @@
 import { createClient } from '@/lib/db/supabase-client'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   const supabase = createClient()
   await supabase.auth.signOut()
 
-  // Use the request origin to redirect (works in all environments)
-  const origin = request.nextUrl.origin
-  return NextResponse.redirect(new URL('/login', origin))
+  // Return success - let the client handle redirect
+  return NextResponse.json({ success: true })
 }
