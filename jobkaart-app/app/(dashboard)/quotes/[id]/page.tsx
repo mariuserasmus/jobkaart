@@ -15,6 +15,7 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [existingJobId, setExistingJobId] = useState<string | null>(null)
 
   // Load quote data
   useState(() => {
@@ -24,6 +25,15 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
         const result = await response.json()
         if (result.success) {
           setQuote(result.data)
+
+          // Check if job already exists for this quote
+          if (result.data.status === 'accepted') {
+            const jobResponse = await fetch(`/api/jobs?quote_id=${id}`)
+            const jobResult = await jobResponse.json()
+            if (jobResult.success && jobResult.data?.jobs?.length > 0) {
+              setExistingJobId(jobResult.data.jobs[0].id)
+            }
+          }
         } else {
           setError(result.error || 'Failed to load quote')
         }
@@ -105,6 +115,7 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
       })
       const result = await response.json()
       if (result.success) {
+        setExistingJobId(result.data.job.id)
         alert('Quote converted to job successfully!')
         router.push(`/jobs/${result.data.job.id}`)
       } else {
@@ -272,10 +283,15 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
             </Button>
           </>
         )}
-        {quote.status === 'accepted' && (
+        {quote.status === 'accepted' && !existingJobId && (
           <Button onClick={handleConvertToJob} variant="success" disabled={actionLoading}>
             Convert to Job
           </Button>
+        )}
+        {quote.status === 'accepted' && existingJobId && (
+          <Link href={`/jobs/${existingJobId}`}>
+            <Button variant="success">View Job</Button>
+          </Link>
         )}
         <Button onClick={handleDelete} variant="destructive" disabled={actionLoading}>
           Delete

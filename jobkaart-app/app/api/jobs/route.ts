@@ -22,6 +22,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search') || ''
     const status = searchParams.get('status') || ''
     const customerId = searchParams.get('customer_id') || ''
+    const quoteId = searchParams.get('quote_id') || ''
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '50')
     const offset = (page - 1) * limit
@@ -42,6 +43,11 @@ export async function GET(request: NextRequest) {
     // Filter by customer
     if (customerId) {
       query = query.eq('customer_id', customerId)
+    }
+
+    // Filter by quote
+    if (quoteId) {
+      query = query.eq('quote_id', quoteId)
     }
 
     // Search by job number or customer name
