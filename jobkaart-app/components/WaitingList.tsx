@@ -8,7 +8,8 @@ export default function WaitingList() {
     email: '',
     phone: '',
     trade: '',
-    otherTrade: ''
+    otherTrade: '',
+    message: ''
   })
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -44,8 +45,9 @@ export default function WaitingList() {
           email: formData.email,
           phone: formData.phone,
           trade: formData.trade === 'Other' ? formData.otherTrade : formData.trade,
-          subject: 'New JobKaart Waiting List Signup',
-          from_name: 'JobKaart Waiting List'
+          message: formData.message,
+          subject: 'New JobKaart Contact Inquiry',
+          from_name: 'JobKaart Contact Form'
         })
       })
 
@@ -56,7 +58,7 @@ export default function WaitingList() {
         // Reset form after 3 seconds
         setTimeout(() => {
           setSubmitted(false)
-          setFormData({ name: '', email: '', phone: '', trade: '', otherTrade: '' })
+          setFormData({ name: '', email: '', phone: '', trade: '', otherTrade: '', message: '' })
         }, 3000)
       } else {
         console.error('Form submission failed:', data)
@@ -70,7 +72,7 @@ export default function WaitingList() {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -78,23 +80,23 @@ export default function WaitingList() {
   }
 
   return (
-    <section id="waiting-list" className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
+    <section id="contact" className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl shadow-2xl p-8 lg:p-12">
           {/* Header */}
           <div className="text-center mb-10">
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Join the Waiting List
+              Questions Before You Join?
             </h2>
             <p className="text-xl text-gray-600">
-              Be the first to know when JobKaart launches. Get in quickly to secure your discount!
+              We're here to help! Ask us anything about JobKaart and we'll get back to you within 24 hours.
             </p>
             <div className="mt-4 space-y-2">
               <p className="text-lg text-green-600 font-semibold">
                 ✨ 14-Day Free Trial • No credit card needed
               </p>
               <p className="text-lg text-blue-600 font-semibold">
-                🔥 First 10 signups get 50% off for the first 3 months!
+                💬 Get answers before you commit
               </p>
             </div>
           </div>
@@ -194,12 +196,27 @@ export default function WaitingList() {
                 </div>
               )}
 
-              {/* Submit Button */}
+              {/* Message / Question */}
+              <div>
+                <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                  Your Question or Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                  placeholder="e.g., How does the quote tracking work? Can I manage multiple teams? Do you integrate with Xero?"
+                />
+                <p className="mt-1 text-xs text-gray-500">Optional - but helps us give you specific answers!</p>
+              </div>
+
               {/* Privacy Notice */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <p className="text-xs text-gray-700 leading-relaxed">
-                  🔒 <span className="font-semibold">Your privacy matters.</span> We only use your information to notify you when JobKaart launches.
-                  We never share or sell your data. POPIA compliant. You can unsubscribe anytime.
+                  🔒 <span className="font-semibold">Your privacy matters.</span> We'll only use your information to answer your questions and send you helpful info about JobKaart. We never share or sell your data. POPIA compliant.
                 </p>
               </div>
 
@@ -208,24 +225,24 @@ export default function WaitingList() {
                 disabled={isSubmitting}
                 className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold text-xl px-8 py-4 rounded-lg shadow-lg transform transition hover:scale-105 disabled:hover:scale-100"
               >
-                {isSubmitting ? 'Submitting...' : 'Join the Waiting List'}
+                {isSubmitting ? 'Sending...' : 'Send My Question'}
               </button>
 
               <p className="text-center text-sm text-gray-500">
-                We'll WhatsApp you when we launch. No spam, promise.
+                We'll get back to you within 24 hours via email or WhatsApp.
               </p>
             </form>
           ) : (
             <div className="text-center py-12">
-              <div className="text-6xl mb-4">🎉</div>
+              <div className="text-6xl mb-4">✅</div>
               <h3 className="text-3xl font-bold text-green-600 mb-2">
-                You're on the list!
+                Message Received!
               </h3>
               <p className="text-xl text-gray-700">
-                We'll WhatsApp you when JobKaart launches!
+                We'll get back to you within 24 hours via email or WhatsApp.
               </p>
               <p className="text-lg text-blue-600 font-semibold mt-4">
-                🔥 You're in the first 10! 50% off your first 3 months secured!
+                💬 Thanks for reaching out!
               </p>
             </div>
           )}
