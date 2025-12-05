@@ -1,18 +1,28 @@
 'use client'
 
+import { createClient } from '@/lib/db/supabase-client'
+
 export default function LogoutButton() {
   const handleLogout = async () => {
     try {
-      const response = await fetch('/api/auth/logout', {
-        method: 'POST',
-      })
+      // Sign out on client (clears cookies immediately)
+      const supabase = createClient()
+      await supabase.auth.signOut()
 
-      if (response.ok) {
-        // Force full page reload to login (clears all state)
-        window.location.href = '/login'
+      // Clear all site data to ensure clean logout
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations()
+        for (const registration of registrations) {
+          await registration.unregister()
+        }
       }
+
+      // Force complete reload to homepage (bypasses all caching and middleware)
+      window.location.replace('/')
     } catch (error) {
       console.error('Logout failed:', error)
+      // Even if error, still redirect
+      window.location.replace('/')
     }
   }
 
