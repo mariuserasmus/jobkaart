@@ -164,8 +164,10 @@ export async function PATCH(
 }
 
 /**
- * DELETE /api/jobs/[id]
- * Delete a job and all related invoices (if no payments recorded)
+ * DELETE /api/jobs/[id]?force=true
+ * Delete a job and all related invoices
+ * - By default: only if no payments recorded
+ * - With force=true: deletes all payments and invoices (for cleanup/testing)
  * Updates quote to allow creating new jobs
  */
 export async function DELETE(
@@ -182,6 +184,9 @@ export async function DELETE(
         { status: 401 }
       )
     }
+
+    const { searchParams } = new URL(request.url)
+    const force = searchParams.get('force') === 'true'
 
     const supabase = await createServerClient()
 
@@ -200,28 +205,56 @@ export async function DELETE(
       )
     }
 
-    // Check if any invoices have payments
-    const { data: invoicesWithPayments } = await supabase
+    // Get all invoices for this job
+    const { data: jobInvoices } = await supabase
       .from('invoices')
-      .select(`
-        id,
-        invoice_number,
-        payments!inner(id)
-      `)
+      .select('id, invoice_number')
       .eq('job_id', id)
       .eq('tenant_id', tenantId)
 
-    if (invoicesWithPayments && invoicesWithPayments.length > 0) {
-      const invoiceNumbers = invoicesWithPayments
-        .map((inv) => inv.invoice_number)
-        .join(', ')
-      return NextResponse.json(
-        {
-          success: false,
-          error: `Cannot delete job with invoices that have payments. Invoices: ${invoiceNumbers}`,
-        },
-        { status: 400 }
-      )
+    if (jobInvoices && jobInvoices.length > 0) {
+      // Check if any invoices have payments
+      const { data: invoicesWithPayments } = await supabase
+        .from('invoices')
+        .select(`
+          id,
+          invoice_number,
+          payments!inner(id)
+        `)
+        .eq('job_id', id)
+        .eq('tenant_id', tenantId)
+
+      if (invoicesWithPayments && invoicesWithPayments.length > 0) {
+        if (force) {
+          // Force delete: Delete all payments for all invoices first
+          for (const invoice of jobInvoices) {
+            const { error: deletePaymentsError } = await supabase
+              .from('payments')
+              .delete()
+              .eq('invoice_id', invoice.id)
+              .eq('tenant_id', tenantId)
+
+            if (deletePaymentsError) {
+              console.error('Error deleting payments:', deletePaymentsError)
+              return NextResponse.json(
+                { success: false, error: 'Failed to delete invoice payments' },
+                { status: 500 }
+              )
+            }
+          }
+        } else {
+          const invoiceNumbers = invoicesWithPayments
+            .map((inv) => inv.invoice_number)
+            .join(', ')
+          return NextResponse.json(
+            {
+              success: false,
+              error: `Cannot delete job with invoices that have payments. Invoices: ${invoiceNumbers}. Use force delete to override.`,
+            },
+            { status: 400 }
+          )
+        }
+      }
     }
 
     // Delete all invoices for this job (cascade should handle payments)

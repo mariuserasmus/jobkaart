@@ -3,6 +3,7 @@ import { getTenantDetails, getTenantActivity } from '@/lib/admin/queries'
 import { notFound } from 'next/navigation'
 import { StatCard } from '../../components/AdminStats'
 import Link from 'next/link'
+import { ResetTenantDataSection } from './ResetTenantDataSection'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -348,6 +349,9 @@ export default async function TenantDetailPage({ params }: PageProps) {
           </div>
         </div>
       </div>
+
+      {/* Reset Tenant Data Section */}
+      <ResetTenantDataSection tenantId={tenant.id} businessName={tenant.business_name} />
     </div>
   )
 }

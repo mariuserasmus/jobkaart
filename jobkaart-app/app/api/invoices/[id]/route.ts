@@ -151,8 +151,10 @@ export async function PATCH(
 }
 
 /**
- * DELETE /api/invoices/[id]
- * Delete an invoice (only if no payments recorded)
+ * DELETE /api/invoices/[id]?force=true
+ * Delete an invoice
+ * - By default: only if no payments recorded
+ * - With force=true: deletes payments first, then invoice (for cleanup/testing)
  * Updates job status back to appropriate state
  */
 export async function DELETE(
@@ -169,6 +171,9 @@ export async function DELETE(
         { status: 401 }
       )
     }
+
+    const { searchParams } = new URL(request.url)
+    const force = searchParams.get('force') === 'true'
 
     const supabase = await createServerClient()
 
@@ -195,13 +200,57 @@ export async function DELETE(
       .eq('tenant_id', tenantId)
 
     if (payments && payments.length > 0) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Cannot delete invoice with recorded payments',
-        },
-        { status: 400 }
-      )
+      if (force) {
+        // Force delete: Remove all payments first
+        const { error: deletePaymentsError } = await supabase
+          .from('payments')
+          .delete()
+          .eq('invoice_id', id)
+          .eq('tenant_id', tenantId)
+
+        if (deletePaymentsError) {
+          console.error('Error deleting payments:', deletePaymentsError)
+          return NextResponse.json(
+            { success: false, error: 'Failed to delete invoice payments' },
+            { status: 500 }
+          )
+        }
+      } else {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Cannot delete invoice with recorded payments. Use force delete to override.',
+          },
+          { status: 400 }
+        )
+      }
+    }
+
+    // CRITICAL: Enforce reverse-order deletion for invoices with same job
+    // Invoices can ONLY be deleted in reverse order of creation (unless force=true)
+    if (invoice.job_id && !force) {
+      const { data: allJobInvoices } = await supabase
+        .from('invoices')
+        .select('id, invoice_number, created_at')
+        .eq('job_id', invoice.job_id)
+        .eq('tenant_id', tenantId)
+        .order('created_at', { ascending: false })
+
+      if (allJobInvoices && allJobInvoices.length > 1) {
+        // Find the most recently created invoice
+        const mostRecentInvoice = allJobInvoices[0]
+
+        // If trying to delete an invoice that's NOT the most recent one, reject
+        if (mostRecentInvoice.id !== id) {
+          return NextResponse.json(
+            {
+              success: false,
+              error: `Cannot delete this invoice. Invoices must be deleted in reverse order. Please delete ${mostRecentInvoice.invoice_number} first, or use force delete.`,
+            },
+            { status: 400 }
+          )
+        }
+      }
     }
 
     // Delete invoice

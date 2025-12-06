@@ -6,6 +6,7 @@ import { JobStatusManager } from '@/components/features/jobs/JobStatusManager'
 import { ScheduledDateEditor } from '@/components/features/jobs/ScheduledDateEditor'
 import { JobPhotosSection } from '@/components/features/jobs/JobPhotosSection'
 import { JobInvoicesSection } from '@/components/features/jobs/JobInvoicesSection'
+import { JobActions } from './JobActions'
 
 interface JobDetailPageProps {
   params: Promise<{ id: string }>
@@ -267,6 +268,13 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
               </a>
             </div>
           </div>
+
+          {/* Job Actions */}
+          <JobActions
+            jobId={job.id}
+            jobNumber={job.job_number}
+            jobStatus={job.status}
+          />
         </div>
       </div>
     </div>

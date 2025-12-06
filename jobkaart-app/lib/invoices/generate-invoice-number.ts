@@ -13,27 +13,28 @@ export async function generateInvoiceNumber(
   const currentYear = new Date().getFullYear()
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
-    // Get the latest invoice number for this tenant
-    const { data: lastInvoice } = await supabase
+    // Get ALL invoices for this year and find the maximum number
+    // We need to check all invoices, not just the most recent by created_at,
+    // because deposit/progress/balance invoices may be created out of order
+    const { data: yearInvoices } = await supabase
       .from('invoices')
       .select('invoice_number')
       .eq('tenant_id', tenantId)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle()
+      .like('invoice_number', `INV-${currentYear}-%`)
 
     let nextNumber = 1
 
-    if (lastInvoice?.invoice_number) {
-      // Try to parse year-based format: INV-YYYY-NNN
-      const match = lastInvoice.invoice_number.match(/INV-(\d{4})-(\d{3})/)
-      if (match) {
-        const year = parseInt(match[1])
-        const num = parseInt(match[2])
-        if (year === currentYear) {
-          nextNumber = num + 1
-        }
-        // If different year, nextNumber stays 1
+    if (yearInvoices && yearInvoices.length > 0) {
+      // Parse all invoice numbers and find the maximum
+      const numbers = yearInvoices
+        .map((inv) => {
+          const match = inv.invoice_number.match(/INV-(\d{4})-(\d{3})/)
+          return match ? parseInt(match[2]) : 0
+        })
+        .filter((num) => num > 0)
+
+      if (numbers.length > 0) {
+        nextNumber = Math.max(...numbers) + 1
       }
     }
 
@@ -55,7 +56,7 @@ export async function generateInvoiceNumber(
     await new Promise((resolve) => setTimeout(resolve, 50 * (attempt + 1)))
   }
 
-  // Fallback: add random suffix if all retries fail
-  const randomSuffix = Math.random().toString(36).substring(2, 5).toUpperCase()
-  return `INV-${currentYear}-${randomSuffix}`
+  // Fallback: Should never reach here, but if it does, throw an error instead of using random suffix
+  console.error(`Failed to generate invoice number after ${maxRetries} attempts for tenant ${tenantId}`)
+  throw new Error('Unable to generate unique invoice number. Please try again.')
 }
