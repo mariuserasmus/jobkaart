@@ -9,6 +9,7 @@ export type UserRole = 'owner' | 'admin' | 'member'
 export type QuoteStatus = 'draft' | 'sent' | 'viewed' | 'accepted' | 'rejected' | 'expired'
 export type JobStatus = 'quoted' | 'scheduled' | 'in_progress' | 'complete' | 'invoiced' | 'paid'
 export type InvoiceStatus = 'draft' | 'sent' | 'viewed' | 'partially_paid' | 'paid' | 'overdue'
+export type InvoiceType = 'full' | 'deposit' | 'balance'
 export type PaymentMethod = 'cash' | 'eft' | 'card' | 'other'
 export type LinkType = 'quote' | 'invoice'
 
@@ -117,6 +118,10 @@ export interface Invoice {
   total: number
   amount_paid: number
   status: InvoiceStatus
+  invoice_type: InvoiceType
+  parent_invoice_id?: string
+  deposit_percentage?: number
+  deposit_amount?: number
   due_date: string
   sent_at?: string
   paid_at?: string

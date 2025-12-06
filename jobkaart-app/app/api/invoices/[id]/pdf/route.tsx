@@ -58,66 +58,15 @@ export async function GET(
       )
     }
 
-    // Calculate outstanding amount
-    const outstandingAmount = invoice.total - invoice.amount_paid
-
-    // Calculate totals for line items (database only stores quantity and unit_price)
-    const lineItemsWithTotals = invoice.line_items.map((item: any) => ({
-      ...item,
-      total: item.quantity * item.unit_price,
-    }))
-
-    // Prepare data for PDF - ensure customers is properly structured
-    const pdfData = {
-      invoice: {
-        invoice_number: invoice.invoice_number,
-        created_at: invoice.created_at,
-        due_date: invoice.due_date,
-        subtotal: invoice.subtotal,
-        vat_amount: invoice.vat_amount,
-        total: invoice.total,
-        notes: invoice.notes,
-        line_items: lineItemsWithTotals,
-        paid_amount: invoice.amount_paid,
-        outstanding_amount: outstandingAmount,
-        customers: invoice.customers, // This is already an object from Supabase join
+    // TODO: PDF generation temporarily disabled due to React-PDF compatibility issues
+    // See Issue #1 in TODO list - needs different approach
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'PDF generation temporarily unavailable. Please use the print function or contact support.'
       },
-      tenant: {
-        company_name: tenant.business_name,
-        phone: tenant.phone,
-        email: tenant.email,
-        address: tenant.address,
-        bank_name: tenant.banking_details?.bank_name || null,
-        bank_account_number: tenant.banking_details?.account_number || null,
-        bank_branch_code: tenant.banking_details?.branch_code || null,
-        logo_url: tenant.logo_url,
-      },
-    }
-
-    // Generate PDF stream
-    const stream = await renderToStream(
-      React.createElement(InvoicePDF, pdfData)
+      { status: 503 }
     )
-
-    // Convert ReadableStream to Node.js Readable stream, then to buffer
-    const reader = stream.getReader()
-    const chunks: Uint8Array[] = []
-
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-      chunks.push(value)
-    }
-
-    const buffer = Buffer.concat(chunks)
-
-    // Return PDF as downloadable file
-    return new NextResponse(buffer, {
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="Invoice-${invoice.invoice_number}.pdf"`,
-      },
-    })
   } catch (error) {
     console.error('Error generating invoice PDF:', error)
     return NextResponse.json(

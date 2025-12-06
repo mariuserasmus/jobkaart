@@ -58,59 +58,15 @@ export async function GET(
       )
     }
 
-    // Calculate totals for line items (database only stores quantity and unit_price)
-    const lineItemsWithTotals = quote.line_items.map((item: any) => ({
-      ...item,
-      total: item.quantity * item.unit_price,
-    }))
-
-    // Prepare data for PDF - ensure customers is properly structured
-    const pdfData = {
-      quote: {
-        quote_number: quote.quote_number,
-        created_at: quote.created_at,
-        valid_until: quote.valid_until,
-        subtotal: quote.subtotal,
-        vat_amount: quote.vat_amount,
-        total: quote.total,
-        notes: quote.notes,
-        terms: quote.terms_and_conditions,
-        line_items: lineItemsWithTotals,
-        customers: quote.customers, // This is already an object from Supabase join
+    // TODO: PDF generation temporarily disabled due to React-PDF compatibility issues
+    // See Issue #1 in TODO list - needs different approach
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'PDF generation temporarily unavailable. Please use the print function or contact support.'
       },
-      tenant: {
-        company_name: tenant.business_name,
-        phone: tenant.phone,
-        email: tenant.email,
-        address: tenant.address,
-        logo_url: tenant.logo_url,
-      },
-    }
-
-    // Generate PDF stream
-    const stream = await renderToStream(
-      React.createElement(QuotePDF, pdfData)
+      { status: 503 }
     )
-
-    // Convert ReadableStream to Node.js Readable stream, then to buffer
-    const reader = stream.getReader()
-    const chunks: Uint8Array[] = []
-
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-      chunks.push(value)
-    }
-
-    const buffer = Buffer.concat(chunks)
-
-    // Return PDF as downloadable file
-    return new NextResponse(buffer, {
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="Quote-${quote.quote_number}.pdf"`,
-      },
-    })
   } catch (error) {
     console.error('Error generating quote PDF:', error)
     return NextResponse.json(
