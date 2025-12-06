@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient, getTenantId } from '@/lib/db/supabase-server'
+import { generateInvoiceNumber } from '@/lib/invoices/generate-invoice-number'
 
 /**
  * GET /api/invoices
@@ -132,6 +133,9 @@ export async function POST(request: NextRequest) {
 
     const supabase = await createServerClient()
 
+    // Generate unique invoice number
+    const invoiceNumber = await generateInvoiceNumber(supabase, tenantId)
+
     // Check if this job already has deposit/progress invoices
     let invoice_type: 'full' | 'balance' = 'full'
     let adjusted_total = total
@@ -141,6 +145,16 @@ export async function POST(request: NextRequest) {
     let parent_invoice_id: string | null = null
 
     if (job_id) {
+      // Get the job with quote total
+      const { data: jobData } = await supabase
+        .from('jobs')
+        .select('quotes(total)')
+        .eq('id', job_id)
+        .eq('tenant_id', tenantId)
+        .single()
+
+      const quoteTotal = (jobData?.quotes as any)?.total || total
+
       const { data: existingInvoices } = await supabase
         .from('invoices')
         .select('id, invoice_number, invoice_type, total, deposit_percentage')
@@ -152,7 +166,7 @@ export async function POST(request: NextRequest) {
       if (existingInvoices && existingInvoices.length > 0) {
         // Calculate total already invoiced
         const totalAlreadyInvoiced = existingInvoices.reduce((sum, inv) => sum + Number(inv.total), 0)
-        const balanceAmount = total - totalAlreadyInvoiced
+        const balanceAmount = quoteTotal - totalAlreadyInvoiced
 
         if (balanceAmount <= 0) {
           return NextResponse.json(
@@ -168,32 +182,17 @@ export async function POST(request: NextRequest) {
         invoice_type = 'balance'
         parent_invoice_id = existingInvoices[0].id
 
-        // Calculate proportional VAT for balance
-        const invoicedPercentage = (totalAlreadyInvoiced / total) * 100
-        const balancePercentage = 100 - invoicedPercentage
-        const balanceVatAmount = ((vat_amount || 0) * balancePercentage) / 100
-        const balanceSubtotal = balanceAmount - balanceVatAmount
-
-        adjusted_total = balanceAmount
-        adjusted_subtotal = balanceSubtotal
-        adjusted_vat = balanceVatAmount
-
-        // Show breakdown in line items
-        adjusted_line_items = [
-          {
-            description: `Final payment for job`,
-            quantity: 1,
-            unit_price: total,
-          },
-          // Show all previous payments
-          ...existingInvoices.map(inv => ({
-            description: `Less: ${inv.invoice_type === 'deposit' ? 'Deposit' : 'Progress'} paid (${inv.invoice_number})${inv.deposit_percentage ? ` - ${inv.deposit_percentage}%` : ''}`,
-            quantity: 1,
-            unit_price: -Number(inv.total),
-          })),
-        ]
+        // Use the submitted values (already calculated by form as balance)
+        // The form has already done the calculation and sent us the correct balance amount
+        adjusted_total = total
+        adjusted_subtotal = subtotal
+        adjusted_vat = vat_amount || 0
+        adjusted_line_items = line_items
       }
     }
+
+    // Generate public link
+    const publicLink = Math.random().toString(36).substring(2, 15)
 
     // Create invoice
     const { data: invoice, error: invoiceError } = await supabase
@@ -202,6 +201,7 @@ export async function POST(request: NextRequest) {
         tenant_id: tenantId,
         customer_id,
         job_id: job_id || null,
+        invoice_number: invoiceNumber,
         invoice_type,
         parent_invoice_id,
         line_items: adjusted_line_items,
@@ -212,6 +212,7 @@ export async function POST(request: NextRequest) {
         status: 'draft',
         due_date: due_date || null,
         notes: notes || null,
+        public_link: publicLink,
       })
       .select(
         `

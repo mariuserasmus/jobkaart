@@ -43,6 +43,7 @@ export function InvoiceForm({ jobId, mode }: InvoiceFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [infoMessage, setInfoMessage] = useState<string | null>(null)
   const [customers, setCustomers] = useState<Customer[]>([])
   const [loadingCustomers, setLoadingCustomers] = useState(true)
   const [loadingJob, setLoadingJob] = useState(!!jobId)
@@ -76,15 +77,58 @@ export function InvoiceForm({ jobId, mode }: InvoiceFormProps) {
           // Pre-fill customer
           setCustomerId(job.customer_id)
 
+          // Check for existing deposit/progress invoices
+          const invoicesResponse = await fetch(`/api/jobs/${jobId}/invoices`)
+          const invoicesResult = await invoicesResponse.json()
+
+          let hasExistingInvoices = false
+          let totalAlreadyInvoiced = 0
+          let existingInvoicesList: any[] = []
+
+          if (invoicesResult.success && invoicesResult.data) {
+            const depositProgressInvoices = invoicesResult.data.filter(
+              (inv: any) => inv.invoice_type === 'deposit' || inv.invoice_type === 'progress'
+            )
+
+            if (depositProgressInvoices.length > 0) {
+              hasExistingInvoices = true
+              existingInvoicesList = depositProgressInvoices
+              totalAlreadyInvoiced = depositProgressInvoices.reduce(
+                (sum: number, inv: any) => sum + Number(inv.total),
+                0
+              )
+            }
+          }
+
           // Pre-fill line items from quote if available
           if (job.quotes && job.quotes.line_items && job.quotes.line_items.length > 0) {
-            setLineItems(
-              job.quotes.line_items.map(item => ({
-                description: item.description,
-                quantity: item.quantity.toString(),
-                unit_price: item.unit_price.toString(),
-              }))
-            )
+            if (hasExistingInvoices) {
+              // Show balance invoice line items
+              const balanceLineItems: LineItemForm[] = [
+                {
+                  description: `Final payment for ${job.quotes.line_items[0]?.description || 'job'}`,
+                  quantity: '1',
+                  unit_price: job.quotes.total.toString(),
+                },
+                // Show all previous payments
+                ...existingInvoicesList.map((inv: any) => ({
+                  description: `Less: ${inv.invoice_type === 'deposit' ? 'Deposit' : 'Progress'} paid (${inv.invoice_number})${inv.deposit_percentage ? ` - ${inv.deposit_percentage}%` : ''}`,
+                  quantity: '1',
+                  unit_price: (-Number(inv.total)).toString(),
+                })),
+              ]
+              setLineItems(balanceLineItems)
+              setInfoMessage(`This will create a balance invoice for R${(job.quotes.total - totalAlreadyInvoiced).toFixed(2)} (after ${existingInvoicesList.length} previous payment${existingInvoicesList.length > 1 ? 's' : ''})`)
+            } else {
+              // Normal full invoice
+              setLineItems(
+                job.quotes.line_items.map(item => ({
+                  description: item.description,
+                  quantity: item.quantity.toString(),
+                  unit_price: item.unit_price.toString(),
+                }))
+              )
+            }
             setIncludeVat(job.quotes.vat_amount > 0)
           }
         }
@@ -257,6 +301,30 @@ export function InvoiceForm({ jobId, mode }: InvoiceFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Error Message */}
+      {infoMessage && (
+        <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex items-start gap-3">
+            <svg
+              className="w-5 h-5 text-blue-600 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-blue-900">Balance Invoice</p>
+              <p className="text-sm text-blue-800 mt-1">{infoMessage}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {error && (
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
           <div className="flex items-start gap-3">
@@ -348,9 +416,11 @@ export function InvoiceForm({ jobId, mode }: InvoiceFormProps) {
           <Label className="text-base">
             Line Items <span className="text-red-600">*</span>
           </Label>
-          <Button type="button" variant="outline" size="sm" onClick={addLineItem}>
-            + Add Line Item
-          </Button>
+          {!infoMessage && (
+            <Button type="button" variant="outline" size="sm" onClick={addLineItem}>
+              + Add Line Item
+            </Button>
+          )}
         </div>
 
         {lineItems.map((item, index) => (
@@ -370,6 +440,7 @@ export function InvoiceForm({ jobId, mode }: InvoiceFormProps) {
                 value={item.description}
                 onChange={(e) => updateLineItem(index, 'description', e.target.value)}
                 required
+                readOnly={!!infoMessage}
               />
             </div>
 
@@ -387,6 +458,7 @@ export function InvoiceForm({ jobId, mode }: InvoiceFormProps) {
                 value={item.quantity}
                 onChange={(e) => updateLineItem(index, 'quantity', e.target.value)}
                 required
+                readOnly={!!infoMessage}
               />
             </div>
 
@@ -399,34 +471,36 @@ export function InvoiceForm({ jobId, mode }: InvoiceFormProps) {
                 id={`price-${index}`}
                 type="number"
                 step="0.01"
-                min="0"
                 placeholder="0.00"
                 value={item.unit_price}
                 onChange={(e) => updateLineItem(index, 'unit_price', e.target.value)}
                 required
+                readOnly={!!infoMessage}
               />
             </div>
 
             {/* Remove Button */}
-            <div className="md:col-span-1 flex items-end">
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => removeLineItem(index)}
-                disabled={lineItems.length === 1}
-                className="text-red-600 hover:text-red-800 hover:bg-red-50"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </Button>
-            </div>
+            {!infoMessage && (
+              <div className="md:col-span-1 flex items-end">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeLineItem(index)}
+                  disabled={lineItems.length === 1}
+                  className="text-red-600 hover:text-red-800 hover:bg-red-50"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </Button>
+              </div>
+            )}
           </div>
         ))}
       </div>
