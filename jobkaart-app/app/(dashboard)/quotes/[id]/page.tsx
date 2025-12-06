@@ -189,26 +189,28 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
     }
   }
 
-  const handleDownloadPDF = async () => {
-    try {
-      const response = await fetch(`/api/quotes/${id}/pdf`)
-      if (!response.ok) {
-        throw new Error('Failed to generate PDF')
-      }
+  // PDF download temporarily disabled due to React-PDF compatibility issues
+  // Use the Print button instead
+  // const handleDownloadPDF = async () => {
+  //   try {
+  //     const response = await fetch(`/api/quotes/${id}/pdf`)
+  //     if (!response.ok) {
+  //       throw new Error('Failed to generate PDF')
+  //     }
 
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `Quote-${quote.quote_number}.pdf`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      window.URL.revokeObjectURL(url)
-    } catch (err) {
-      alert('Failed to download PDF')
-    }
-  }
+  //     const blob = await response.blob()
+  //     const url = window.URL.createObjectURL(blob)
+  //     const link = document.createElement('a')
+  //     link.href = url
+  //     link.download = `Quote-${quote.quote_number}.pdf`
+  //     document.body.appendChild(link)
+  //     link.click()
+  //     document.body.removeChild(link)
+  //     window.URL.revokeObjectURL(url)
+  //   } catch (err) {
+  //     alert('Failed to download PDF')
+  //   }
+  // }
 
   if (loading) {
     return (
@@ -267,9 +269,10 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
         <Button onClick={handleSendWhatsApp} variant="default">
           Send via WhatsApp
         </Button>
-        <Button onClick={handleDownloadPDF} variant="outline">
+        {/* PDF download temporarily disabled - use browser print instead */}
+        {/* <Button onClick={handleDownloadPDF} variant="outline">
           Download PDF
-        </Button>
+        </Button> */}
         {(quote.status === 'draft' || quote.status === 'sent' || quote.status === 'viewed') && (
           <>
             <Link href={`/quotes/${id}/edit`}>

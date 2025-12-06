@@ -48,7 +48,7 @@ export async function POST(
     // Get invoice to validate and update
     const { data: invoice, error: invoiceError } = await supabase
       .from('invoices')
-      .select('id, total, amount_paid, customer_id')
+      .select('id, total, amount_paid, customer_id, invoice_type, job_id')
       .eq('id', invoiceId)
       .eq('tenant_id', tenantId)
       .single()
@@ -132,12 +132,28 @@ export async function POST(
     }
 
     // If invoice is now fully paid, update related job status to 'paid'
+    // BUT ONLY for 'full' or 'balance' invoice types (NOT for 'deposit' or 'progress' invoices)
     if (newStatus === 'paid' && updatedInvoice.job_id) {
-      await supabase
-        .from('jobs')
-        .update({ status: 'paid' })
-        .eq('id', updatedInvoice.job_id)
-        .eq('tenant_id', tenantId)
+      // Use updatedInvoice data (not old invoice data)
+      const invoiceType = updatedInvoice.invoice_type || 'full'
+
+      console.log('=== PAYMENT RECEIVED ===')
+      console.log('Invoice ID:', invoiceId)
+      console.log('Invoice Type:', invoiceType)
+      console.log('Job ID:', updatedInvoice.job_id)
+      console.log('Should mark job as paid?', (invoiceType === 'full' || invoiceType === 'balance'))
+
+      // Only mark job as paid when the final invoice is paid
+      if (invoiceType === 'full' || invoiceType === 'balance') {
+        console.log('✅ Marking job as PAID (final invoice paid)')
+        await supabase
+          .from('jobs')
+          .update({ status: 'paid' })
+          .eq('id', updatedInvoice.job_id)
+          .eq('tenant_id', tenantId)
+      } else {
+        console.log('⏸️  NOT marking job as paid (deposit/progress invoice)')
+      }
     }
 
     return NextResponse.json({

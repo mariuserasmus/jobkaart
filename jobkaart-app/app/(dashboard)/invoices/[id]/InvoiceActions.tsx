@@ -80,30 +80,32 @@ export function InvoiceActions({
     window.print()
   }
 
-  const handleDownloadPDF = async () => {
-    try {
-      const response = await fetch(`/api/invoices/${invoiceId}/pdf`)
-      if (!response.ok) {
-        throw new Error('Failed to generate PDF')
-      }
+  // PDF download temporarily disabled due to React-PDF compatibility issues
+  // Use the Print button instead
+  // const handleDownloadPDF = async () => {
+  //   try {
+  //     const response = await fetch(`/api/invoices/${invoiceId}/pdf`)
+  //     if (!response.ok) {
+  //       throw new Error('Failed to generate PDF')
+  //     }
 
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `Invoice-${invoiceNumber}.pdf`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      window.URL.revokeObjectURL(url)
+  //     const blob = await response.blob()
+  //     const url = window.URL.createObjectURL(blob)
+  //     const link = document.createElement('a')
+  //     link.href = url
+  //     link.download = `Invoice-${invoiceNumber}.pdf`
+  //     document.body.appendChild(link)
+  //     link.click()
+  //     document.body.removeChild(link)
+  //     window.URL.revokeObjectURL(url)
 
-      setSuccessMessage('PDF downloaded successfully')
-      setTimeout(() => setSuccessMessage(null), 3000)
-    } catch (err) {
-      setErrorMessage('Failed to download PDF')
-      setTimeout(() => setErrorMessage(null), 3000)
-    }
-  }
+  //     setSuccessMessage('PDF downloaded successfully')
+  //     setTimeout(() => setSuccessMessage(null), 3000)
+  //   } catch (err) {
+  //     setErrorMessage('Failed to download PDF')
+  //     setTimeout(() => setErrorMessage(null), 3000)
+  //   }
+  // }
 
   const handleSendWhatsApp = async () => {
     try {
@@ -185,8 +187,8 @@ export function InvoiceActions({
           </Button>
         )}
 
-        {/* Download PDF Button */}
-        <Button
+        {/* PDF download temporarily disabled - use Print button instead */}
+        {/* <Button
           onClick={handleDownloadPDF}
           variant="default"
           className="w-full"
@@ -206,7 +208,7 @@ export function InvoiceActions({
             />
           </svg>
           Download PDF
-        </Button>
+        </Button> */}
 
         {/* Print Button */}
         <Button

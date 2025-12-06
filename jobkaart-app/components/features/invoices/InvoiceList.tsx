@@ -187,11 +187,26 @@ export function InvoiceList({ initialInvoices, initialTotal }: InvoiceListProps)
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     {/* Invoice Info */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-2">
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
                         <h3 className="text-lg font-semibold text-gray-900">
                           {invoice.invoice_number}
                         </h3>
                         <InvoiceStatusBadge status={displayStatus} />
+                        {invoice.invoice_type === 'deposit' && (
+                          <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                            Deposit {invoice.deposit_percentage && `(${invoice.deposit_percentage}%)`}
+                          </span>
+                        )}
+                        {invoice.invoice_type === 'progress' && (
+                          <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800">
+                            Progress {invoice.deposit_percentage && `(${invoice.deposit_percentage}%)`}
+                          </span>
+                        )}
+                        {invoice.invoice_type === 'balance' && (
+                          <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                            Final Balance
+                          </span>
+                        )}
                       </div>
                       <p className="text-sm text-gray-600 mb-1">
                         <span className="font-medium">Customer:</span> {invoice.customers.name}

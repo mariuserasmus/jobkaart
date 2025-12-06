@@ -5,6 +5,7 @@ import { JobStatusBadge } from '@/components/features/jobs/JobStatusBadge'
 import { JobStatusManager } from '@/components/features/jobs/JobStatusManager'
 import { ScheduledDateEditor } from '@/components/features/jobs/ScheduledDateEditor'
 import { JobPhotosSection } from '@/components/features/jobs/JobPhotosSection'
+import { JobInvoicesSection } from '@/components/features/jobs/JobInvoicesSection'
 
 interface JobDetailPageProps {
   params: Promise<{ id: string }>
@@ -179,6 +180,14 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
               </Link>
             </div>
           )}
+
+          {/* Invoices Section - Deposit & Balance */}
+          <JobInvoicesSection
+            jobId={job.id}
+            jobTitle={job.title}
+            jobStatus={job.status}
+            quoteTotal={job.quotes?.total}
+          />
 
           {/* Job Photos */}
           <JobPhotosSection jobId={job.id} />

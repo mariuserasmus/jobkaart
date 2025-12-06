@@ -9,7 +9,7 @@ export type UserRole = 'owner' | 'admin' | 'member'
 export type QuoteStatus = 'draft' | 'sent' | 'viewed' | 'accepted' | 'rejected' | 'expired'
 export type JobStatus = 'quoted' | 'scheduled' | 'in_progress' | 'complete' | 'invoiced' | 'paid'
 export type InvoiceStatus = 'draft' | 'sent' | 'viewed' | 'partially_paid' | 'paid' | 'overdue'
-export type InvoiceType = 'full' | 'deposit' | 'balance'
+export type InvoiceType = 'full' | 'deposit' | 'progress' | 'balance'
 export type PaymentMethod = 'cash' | 'eft' | 'card' | 'other'
 export type LinkType = 'quote' | 'invoice'
 
