@@ -153,6 +153,7 @@ export async function PATCH(
 /**
  * DELETE /api/invoices/[id]
  * Delete an invoice (only if no payments recorded)
+ * Updates job status back to appropriate state
  */
 export async function DELETE(
   request: NextRequest,
@@ -170,6 +171,21 @@ export async function DELETE(
     }
 
     const supabase = await createServerClient()
+
+    // Get invoice details to check job_id and invoice type
+    const { data: invoice, error: invoiceError } = await supabase
+      .from('invoices')
+      .select('id, job_id, invoice_type')
+      .eq('id', id)
+      .eq('tenant_id', tenantId)
+      .single()
+
+    if (invoiceError || !invoice) {
+      return NextResponse.json(
+        { success: false, error: 'Invoice not found' },
+        { status: 404 }
+      )
+    }
 
     // Check if invoice has payments
     const { data: payments } = await supabase
@@ -201,6 +217,45 @@ export async function DELETE(
         { success: false, error: 'Failed to delete invoice' },
         { status: 500 }
       )
+    }
+
+    // If invoice was linked to a job, update job status
+    if (invoice.job_id) {
+      // Check if there are any remaining invoices for this job
+      const { data: remainingInvoices } = await supabase
+        .from('invoices')
+        .select('id, status, total, amount_paid, invoice_type')
+        .eq('job_id', invoice.job_id)
+        .eq('tenant_id', tenantId)
+
+      let newJobStatus = 'complete' // Default to complete if no invoices
+
+      if (remainingInvoices && remainingInvoices.length > 0) {
+        // Check if any invoices are fully paid
+        const hasFullyPaidInvoice = remainingInvoices.some(
+          (inv) => inv.status === 'paid' && inv.amount_paid >= inv.total
+        )
+
+        // Check if all are balance/full invoices and all paid
+        const hasBalanceOrFullInvoice = remainingInvoices.some(
+          (inv) => (inv.invoice_type === 'balance' || inv.invoice_type === 'full') && inv.status === 'paid'
+        )
+
+        if (hasBalanceOrFullInvoice) {
+          newJobStatus = 'paid'
+        } else if (remainingInvoices.some((inv) => inv.status !== 'draft')) {
+          newJobStatus = 'invoiced'
+        } else {
+          newJobStatus = 'complete'
+        }
+      }
+
+      // Update job status
+      await supabase
+        .from('jobs')
+        .update({ status: newJobStatus })
+        .eq('id', invoice.job_id)
+        .eq('tenant_id', tenantId)
     }
 
     return NextResponse.json({

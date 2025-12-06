@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createServerClient, getTenantId } from '@/lib/db/supabase-server'
+import { generateInvoiceNumber } from '@/lib/invoices/generate-invoice-number'
 
 /**
  * POST /api/invoices/balance
@@ -104,31 +105,8 @@ export async function POST(request: Request) {
     const balanceVatAmount = (quote.vat_amount * balancePercentage) / 100
     const balanceSubtotal = balanceAmount - balanceVatAmount
 
-    // Generate invoice number (format: INV-YYYY-NNN)
-    const currentYear = new Date().getFullYear()
-
-    const { data: latestInvoice } = await supabase
-      .from('invoices')
-      .select('invoice_number')
-      .eq('tenant_id', tenantId)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single()
-
-    let nextNumber = 1
-    if (latestInvoice?.invoice_number) {
-      // Try to parse year-based format: INV-YYYY-NNN
-      const match = latestInvoice.invoice_number.match(/INV-(\d{4})-(\d{3})/)
-      if (match) {
-        const year = parseInt(match[1])
-        const num = parseInt(match[2])
-        if (year === currentYear) {
-          nextNumber = num + 1
-        }
-        // If different year, nextNumber stays 1
-      }
-    }
-    const invoiceNumber = `INV-${currentYear}-${String(nextNumber).padStart(3, '0')}`
+    // Generate unique invoice number
+    const invoiceNumber = await generateInvoiceNumber(supabase, tenantId)
 
     // Generate public link
     const publicLink = Math.random().toString(36).substring(2, 15)

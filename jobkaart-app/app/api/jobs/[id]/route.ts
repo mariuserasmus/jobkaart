@@ -162,3 +162,110 @@ export async function PATCH(
     )
   }
 }
+
+/**
+ * DELETE /api/jobs/[id]
+ * Delete a job and all related invoices (if no payments recorded)
+ * Updates quote to allow creating new jobs
+ */
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params
+    const tenantId = await getTenantId()
+
+    if (!tenantId) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const supabase = await createServerClient()
+
+    // Get job details to check for quote_id
+    const { data: job, error: jobError } = await supabase
+      .from('jobs')
+      .select('id, quote_id')
+      .eq('id', id)
+      .eq('tenant_id', tenantId)
+      .single()
+
+    if (jobError || !job) {
+      return NextResponse.json(
+        { success: false, error: 'Job not found' },
+        { status: 404 }
+      )
+    }
+
+    // Check if any invoices have payments
+    const { data: invoicesWithPayments } = await supabase
+      .from('invoices')
+      .select(`
+        id,
+        invoice_number,
+        payments!inner(id)
+      `)
+      .eq('job_id', id)
+      .eq('tenant_id', tenantId)
+
+    if (invoicesWithPayments && invoicesWithPayments.length > 0) {
+      const invoiceNumbers = invoicesWithPayments
+        .map((inv) => inv.invoice_number)
+        .join(', ')
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Cannot delete job with invoices that have payments. Invoices: ${invoiceNumbers}`,
+        },
+        { status: 400 }
+      )
+    }
+
+    // Delete all invoices for this job (cascade should handle payments)
+    const { error: deleteInvoicesError } = await supabase
+      .from('invoices')
+      .delete()
+      .eq('job_id', id)
+      .eq('tenant_id', tenantId)
+
+    if (deleteInvoicesError) {
+      console.error('Error deleting invoices:', deleteInvoicesError)
+      return NextResponse.json(
+        { success: false, error: 'Failed to delete job invoices' },
+        { status: 500 }
+      )
+    }
+
+    // Delete the job
+    const { error: deleteJobError } = await supabase
+      .from('jobs')
+      .delete()
+      .eq('id', id)
+      .eq('tenant_id', tenantId)
+
+    if (deleteJobError) {
+      console.error('Error deleting job:', deleteJobError)
+      return NextResponse.json(
+        { success: false, error: 'Failed to delete job' },
+        { status: 500 }
+      )
+    }
+
+    // Quote can now be used to create new jobs (no action needed, just document behavior)
+    // The quote remains in 'accepted' status and can be converted to a new job
+
+    return NextResponse.json({
+      success: true,
+      message: 'Job and related invoices deleted successfully',
+    })
+  } catch (error) {
+    console.error('Unexpected error:', error)
+    return NextResponse.json(
+      { success: false, error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}

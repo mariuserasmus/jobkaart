@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createServerClient, getTenantId } from '@/lib/db/supabase-server'
+import { generateInvoiceNumber } from '@/lib/invoices/generate-invoice-number'
 
 /**
  * POST /api/invoices/deposit
@@ -78,28 +79,8 @@ export async function POST(request: Request) {
     const depositVatAmount = (quote.vat_amount * deposit_percentage) / 100
     const depositSubtotal = depositAmount - depositVatAmount
 
-    // Generate invoice number
-    const { data: lastInvoice } = await supabase
-      .from('invoices')
-      .select('invoice_number')
-      .eq('tenant_id', tenantId)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single()
-
-    const currentYear = new Date().getFullYear()
-    let invoiceNumber = `INV-${currentYear}-001`
-
-    if (lastInvoice?.invoice_number) {
-      const match = lastInvoice.invoice_number.match(/INV-(\d{4})-(\d{3})/)
-      if (match) {
-        const year = parseInt(match[1])
-        const num = parseInt(match[2])
-        if (year === currentYear) {
-          invoiceNumber = `INV-${currentYear}-${String(num + 1).padStart(3, '0')}`
-        }
-      }
-    }
+    // Generate unique invoice number
+    const invoiceNumber = await generateInvoiceNumber(supabase, tenantId)
 
     // Generate public link
     const publicLink = Math.random().toString(36).substring(2, 15)
