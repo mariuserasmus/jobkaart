@@ -93,98 +93,151 @@ export function OnboardingTour() {
         },
       },
 
-      // Step 3: Navigation - Customers
-      {
-        element: isMobile ? 'button[aria-expanded]' : 'a[href="/customers"]',
-        popover: {
-          title: 'Add Your Customers 👥',
-          description: `
-            <div class="tour-content">
-              <p>Start by adding <strong>Tannie Maria</strong> or your next customer.</p>
-              <p>Store numbers, addresses, and see their full history.</p>
-              <p class="tour-tip">💡 No more searching through WhatsApp for that number!</p>
-            </div>
-          `,
-          side: isMobile ? 'bottom' : 'bottom',
-          align: 'start',
-        },
-      },
+      // Step 3: Navigation Menu (Mobile vs Desktop)
+      ...(isMobile
+        ? ([
+            // MOBILE: Just show the hamburger menu
+            {
+              element: 'button[aria-expanded]',
+              popover: {
+                title: 'Your Navigation Menu 📱',
+                description: `
+                  <div class="tour-content">
+                    <p>Tap this menu to access everything:</p>
+                    <ul class="tour-list">
+                      <li><strong>Customers</strong> - Manage client database</li>
+                      <li><strong>Quotes</strong> - Create & send quotes</li>
+                      <li><strong>Jobs</strong> - Track work pipeline</li>
+                      <li><strong>Invoices</strong> - Get paid faster</li>
+                      <li><strong>Settings</strong> - Business details</li>
+                    </ul>
+                    <p class="tour-tip">💡 Everything is just one tap away!</p>
+                  </div>
+                `,
+                side: 'bottom' as const,
+                align: 'start' as const,
+              },
+            },
+          ] as DriveStep[])
+        : ([
+            // DESKTOP: Show each nav item individually
+            {
+              element: 'a[href="/customers"]',
+              popover: {
+                title: 'Add Your Customers 👥',
+                description: `
+                  <div class="tour-content">
+                    <p>Start by adding <strong>Tannie Maria</strong> or your next customer.</p>
+                    <p>Store numbers, addresses, and see their full history.</p>
+                    <p class="tour-tip">💡 No more searching through WhatsApp for that number!</p>
+                  </div>
+                `,
+                side: 'bottom' as const,
+                align: 'start' as const,
+              },
+            },
+            {
+              element: 'a[href="/quotes"]',
+              popover: {
+                title: 'Professional Quotes 📄',
+                description: `
+                  <div class="tour-content">
+                    <p>Build quotes in under 2 minutes.</p>
+                    <p>Send via WhatsApp as <strong>professional PDFs</strong>.</p>
+                    <p class="tour-highlight">Know when customers VIEW your quotes!</p>
+                    <p class="tour-tip">💡 No more paper quotes going through the wash</p>
+                  </div>
+                `,
+                side: 'bottom' as const,
+                align: 'start' as const,
+              },
+            },
+            {
+              element: 'a[href="/jobs"]',
+              popover: {
+                title: 'Track Every Job 🔧',
+                description: `
+                  <div class="tour-content">
+                    <p>Never forget to invoice again!</p>
+                    <p><strong>6 Simple Statuses:</strong></p>
+                    <ul class="tour-list">
+                      <li>Quoted → Scheduled → In Progress</li>
+                      <li>Complete → Invoiced → Paid ✓</li>
+                    </ul>
+                    <p class="tour-tip">💡 We'll remind you when jobs are ready to bill</p>
+                  </div>
+                `,
+                side: 'bottom' as const,
+                align: 'start' as const,
+              },
+            },
+            {
+              element: 'a[href="/invoices"]',
+              popover: {
+                title: 'Get Paid Faster 💰',
+                description: `
+                  <div class="tour-content">
+                    <p>Create invoices from jobs with one click.</p>
+                    <p>Send via WhatsApp, track payment status.</p>
+                    <p class="tour-highlight">See which invoices are OVERDUE at a glance</p>
+                    <p class="tour-tip">💡 Progress billing for big jobs (deposit, progress, balance)</p>
+                  </div>
+                `,
+                side: 'bottom' as const,
+                align: 'start' as const,
+              },
+            },
+            {
+              element: 'a[href="/settings"]',
+              popover: {
+                title: 'Your Business Details ⚙️',
+                description: `
+                  <div class="tour-content">
+                    <p>Add your business name, logo, and banking details.</p>
+                    <p>This info appears on all quotes and invoices.</p>
+                    <p class="tour-tip">💡 Set it once, look professional every time</p>
+                  </div>
+                `,
+                side: 'bottom' as const,
+                align: 'start' as const,
+              },
+            },
+          ] as DriveStep[])
+      ),
 
-      // Step 4: Navigation - Quotes
-      {
-        element: isMobile ? 'button[aria-expanded]' : 'a[href="/quotes"]',
-        popover: {
-          title: 'Professional Quotes 📄',
-          description: `
-            <div class="tour-content">
-              <p>Build quotes in under 2 minutes.</p>
-              <p>Send via WhatsApp as <strong>professional PDFs</strong>.</p>
-              <p class="tour-highlight">Know when customers VIEW your quotes!</p>
-              <p class="tour-tip">💡 No more paper quotes going through the wash</p>
-            </div>
-          `,
-          side: isMobile ? 'bottom' : 'bottom',
-          align: 'start',
-        },
-      },
+      // Mobile-only: Add to Home Screen
+      ...(isMobile
+        ? ([
+            {
+              popover: {
+                title: '📱 Add JobKaart to Your Home Screen!',
+                description: `
+                  <div class="tour-content">
+                    <p class="tour-highlight">This is the SECRET to using JobKaart like a PRO!</p>
+                    <p><strong>Android (Chrome):</strong></p>
+                    <ol class="tour-list" style="list-style-type: decimal;">
+                      <li>Tap the menu (⋮) in the top-right corner</li>
+                      <li>Select "Add to Home screen"</li>
+                      <li>Tap "Add" or "Install"</li>
+                    </ol>
+                    <p><strong>iPhone (Safari):</strong></p>
+                    <ol class="tour-list" style="list-style-type: decimal;">
+                      <li>Tap the Share button (□↑)</li>
+                      <li>Scroll down and tap "Add to Home Screen"</li>
+                      <li>Tap "Add"</li>
+                    </ol>
+                    <p class="tour-tip">💡 Now JobKaart works like a real app — no browser tabs, just tap the icon!</p>
+                  </div>
+                `,
+                side: 'bottom' as const,
+                align: 'center' as const,
+              },
+            },
+          ] as DriveStep[])
+        : []
+      ),
 
-      // Step 5: Navigation - Jobs
-      {
-        element: isMobile ? 'button[aria-expanded]' : 'a[href="/jobs"]',
-        popover: {
-          title: 'Track Every Job 🔧',
-          description: `
-            <div class="tour-content">
-              <p>Never forget to invoice again!</p>
-              <p><strong>6 Simple Statuses:</strong></p>
-              <ul class="tour-list">
-                <li>Quoted → Scheduled → In Progress</li>
-                <li>Complete → Invoiced → Paid ✓</li>
-              </ul>
-              <p class="tour-tip">💡 We'll remind you when jobs are ready to bill</p>
-            </div>
-          `,
-          side: isMobile ? 'bottom' : 'bottom',
-          align: 'start',
-        },
-      },
-
-      // Step 6: Navigation - Invoices
-      {
-        element: isMobile ? 'button[aria-expanded]' : 'a[href="/invoices"]',
-        popover: {
-          title: 'Get Paid Faster 💰',
-          description: `
-            <div class="tour-content">
-              <p>Create invoices from jobs with one click.</p>
-              <p>Send via WhatsApp, track payment status.</p>
-              <p class="tour-highlight">See which invoices are OVERDUE at a glance</p>
-              <p class="tour-tip">💡 Progress billing for big jobs (deposit, progress, balance)</p>
-            </div>
-          `,
-          side: isMobile ? 'bottom' : 'bottom',
-          align: 'start',
-        },
-      },
-
-      // Step 7: Settings
-      {
-        element: isMobile ? 'button[aria-expanded]' : 'a[href="/settings"]',
-        popover: {
-          title: 'Your Business Details ⚙️',
-          description: `
-            <div class="tour-content">
-              <p>Add your business name, logo, and banking details.</p>
-              <p>This info appears on all quotes and invoices.</p>
-              <p class="tour-tip">💡 Set it once, look professional every time</p>
-            </div>
-          `,
-          side: isMobile ? 'bottom' : 'bottom',
-          align: 'start',
-        },
-      },
-
-      // Step 8: Final - Get Started!
+      // Final Step: Get Started!
       {
         popover: {
           title: "You're All Set! 🎉",
