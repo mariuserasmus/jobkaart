@@ -5,13 +5,14 @@ import BusinessDetailsForm from './BusinessDetailsForm'
 import BankingDetailsForm from './BankingDetailsForm'
 import VatBrandingForm from './VatBrandingForm'
 import QuoteTemplatesSection from './QuoteTemplatesSection'
+import TeamMembersSection from './TeamMembersSection'
 
 interface SettingsTabsProps {
   tenant: any
   templates: any[]
 }
 
-type Tab = 'business' | 'banking' | 'vat-branding' | 'templates'
+type Tab = 'business' | 'banking' | 'vat-branding' | 'templates' | 'team'
 
 export default function SettingsTabs({ tenant, templates }: SettingsTabsProps) {
   const [activeTab, setActiveTab] = useState<Tab>('business')
@@ -21,6 +22,7 @@ export default function SettingsTabs({ tenant, templates }: SettingsTabsProps) {
     { id: 'banking' as Tab, label: 'Banking Details', icon: '🏦' },
     { id: 'vat-branding' as Tab, label: 'VAT & Branding', icon: '⚙️' },
     { id: 'templates' as Tab, label: 'Quote Templates', icon: '📄' },
+    { id: 'team' as Tab, label: 'Team Members', icon: '👥' },
   ]
 
   return (
@@ -54,6 +56,7 @@ export default function SettingsTabs({ tenant, templates }: SettingsTabsProps) {
         {activeTab === 'banking' && <BankingDetailsForm tenant={tenant} />}
         {activeTab === 'vat-branding' && <VatBrandingForm tenant={tenant} />}
         {activeTab === 'templates' && <QuoteTemplatesSection templates={templates} />}
+        {activeTab === 'team' && <TeamMembersSection tenant={tenant} />}
       </div>
     </div>
   )

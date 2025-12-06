@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     // Get current tenant details for logging
     const { data: tenant, error: tenantError } = await supabase
       .from('tenants')
-      .select('id, business_name, subscription_status, subscription_tier, trial_ends_at')
+      .select('id, business_name, subscription_status, subscription_tier, subscription_ends_at')
       .eq('id', tenantId)
       .single()
 
@@ -42,12 +42,15 @@ export async function POST(request: NextRequest) {
     const trialEndsAt = new Date()
     trialEndsAt.setDate(trialEndsAt.getDate() + 14)
 
+    const trialStartsAt = new Date()
+
     // Update tenant to trial status
     const { error: updateError } = await supabase
       .from('tenants')
       .update({
         subscription_status: 'trial',
-        trial_ends_at: trialEndsAt.toISOString(),
+        subscription_started_at: trialStartsAt.toISOString(),
+        subscription_ends_at: trialEndsAt.toISOString(),
         updated_at: new Date().toISOString(),
       })
       .eq('id', tenantId)
@@ -66,8 +69,8 @@ export async function POST(request: NextRequest) {
       event_type: 'trial_reset',
       event_data: {
         previous_status: tenant.subscription_status,
-        previous_trial_ends_at: tenant.trial_ends_at,
-        new_trial_ends_at: trialEndsAt.toISOString(),
+        previous_subscription_ends_at: tenant.subscription_ends_at,
+        new_subscription_ends_at: trialEndsAt.toISOString(),
         reset_by: 'admin',
       },
     })
@@ -80,8 +83,8 @@ export async function POST(request: NextRequest) {
       metadata: {
         business_name: tenant.business_name,
         previous_status: tenant.subscription_status,
-        previous_trial_ends_at: tenant.trial_ends_at,
-        new_trial_ends_at: trialEndsAt.toISOString(),
+        previous_subscription_ends_at: tenant.subscription_ends_at,
+        new_subscription_ends_at: trialEndsAt.toISOString(),
       },
     })
 

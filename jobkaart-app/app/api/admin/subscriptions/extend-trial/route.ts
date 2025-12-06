@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     const { data: tenant, error: tenantError } = await supabase
       .from('tenants')
       .select(
-        'id, business_name, subscription_status, subscription_tier, trial_ends_at, current_subscription_id'
+        'id, business_name, subscription_status, subscription_tier, subscription_ends_at, current_subscription_id'
       )
       .eq('id', tenantId)
       .single()
@@ -48,27 +48,27 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const previousTrialEndsAt = tenant.trial_ends_at
+    const previousSubscriptionEndsAt = tenant.subscription_ends_at
 
     // Calculate new trial end date
-    let newTrialEndsAt: Date
-    if (tenant.trial_ends_at) {
-      // Extend from current trial end date
-      newTrialEndsAt = new Date(tenant.trial_ends_at)
-      newTrialEndsAt.setDate(newTrialEndsAt.getDate() + days)
+    let newSubscriptionEndsAt: Date
+    if (tenant.subscription_ends_at) {
+      // Extend from current subscription end date
+      newSubscriptionEndsAt = new Date(tenant.subscription_ends_at)
+      newSubscriptionEndsAt.setDate(newSubscriptionEndsAt.getDate() + days)
     } else {
-      // No trial end date set, start from now
-      newTrialEndsAt = new Date()
-      newTrialEndsAt.setDate(newTrialEndsAt.getDate() + days)
+      // No subscription end date set, start from now
+      newSubscriptionEndsAt = new Date()
+      newSubscriptionEndsAt.setDate(newSubscriptionEndsAt.getDate() + days)
     }
 
     const now = new Date().toISOString()
 
-    // Update tenant trial end date
+    // Update tenant subscription end date
     const { error: updateError } = await supabase
       .from('tenants')
       .update({
-        trial_ends_at: newTrialEndsAt.toISOString(),
+        subscription_ends_at: newSubscriptionEndsAt.toISOString(),
         subscription_status: 'trial', // Ensure status is trial
         updated_at: now,
       })
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
       await supabase
         .from('subscriptions')
         .update({
-          trial_ends_at: newTrialEndsAt.toISOString(),
+          trial_ends_at: newSubscriptionEndsAt.toISOString(),
           status: 'trial',
           updated_at: now,
         })
@@ -100,8 +100,8 @@ export async function POST(request: NextRequest) {
       subscription_id: tenant.current_subscription_id,
       event_type: 'trial_extended',
       event_data: {
-        previous_trial_ends_at: previousTrialEndsAt,
-        new_trial_ends_at: newTrialEndsAt.toISOString(),
+        previous_subscription_ends_at: previousSubscriptionEndsAt,
+        new_subscription_ends_at: newSubscriptionEndsAt.toISOString(),
         days_extended: days,
         extended_by: 'admin',
       },
@@ -114,8 +114,8 @@ export async function POST(request: NextRequest) {
       targetId: tenantId,
       metadata: {
         business_name: tenant.business_name,
-        previous_trial_ends_at: previousTrialEndsAt,
-        new_trial_ends_at: newTrialEndsAt.toISOString(),
+        previous_subscription_ends_at: previousSubscriptionEndsAt,
+        new_subscription_ends_at: newSubscriptionEndsAt.toISOString(),
         days_extended: days,
       },
     })
@@ -124,8 +124,8 @@ export async function POST(request: NextRequest) {
       success: true,
       data: {
         tenantId,
-        previousTrialEndsAt,
-        newTrialEndsAt: newTrialEndsAt.toISOString(),
+        previousTrialEndsAt: previousSubscriptionEndsAt,
+        newTrialEndsAt: newSubscriptionEndsAt.toISOString(),
         daysExtended: days,
         message: `Trial extended by ${days} days`,
       },

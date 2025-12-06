@@ -29,6 +29,8 @@ export async function POST(request: NextRequest) {
       .from('tenants')
       .insert({
         business_name,
+        email, // Add tenant email from signup
+        phone, // Add tenant phone from signup
         subscription_tier: 'starter', // Default to Starter plan
         subscription_status: 'trial', // Start with 14-day trial
         subscription_started_at: trialStartDate.toISOString(),
