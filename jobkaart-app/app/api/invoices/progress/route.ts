@@ -58,7 +58,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const quote = job.quotes
+    const quote = job.quotes as any
 
     // Get all existing invoices for this job to calculate total invoiced
     const { data: existingInvoices, error: invoicesError } = await supabase

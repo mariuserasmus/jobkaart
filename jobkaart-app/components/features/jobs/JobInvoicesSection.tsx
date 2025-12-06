@@ -9,7 +9,7 @@ import { ProgressOrBalanceModal } from '../invoices/ProgressOrBalanceModal'
 interface Invoice {
   id: string
   invoice_number: string
-  invoice_type: 'full' | 'deposit' | 'balance'
+  invoice_type: 'full' | 'deposit' | 'progress' | 'balance'
   total: number
   amount_paid: number
   status: string
