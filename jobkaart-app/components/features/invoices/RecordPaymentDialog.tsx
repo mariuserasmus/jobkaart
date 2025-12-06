@@ -5,7 +5,7 @@
  * Modal dialog for recording invoice payments
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -59,6 +59,20 @@ export function RecordPaymentDialog({
     reference: '',
   })
 
+  // Update form when dialog opens or maxAmount changes
+  useEffect(() => {
+    if (isOpen) {
+      setAmountInput(maxAmount.toFixed(2))
+      setFormData({
+        amount: maxAmount,
+        payment_date: new Date().toISOString().split('T')[0],
+        payment_method: 'eft',
+        reference: '',
+      })
+      setError(null)
+    }
+  }, [isOpen, maxAmount])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
@@ -87,14 +101,7 @@ export function RecordPaymentDialog({
     setIsSubmitting(true)
     try {
       await onSubmit({ ...formData, amount: roundedAmount })
-      // Reset form
-      setAmountInput(maxAmount.toFixed(2))
-      setFormData({
-        amount: maxAmount,
-        payment_date: new Date().toISOString().split('T')[0],
-        payment_method: 'eft',
-        reference: '',
-      })
+      // Close dialog - form will reset automatically when reopened with new maxAmount
       onClose()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to record payment')

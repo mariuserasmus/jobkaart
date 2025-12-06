@@ -13,7 +13,7 @@ async function getSubscriptionsData() {
     // Get all tenants
     const { data: tenants, error } = await supabase
       .from('tenants')
-      .select('id, business_name, subscription_tier, subscription_status, trial_ends_at, subscription_ends_at, created_at, updated_at')
+      .select('id, business_name, subscription_tier, subscription_status, subscription_ends_at, created_at, updated_at')
       .order('created_at', { ascending: false })
 
     if (error) {
@@ -37,7 +37,7 @@ async function getSubscriptionsData() {
         business_name: tenant.business_name,
         subscription_tier: tenant.subscription_tier,
         subscription_status: tenant.subscription_status,
-        trial_ends_at: tenant.trial_ends_at,
+        trial_ends_at: tenant.subscription_ends_at, // Map subscription_ends_at to trial_ends_at
         next_billing_date,
         created_at: tenant.created_at,
         last_activity_at: tenant.updated_at,

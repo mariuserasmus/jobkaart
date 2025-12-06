@@ -3,6 +3,7 @@ import { createServerClient, getTenantId } from '@/lib/db/supabase-server'
 import { renderToStream } from '@react-pdf/renderer'
 import { InvoicePDF } from '@/components/pdf/InvoicePDF'
 import React from 'react'
+import { Readable } from 'stream'
 
 /**
  * GET /api/invoices/[id]/pdf
@@ -66,13 +67,20 @@ export async function GET(
       total: item.quantity * item.unit_price,
     }))
 
-    // Prepare data for PDF
+    // Prepare data for PDF - ensure customers is properly structured
     const pdfData = {
       invoice: {
-        ...invoice,
+        invoice_number: invoice.invoice_number,
+        created_at: invoice.created_at,
+        due_date: invoice.due_date,
+        subtotal: invoice.subtotal,
+        vat_amount: invoice.vat_amount,
+        total: invoice.total,
+        notes: invoice.notes,
         line_items: lineItemsWithTotals,
         paid_amount: invoice.amount_paid,
         outstanding_amount: outstandingAmount,
+        customers: invoice.customers, // This is already an object from Supabase join
       },
       tenant: {
         company_name: tenant.business_name,
@@ -86,14 +94,21 @@ export async function GET(
       },
     }
 
-    // Generate PDF
-    const stream = await renderToStream(<InvoicePDF {...pdfData} />)
+    // Generate PDF stream
+    const stream = await renderToStream(
+      React.createElement(InvoicePDF, pdfData)
+    )
 
-    // Convert stream to buffer
-    const chunks: Buffer[] = []
-    for await (const chunk of stream) {
-      chunks.push(Buffer.from(chunk))
+    // Convert ReadableStream to Node.js Readable stream, then to buffer
+    const reader = stream.getReader()
+    const chunks: Uint8Array[] = []
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      chunks.push(value)
     }
+
     const buffer = Buffer.concat(chunks)
 
     // Return PDF as downloadable file

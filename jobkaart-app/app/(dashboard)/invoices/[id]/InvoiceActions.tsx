@@ -6,6 +6,7 @@
  */
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui'
 import { InvoiceStatus } from '@/types'
 
@@ -19,6 +20,15 @@ interface InvoiceActionsProps {
   customerPhone?: string
 }
 
+const statusFlow: Record<InvoiceStatus, { label: string; color: string }> = {
+  draft: { label: 'Draft', color: 'bg-yellow-500' },
+  sent: { label: 'Sent', color: 'bg-blue-500' },
+  viewed: { label: 'Viewed', color: 'bg-purple-500' },
+  partially_paid: { label: 'Partially Paid', color: 'bg-orange-500' },
+  paid: { label: 'Paid', color: 'bg-green-500' },
+  overdue: { label: 'Overdue', color: 'bg-red-500' },
+}
+
 export function InvoiceActions({
   invoiceId,
   invoiceNumber,
@@ -28,8 +38,43 @@ export function InvoiceActions({
   dueDate,
   customerPhone,
 }: InvoiceActionsProps) {
+  const router = useRouter()
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [updating, setUpdating] = useState(false)
+
+  const updateStatus = async (newStatus: InvoiceStatus) => {
+    setUpdating(true)
+    setErrorMessage(null)
+
+    try {
+      const response = await fetch(`/api/invoices/${invoiceId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }),
+      })
+
+      const result = await response.json()
+
+      if (!result.success) {
+        setErrorMessage(result.error || 'Failed to update status')
+        setTimeout(() => setErrorMessage(null), 3000)
+        return
+      }
+
+      setSuccessMessage('Status updated successfully')
+      setTimeout(() => setSuccessMessage(null), 3000)
+      router.refresh()
+    } catch (err) {
+      console.error('Error updating status:', err)
+      setErrorMessage('Failed to update status')
+      setTimeout(() => setErrorMessage(null), 3000)
+    } finally {
+      setUpdating(false)
+    }
+  }
 
   const handlePrint = () => {
     window.print()
@@ -185,6 +230,28 @@ export function InvoiceActions({
           </svg>
           Print
         </Button>
+
+        {/* Status Dropdown - Moved from main content for mobile space */}
+        <div className="pt-3 border-t border-gray-200">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Change Status
+          </label>
+          <select
+            value={status}
+            onChange={(e) => updateStatus(e.target.value as InvoiceStatus)}
+            disabled={updating}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            {Object.entries(statusFlow).map(([statusKey, config]) => (
+              <option key={statusKey} value={statusKey}>
+                {config.label}
+              </option>
+            ))}
+          </select>
+          <p className="mt-2 text-xs text-gray-500">
+            Manually change invoice status if needed
+          </p>
+        </div>
       </div>
 
       {/* Outstanding Amount Highlight */}
