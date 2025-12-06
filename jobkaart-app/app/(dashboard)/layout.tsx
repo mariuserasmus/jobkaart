@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import DashboardNav from './components/DashboardNav'
 import LogoutButton from './components/LogoutButton'
+import { OnboardingTour } from '@/components/onboarding/OnboardingTour'
 
 export default async function DashboardLayout({
   children,
@@ -30,6 +31,9 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Onboarding Tour (client-side) */}
+      <OnboardingTour />
+
       {/* Top Navigation */}
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
