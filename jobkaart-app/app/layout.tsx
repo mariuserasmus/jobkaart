@@ -61,6 +61,43 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Critical error handler - loads BEFORE React */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                window.addEventListener('error', function(event) {
+                  var isChunkError = event.message && (
+                    event.message.includes('Failed to load chunk') ||
+                    event.message.includes('Loading chunk') ||
+                    event.message.includes('ChunkLoadError')
+                  );
+
+                  if (isChunkError) {
+                    event.preventDefault();
+                    var hasReloaded = sessionStorage.getItem('chunk-error-reloaded');
+                    if (!hasReloaded) {
+                      sessionStorage.setItem('chunk-error-reloaded', 'true');
+                      console.log('[JobKaart] Chunk loading error detected - reloading to fetch new deployment');
+                      window.location.reload();
+                    } else {
+                      console.error('[JobKaart] Chunk error persists after reload - may need manual refresh');
+                    }
+                  }
+                });
+
+                // Clear reload flag after successful load
+                window.addEventListener('load', function() {
+                  setTimeout(function() {
+                    sessionStorage.removeItem('chunk-error-reloaded');
+                  }, 1000);
+                });
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className={inter.className}>
         <PWAInstaller />
         {children}

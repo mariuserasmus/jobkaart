@@ -1,7 +1,7 @@
 // JobKaart Service Worker
 // This enables offline functionality and makes the app feel native
 
-const CACHE_NAME = 'jobkaart-v4'
+const CACHE_NAME = 'jobkaart-v5'
 const urlsToCache = [
   '/',
   '/dashboard',
@@ -29,19 +29,22 @@ self.addEventListener('fetch', (event) => {
   const dynamicPages = ['/dashboard', '/customers', '/quotes', '/jobs', '/invoices', '/api']
   const isDynamicPage = dynamicPages.some(page => url.pathname.startsWith(page))
 
+  // Skip caching for non-GET requests (POST, PUT, DELETE, etc.)
+  if (event.request.method !== 'GET') {
+    event.respondWith(fetch(event.request))
+    return
+  }
+
   if (isDynamicPage) {
     // Network-first strategy: Try network, fallback to cache only if offline
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          // Only cache GET requests (POST, PUT, DELETE cannot be cached)
-          if (event.request.method === 'GET') {
-            return caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, response.clone())
-              return response
-            })
-          }
-          return response
+          // Cache the response
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, response.clone())
+            return response
+          })
         })
         .catch(() => {
           // Network failed (offline) - serve from cache if available
