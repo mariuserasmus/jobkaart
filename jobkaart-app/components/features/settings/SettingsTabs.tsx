@@ -31,7 +31,27 @@ export default function SettingsTabs({ tenant, templates }: SettingsTabsProps) {
     <div className="bg-white shadow rounded-lg">
       {/* Tab Navigation */}
       <div className="border-b border-gray-200">
-        <nav className="flex -mb-px overflow-x-auto">
+        {/* MOBILE: Dropdown Menu */}
+        <div className="sm:hidden">
+          <label htmlFor="tab-select" className="sr-only">
+            Select a tab
+          </label>
+          <select
+            id="tab-select"
+            value={activeTab}
+            onChange={(e) => setActiveTab(e.target.value as Tab)}
+            className="block w-full py-3 px-4 border-0 border-b-2 border-blue-500 focus:ring-0 focus:border-blue-500 text-base font-medium text-gray-900"
+          >
+            {tabs.map((tab) => (
+              <option key={tab.id} value={tab.id}>
+                {tab.icon} {tab.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* DESKTOP: Horizontal Tabs */}
+        <nav className="hidden sm:flex -mb-px overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab.id}
