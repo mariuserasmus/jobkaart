@@ -1,0 +1,15 @@
+# JobKaart Robots.txt
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Disallow sensitive areas
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /login
+Disallow: /signup
+
+# Sitemap location
+Sitemap: https://jobkaart.co.za/sitemap.xml

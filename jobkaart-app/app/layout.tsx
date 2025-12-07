@@ -6,20 +6,44 @@ import { PWAInstaller } from '@/components/layout/PWAInstaller'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'JobKaart - Stop Losing Jobs. Get Paid Faster.',
-  description: 'Simple job management for South African tradespeople. Track quotes, jobs, and invoices. Never lose another job to forgotten follow-ups.',
-  keywords: 'job management, quotes, invoicing, tradespeople, plumber, electrician, South Africa',
+  title: 'JobKaart - Job Management Software for SA Plumbers & Electricians | R299/month',
+  description: 'Stop losing R8,000-12,000/month in forgotten jobs. JobKaart helps SA plumbers, electricians & tradies track quotes, jobs & invoices. 14-day free trial. From R299/month.',
+  keywords: 'job management software south africa, plumber invoicing app, electrician quote software, tradie app sa, invoice software for tradies, quote tracking south africa, plumbing business software, electrician business software, handyman job tracking, sa tradie software',
   manifest: '/manifest.json',
+  authors: [{ name: 'JobKaart' }],
+  creator: 'JobKaart',
+  publisher: 'JobKaart',
+  alternates: {
+    canonical: 'https://jobkaart.co.za',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
     title: 'JobKaart',
   },
   openGraph: {
-    title: 'JobKaart - Stop Losing Jobs. Get Paid Faster.',
-    description: 'Simple job management for South African tradespeople. R299/month. 14-day free trial.',
+    title: 'JobKaart - Job Management Software for SA Plumbers & Electricians',
+    description: 'Stop losing R8,000-12,000/month in forgotten jobs. Track quotes, jobs & invoices. 14-day free trial. From R299/month.',
     type: 'website',
     locale: 'en_ZA',
+    url: 'https://jobkaart.co.za',
+    siteName: 'JobKaart',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'JobKaart - Job Management Software for SA Tradies',
+    description: 'Stop losing jobs. Get paid faster. R299/month for SA plumbers, electricians & tradies.',
   },
 }
 
