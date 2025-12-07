@@ -1,7 +1,7 @@
 // JobKaart Service Worker
 // This enables offline functionality and makes the app feel native
 
-const CACHE_NAME = 'jobkaart-v3'
+const CACHE_NAME = 'jobkaart-v4'
 const urlsToCache = [
   '/',
   '/dashboard',
