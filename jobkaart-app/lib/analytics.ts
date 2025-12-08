@@ -103,6 +103,32 @@ export const analytics = {
     })
   },
 
+  // Signup page specific tracking
+  trackSignupPageView: () => {
+    trackEvent('signup_page_view', {
+      event_category: 'engagement',
+    })
+  },
+
+  trackSignupFormStart: () => {
+    trackEvent('signup_form_start', {
+      event_category: 'engagement',
+    })
+  },
+
+  trackSignupFormError: (errorMessage: string) => {
+    trackEvent('signup_form_error', {
+      error_message: errorMessage,
+      event_category: 'error',
+    })
+  },
+
+  trackSignupFormSubmit: () => {
+    trackEvent('signup_form_submit', {
+      event_category: 'conversion',
+    })
+  },
+
   // Subscription/Pricing
   trackPricingView: (plan: string) => {
     trackEvent('pricing_view', {
