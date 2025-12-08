@@ -62,6 +62,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google Analytics */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-8GCHQXDCQM"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-8GCHQXDCQM');
+            `,
+          }}
+        />
+
         {/* Critical error handler - loads BEFORE React */}
         <script
           dangerouslySetInnerHTML={{

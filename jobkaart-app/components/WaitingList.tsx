@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { analytics } from '@/lib/analytics'
 
 export default function WaitingList() {
   const [formData, setFormData] = useState({
@@ -55,6 +56,8 @@ export default function WaitingList() {
 
       if (data.success) {
         setSubmitted(true)
+        // Track successful submission
+        analytics.trackContactFormSubmit(true)
         // Reset form after 3 seconds
         setTimeout(() => {
           setSubmitted(false)
@@ -62,10 +65,14 @@ export default function WaitingList() {
         }, 3000)
       } else {
         console.error('Form submission failed:', data)
+        // Track failed submission
+        analytics.trackContactFormSubmit(false)
         alert('Something went wrong. Please try again.')
       }
     } catch (error) {
       console.error('Form submission error:', error)
+      // Track failed submission
+      analytics.trackContactFormSubmit(false)
       alert('Something went wrong. Please try again.')
     } finally {
       setIsSubmitting(false)

@@ -1,3 +1,7 @@
+'use client'
+
+import { analytics } from '@/lib/analytics'
+
 export default function Hero() {
   return (
     <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white">
@@ -41,6 +45,7 @@ export default function Hero() {
           {/* CTA Button */}
           <a
             href="/signup"
+            onClick={analytics.trackSignUpClick}
             className="inline-block bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold text-xl px-12 py-5 rounded-lg shadow-2xl transform transition hover:scale-105 hover:shadow-yellow-400/50"
           >
             Start Free Trial →
@@ -49,7 +54,11 @@ export default function Hero() {
           {/* Login link */}
           <p className="mt-4 text-blue-100">
             Already have an account?{' '}
-            <a href="/login" className="text-yellow-300 hover:text-yellow-200 font-semibold underline">
+            <a
+              href="/login"
+              onClick={analytics.trackLoginClick}
+              className="text-yellow-300 hover:text-yellow-200 font-semibold underline"
+            >
               Sign in
             </a>
           </p>
