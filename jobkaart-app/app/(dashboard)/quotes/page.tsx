@@ -11,8 +11,9 @@ export const metadata = {
 export default async function QuotesPage({
   searchParams,
 }: {
-  searchParams: { highlight?: string }
+  searchParams: Promise<{ highlight?: string }>
 }) {
+  const params = await searchParams
   const tenantId = await getTenantId()
 
   if (!tenantId) {
@@ -51,7 +52,7 @@ export default async function QuotesPage({
       new Date(q.created_at) < new Date(threeDaysAgo)
   ) || []
 
-  const showHighlight = searchParams.highlight === 'true'
+  const showHighlight = params.highlight === 'true'
 
   const formatCurrency = (amount: number | null) => {
     if (!amount) return 'R0.00'

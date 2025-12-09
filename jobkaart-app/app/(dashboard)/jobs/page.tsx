@@ -5,8 +5,9 @@ import { JobStatusBadge } from '@/components/features/jobs/JobStatusBadge'
 export default async function JobsPage({
   searchParams,
 }: {
-  searchParams: { highlight?: string }
+  searchParams: Promise<{ highlight?: string }>
 }) {
+  const params = await searchParams
   const tenantId = await getTenantId()
   const supabase = await createServerClient()
 
@@ -54,7 +55,7 @@ export default async function JobsPage({
     paid: 'Paid',
   }
 
-  const showHighlight = searchParams.highlight === 'true'
+  const showHighlight = params.highlight === 'true'
   const jobsToInvoice = jobsByStatus.complete
 
   return (

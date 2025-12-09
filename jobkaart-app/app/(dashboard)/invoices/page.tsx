@@ -12,8 +12,9 @@ export const metadata = {
 export default async function InvoicesPage({
   searchParams,
 }: {
-  searchParams: { highlight?: string }
+  searchParams: Promise<{ highlight?: string }>
 }) {
+  const params = await searchParams
   const tenantId = await getTenantId()
 
   if (!tenantId) {
@@ -51,7 +52,7 @@ export default async function InvoicesPage({
     (inv) => inv.due_date < today && inv.status !== 'paid'
   ) || []
 
-  const showHighlight = searchParams.highlight === 'true'
+  const showHighlight = params.highlight === 'true'
 
   const formatCurrency = (amount: number | null) => {
     if (!amount) return 'R0.00'
