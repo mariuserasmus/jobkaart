@@ -2,7 +2,11 @@ import { createServerClient, getTenantId } from '@/lib/db/supabase-server'
 import Link from 'next/link'
 import { JobStatusBadge } from '@/components/features/jobs/JobStatusBadge'
 
-export default async function JobsPage() {
+export default async function JobsPage({
+  searchParams,
+}: {
+  searchParams: { highlight?: string }
+}) {
   const tenantId = await getTenantId()
   const supabase = await createServerClient()
 
@@ -50,6 +54,9 @@ export default async function JobsPage() {
     paid: 'Paid',
   }
 
+  const showHighlight = searchParams.highlight === 'true'
+  const jobsToInvoice = jobsByStatus.complete
+
   return (
     <div>
       {/* Page Header */}
@@ -61,6 +68,74 @@ export default async function JobsPage() {
           </p>
         </div>
       </div>
+
+      {/* Highlighted Section - Jobs Ready to Invoice */}
+      {showHighlight && jobsToInvoice.length > 0 && (
+        <div className="mb-8 bg-yellow-50 border-2 border-yellow-400 rounded-lg p-6">
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h2 className="text-xl font-bold text-yellow-900 flex items-center gap-2">
+                <span className="inline-flex items-center justify-center w-6 h-6 text-sm font-bold text-white bg-red-500 rounded-full">
+                  {jobsToInvoice.length}
+                </span>
+                Job{jobsToInvoice.length !== 1 ? 's' : ''} Ready to Invoice
+              </h2>
+              <p className="text-yellow-800 mt-1 text-sm">
+                {jobsToInvoice.length === 1
+                  ? 'This job is complete and ready to be invoiced'
+                  : `These ${jobsToInvoice.length} jobs are complete and ready to be invoiced`}
+              </p>
+            </div>
+            <Link
+              href="/jobs"
+              className="text-yellow-700 hover:text-yellow-900 text-sm font-medium"
+            >
+              Clear
+            </Link>
+          </div>
+
+          <div className="space-y-3">
+            {jobsToInvoice.map((job) => (
+              <Link
+                key={job.id}
+                href={`/jobs/${job.id}`}
+                className="block bg-white border border-yellow-300 rounded-lg p-4 hover:border-yellow-500 hover:shadow-md transition-all"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-1">
+                      <p className="text-sm font-bold text-blue-600">
+                        {job.job_number}
+                      </p>
+                      <JobStatusBadge status={job.status} />
+                    </div>
+                    <p className="text-sm font-medium text-gray-900">
+                      {job.customers.name}
+                    </p>
+                    {job.title && (
+                      <p className="text-sm text-gray-600 mt-1">
+                        {job.title}
+                      </p>
+                    )}
+                    {job.completed_date && (
+                      <p className="text-xs text-yellow-700 mt-1 font-medium">
+                        Completed: {formatDate(job.completed_date)} - Invoice now!
+                      </p>
+                    )}
+                  </div>
+                  <div className="ml-4 flex flex-col items-end gap-1">
+                    {job.total && (
+                      <span className="text-lg font-bold text-gray-900">
+                        {formatCurrency(job.total)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {jobs && jobs.length > 0 ? (
         <>

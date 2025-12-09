@@ -43,6 +43,15 @@ export default function DashboardNav({
     return 0
   }
 
+  // Helper function to get link href with highlight parameter if badge exists
+  const getLinkHref = (href: string): string => {
+    const badgeCount = getBadgeCount(href)
+    if (badgeCount > 0) {
+      return `${href}?highlight=true`
+    }
+    return href
+  }
+
   return (
     <>
       {/* Desktop Navigation - Horizontal */}
@@ -53,7 +62,7 @@ export default function DashboardNav({
           return (
             <Link
               key={link.href}
-              href={link.href}
+              href={getLinkHref(link.href)}
               className={`${
                 isActive
                   ? 'border-blue-500 text-gray-900'
@@ -123,7 +132,7 @@ export default function DashboardNav({
               return (
                 <Link
                   key={link.href}
-                  href={link.href}
+                  href={getLinkHref(link.href)}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`${
                     isActive
