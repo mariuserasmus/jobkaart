@@ -23,11 +23,39 @@ export default async function DashboardLayout({
   // Check if user is super admin
   const { data: userData } = await supabase
     .from('users')
-    .select('is_super_admin')
+    .select('is_super_admin, tenant_id')
     .eq('id', user.id)
     .single()
 
   const isSuperAdmin = userData?.is_super_admin || false
+  const tenantId = userData?.tenant_id
+
+  // Fetch badge counts
+  const today = new Date().toISOString().split('T')[0]
+  const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
+
+  // Count quotes needing follow-up (3+ days old, sent/viewed status)
+  const { count: quotesBadge } = await supabase
+    .from('quotes')
+    .select('*', { count: 'exact', head: true })
+    .eq('tenant_id', tenantId)
+    .in('status', ['sent', 'viewed'])
+    .lt('created_at', threeDaysAgo)
+
+  // Count jobs ready to invoice (status = complete)
+  const { count: jobsBadge } = await supabase
+    .from('jobs')
+    .select('*', { count: 'exact', head: true })
+    .eq('tenant_id', tenantId)
+    .eq('status', 'complete')
+
+  // Count overdue invoices
+  const { count: invoicesBadge } = await supabase
+    .from('invoices')
+    .select('*', { count: 'exact', head: true })
+    .eq('tenant_id', tenantId)
+    .lt('due_date', today)
+    .neq('status', 'paid')
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -47,7 +75,12 @@ export default async function DashboardLayout({
               </div>
 
               {/* Desktop Navigation Links */}
-              <DashboardNav isSuperAdmin={isSuperAdmin} />
+              <DashboardNav
+                isSuperAdmin={isSuperAdmin}
+                quotesBadge={quotesBadge || 0}
+                jobsBadge={jobsBadge || 0}
+                invoicesBadge={invoicesBadge || 0}
+              />
             </div>
 
             {/* Right side - User info and logout */}
