@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobKaart Facebook Post - Testimonial Style</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .post {
+            width: 1080px;
+            height: 1080px;
+            background: linear-gradient(to bottom, #f8fafc 0%, #e2e8f0 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px;
+            position: relative;
+        }
+
+        .quote-mark {
+            font-size: 200px;
+            color: #cbd5e1;
+            line-height: 1;
+            position: absolute;
+            top: 50px;
+            left: 80px;
+            font-family: Georgia, serif;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 850px;
+        }
+
+        .testimonial {
+            background: white;
+            border-radius: 30px;
+            padding: 70px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            margin-bottom: 50px;
+        }
+
+        .quote-text {
+            font-size: 42px;
+            line-height: 1.5;
+            color: #1e293b;
+            font-weight: 600;
+            font-style: italic;
+            margin-bottom: 50px;
+        }
+
+        .highlight-number {
+            color: #16a34a;
+            font-weight: 900;
+            font-size: 52px;
+        }
+
+        .author {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 3px solid #e2e8f0;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            color: white;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .author-title {
+            font-size: 28px;
+            color: #64748b;
+        }
+
+        .stats {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 56px;
+            font-weight: 900;
+            color: #2563eb;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 24px;
+            color: #64748b;
+            margin-top: 10px;
+        }
+
+        .footer {
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 64px;
+            font-weight: 900;
+            color: #2563eb;
+            margin-bottom: 15px;
+        }
+
+        .tagline {
+            font-size: 32px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .trial-badge {
+            background: #16a34a;
+            color: white;
+            font-size: 28px;
+            padding: 15px 35px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 25px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="post">
+        <div class="quote-mark">"</div>
+
+        <div class="content">
+            <div class="testimonial">
+                <div class="quote-text">
+                    I recovered a <span class="highlight-number">R4,500</span> quote in my first week that I would've completely forgotten about. Already paid for itself.
+                </div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Quotes sent</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Follow-ups</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">2</div>
+                        <div class="stat-label">Jobs recovered</div>
+                    </div>
+                </div>
+
+                <div class="author">
+                    <div class="avatar">J</div>
+                    <div class="author-info">
+                        <div class="author-name">Johan</div>
+                        <div class="author-title">Plumber, Pretoria</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="logo">JobKaart</div>
+                <div class="tagline">Stop Losing Jobs. Get Paid Faster.</div>
+                <div class="trial-badge">✨ 14-Day Free Trial</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobKaart Facebook Post - Lost Money</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .post {
+            width: 1080px;
+            height: 1080px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image:
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.05) 10px, rgba(255,255,255,.05) 20px);
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .emoji {
+            font-size: 120px;
+            margin-bottom: 40px;
+            display: block;
+        }
+
+        .question {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 50px 60px;
+            margin: 40px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .stat-number {
+            font-size: 96px;
+            font-weight: 900;
+            color: #d32f2f;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .stat-text {
+            font-size: 38px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .solution {
+            font-size: 42px;
+            font-weight: 600;
+            margin-top: 50px;
+            line-height: 1.4;
+        }
+
+        .highlight {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 8px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .footer {
+            margin-top: 60px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            font-size: 28px;
+            opacity: 0.95;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="post">
+        <div class="background-pattern"></div>
+        <div class="content">
+            <span class="emoji">😱💸</span>
+
+            <div class="question">
+                How many quotes did you<br>forget to follow up on<br>this month?
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-number">R8,000 - R12,000</div>
+                <div class="stat-text">lost per month by the average tradie</div>
+            </div>
+
+            <div class="solution">
+                2-3 forgotten quotes × R4,000 each<br>
+                <span class="highlight">= Money walking out the door</span>
+            </div>
+
+            <div class="footer">
+                <div class="logo">JobKaart</div>
+                <div class="tagline">Stop Losing Jobs. Get Paid Faster.</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

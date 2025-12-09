@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobKaart Facebook Post - Before vs After</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .post {
+            width: 1080px;
+            height: 1080px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2563eb;
+            color: white;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 64px;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            font-size: 36px;
+            opacity: 0.95;
+        }
+
+        .comparison {
+            display: flex;
+            flex: 1;
+        }
+
+        .side {
+            flex: 1;
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .before {
+            background: #fee;
+            border-right: 4px dashed #ccc;
+        }
+
+        .after {
+            background: #efe;
+        }
+
+        .side-title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .before .side-title {
+            color: #dc2626;
+        }
+
+        .after .side-title {
+            color: #16a34a;
+        }
+
+        .items {
+            list-style: none;
+        }
+
+        .items li {
+            font-size: 32px;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .before .items li {
+            color: #7f1d1d;
+        }
+
+        .after .items li {
+            color: #14532d;
+        }
+
+        .icon {
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .cta {
+            font-size: 32px;
+            background: #fbbf24;
+            color: #1e293b;
+            padding: 20px 40px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 20px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="post">
+        <div class="header">
+            <h1>The Tradie Reality Check</h1>
+            <p>Before vs After JobKaart</p>
+        </div>
+
+        <div class="comparison">
+            <div class="side before">
+                <div class="side-title">❌ Before</div>
+                <ul class="items">
+                    <li>
+                        <span class="icon">📝</span>
+                        <span>Quotes in WhatsApp chats</span>
+                    </li>
+                    <li>
+                        <span class="icon">🤦</span>
+                        <span>Forget to follow up</span>
+                    </li>
+                    <li>
+                        <span class="icon">💸</span>
+                        <span>Lose 2-3 jobs/month</span>
+                    </li>
+                    <li>
+                        <span class="icon">😰</span>
+                        <span>No idea who owes money</span>
+                    </li>
+                    <li>
+                        <span class="icon">📓</span>
+                        <span>Notes in the bakkie</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="side after">
+                <div class="side-title">✅ After</div>
+                <ul class="items">
+                    <li>
+                        <span class="icon">📱</span>
+                        <span>Professional quotes in 2 mins</span>
+                    </li>
+                    <li>
+                        <span class="icon">⏰</span>
+                        <span>Auto-reminders at 3 days</span>
+                    </li>
+                    <li>
+                        <span class="icon">💰</span>
+                        <span>Recover forgotten quotes</span>
+                    </li>
+                    <li>
+                        <span class="icon">📊</span>
+                        <span>See who owes R23,400</span>
+                    </li>
+                    <li>
+                        <span class="icon">☁️</span>
+                        <span>Safe in the cloud</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="logo">JobKaart</div>
+            <div class="cta">14-Day Free Trial • No Credit Card</div>
+        </div>
+    </div>
+</body>
+</html>
