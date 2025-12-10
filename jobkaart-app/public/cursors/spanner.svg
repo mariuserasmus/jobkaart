@@ -1,13 +1,21 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Spanner/Wrench cursor -->
+  <!-- Realistic Spanner/Wrench -->
   <g filter="url(#shadow)">
-    <path d="M8 4L4 8L12 16L8 20L12 24L16 20L24 28L28 24L20 16L24 12L20 8L16 12L8 4Z"
-          fill="#3B82F6" stroke="#1E40AF" stroke-width="1.5" stroke-linejoin="round"/>
-    <circle cx="16" cy="16" r="2" fill="#1E40AF"/>
+    <!-- Wrench body -->
+    <path d="M26 6 L26 10 L24 12 L20 12 L18 10 L10 18 L8 20 L6 20 L4 22 L4 26 L6 28 L10 28 L12 26 L12 24 L14 22 L22 14 L24 12 L22 10 L22 6 Z"
+          fill="#94A3B8" stroke="#475569" stroke-width="1.2"/>
+    <!-- Adjustable jaw -->
+    <path d="M24 6 L28 6 L28 10 L26 10 Z"
+          fill="#CBD5E1" stroke="#475569" stroke-width="1"/>
+    <!-- Hex hole -->
+    <circle cx="15" cy="19" r="2.5" fill="#64748B" stroke="#334155" stroke-width="1"/>
+    <!-- Handle grip lines -->
+    <line x1="10" y1="20" x2="8" y2="22" stroke="#334155" stroke-width="0.8"/>
+    <line x1="11" y1="21" x2="9" y2="23" stroke="#334155" stroke-width="0.8"/>
   </g>
   <defs>
     <filter id="shadow" x="0" y="0" width="36" height="36" filterUnits="userSpaceOnUse">
-      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-opacity="0.3"/>
+      <feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-opacity="0.4"/>
     </filter>
   </defs>
 </svg>
