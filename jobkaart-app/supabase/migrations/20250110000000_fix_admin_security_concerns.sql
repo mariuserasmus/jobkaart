@@ -17,8 +17,8 @@ SELECT
   t.business_name,
   t.created_at,
   t.subscription_status,
-  t.subscription_plan,
-  t.trial_ends_at,
+  t.subscription_tier,
+  t.subscription_ends_at,
   COUNT(DISTINCT u.id) as user_count,
   COUNT(DISTINCT c.id) as customer_count,
   COUNT(DISTINCT q.id) as quote_count,
@@ -31,7 +31,7 @@ LEFT JOIN customers c ON c.tenant_id = t.id
 LEFT JOIN quotes q ON q.tenant_id = t.id
 LEFT JOIN jobs j ON j.tenant_id = t.id
 LEFT JOIN invoices i ON i.tenant_id = t.id AND i.status = 'paid'
-GROUP BY t.id, t.business_name, t.created_at, t.subscription_status, t.subscription_plan, t.trial_ends_at;
+GROUP BY t.id, t.business_name, t.created_at, t.subscription_status, t.subscription_tier, t.subscription_ends_at;
 
 -- Recreate admin_system_stats view WITHOUT SECURITY DEFINER
 CREATE VIEW admin_system_stats AS
