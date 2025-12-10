@@ -27,7 +27,7 @@ export default function SettingsTabs({ tenant, templates, userId, cursorStyle }:
     { id: 'vat-branding' as Tab, label: 'VAT & Branding', icon: '⚙️' },
     { id: 'templates' as Tab, label: 'Quote Templates', icon: '📄' },
     { id: 'team' as Tab, label: 'Team Members', icon: '👥' },
-    { id: 'preferences' as Tab, label: 'Preferences', icon: '🎨' },
+    // { id: 'preferences' as Tab, label: 'Preferences', icon: '🎨' }, // Hidden - cursor icons need improvement
     { id: 'help' as Tab, label: 'Help & Support', icon: '❓' },
   ]
 
