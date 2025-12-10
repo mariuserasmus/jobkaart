@@ -4,6 +4,7 @@ import Link from 'next/link'
 import DashboardNav from './components/DashboardNav'
 import LogoutButton from './components/LogoutButton'
 import { OnboardingTour } from '@/components/onboarding/OnboardingTour'
+import CursorStyle from '@/components/CursorStyle'
 
 export default async function DashboardLayout({
   children,
@@ -20,15 +21,18 @@ export default async function DashboardLayout({
     redirect('/login')
   }
 
-  // Check if user is super admin
+  // Check if user is super admin and get cursor preference
   const { data: userData } = await supabase
     .from('users')
-    .select('is_super_admin, tenant_id')
+    .select('is_super_admin, tenant_id, cursor_style')
     .eq('id', user.id)
     .single()
 
   const isSuperAdmin = userData?.is_super_admin || false
   const tenantId = userData?.tenant_id
+
+  // Fetch user cursor preference
+  const cursorStyle = userData?.cursor_style || 'default'
 
   // Fetch badge counts
   const today = new Date().toISOString().split('T')[0]
@@ -59,6 +63,9 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Custom Cursor Style (client-side) */}
+      <CursorStyle cursorStyle={cursorStyle} />
+
       {/* Onboarding Tour (client-side) */}
       <OnboardingTour />
 

@@ -14,6 +14,20 @@ export default async function SettingsPage() {
 
   const supabase = await createServerClient()
 
+  // Get current user
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  // Fetch user data for cursor preference
+  const { data: userData } = await supabase
+    .from('users')
+    .select('cursor_style')
+    .eq('id', user.id)
+    .single()
+
   // Fetch tenant data
   const { data: tenant, error: tenantError } = await supabase
     .from('tenants')
@@ -43,13 +57,15 @@ export default async function SettingsPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
         <p className="mt-2 text-sm text-gray-600">
-          Manage your business information, banking details, and quote templates
+          Manage your business information, banking details, preferences, and quote templates
         </p>
       </div>
 
       <SettingsTabs
         tenant={tenant}
         templates={templates || []}
+        userId={user.id}
+        cursorStyle={userData?.cursor_style || 'default'}
       />
     </div>
   )

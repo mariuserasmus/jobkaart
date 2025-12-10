@@ -1,0 +1,16 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Screwdriver cursor -->
+  <g filter="url(#shadow)">
+    <path d="M4 28L14 18L18 22L8 32L4 28Z"
+          fill="#EF4444" stroke="#B91C1C" stroke-width="1.5"/>
+    <rect x="12" y="8" width="4" height="12"
+          fill="#3B82F6" stroke="#1E40AF" stroke-width="1.5" transform="rotate(45 14 14)"/>
+    <path d="M20 4L24 8L26 6L28 8L26 10L22 6L20 4Z"
+          fill="#F59E0B" stroke="#D97706" stroke-width="1.5"/>
+  </g>
+  <defs>
+    <filter id="shadow" x="0" y="0" width="36" height="36" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+</svg>

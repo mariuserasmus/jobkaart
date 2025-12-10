@@ -7,15 +7,18 @@ import VatBrandingForm from './VatBrandingForm'
 import QuoteTemplatesSection from './QuoteTemplatesSection'
 import TeamMembersSection from './TeamMembersSection'
 import HelpSection from './HelpSection'
+import CursorPreferenceSection from './CursorPreferenceSection'
 
 interface SettingsTabsProps {
   tenant: any
   templates: any[]
+  userId: string
+  cursorStyle: string
 }
 
-type Tab = 'business' | 'banking' | 'vat-branding' | 'templates' | 'team' | 'help'
+type Tab = 'business' | 'banking' | 'vat-branding' | 'templates' | 'team' | 'preferences' | 'help'
 
-export default function SettingsTabs({ tenant, templates }: SettingsTabsProps) {
+export default function SettingsTabs({ tenant, templates, userId, cursorStyle }: SettingsTabsProps) {
   const [activeTab, setActiveTab] = useState<Tab>('business')
 
   const tabs = [
@@ -24,6 +27,7 @@ export default function SettingsTabs({ tenant, templates }: SettingsTabsProps) {
     { id: 'vat-branding' as Tab, label: 'VAT & Branding', icon: '⚙️' },
     { id: 'templates' as Tab, label: 'Quote Templates', icon: '📄' },
     { id: 'team' as Tab, label: 'Team Members', icon: '👥' },
+    { id: 'preferences' as Tab, label: 'Preferences', icon: '🎨' },
     { id: 'help' as Tab, label: 'Help & Support', icon: '❓' },
   ]
 
@@ -79,6 +83,7 @@ export default function SettingsTabs({ tenant, templates }: SettingsTabsProps) {
         {activeTab === 'vat-branding' && <VatBrandingForm tenant={tenant} />}
         {activeTab === 'templates' && <QuoteTemplatesSection templates={templates} />}
         {activeTab === 'team' && <TeamMembersSection tenant={tenant} />}
+        {activeTab === 'preferences' && <CursorPreferenceSection initialCursor={cursorStyle} userId={userId} />}
         {activeTab === 'help' && <HelpSection />}
       </div>
     </div>
