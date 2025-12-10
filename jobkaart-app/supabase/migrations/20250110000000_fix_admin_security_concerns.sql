@@ -38,7 +38,7 @@ CREATE VIEW admin_system_stats AS
 SELECT
   (SELECT COUNT(*) FROM tenants) as total_tenants,
   (SELECT COUNT(*) FROM tenants WHERE subscription_status = 'active') as active_tenants,
-  (SELECT COUNT(*) FROM tenants WHERE subscription_status = 'trialing') as trial_tenants,
+  (SELECT COUNT(*) FROM tenants WHERE subscription_status = 'trial') as trial_tenants,
   (SELECT COUNT(*) FROM users) as total_users,
   (SELECT COUNT(*) FROM customers) as total_customers,
   (SELECT COUNT(*) FROM quotes) as total_quotes,
