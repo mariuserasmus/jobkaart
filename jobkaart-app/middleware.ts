@@ -61,20 +61,21 @@ export async function middleware(req: NextRequest) {
     error,
   } = await supabase.auth.getUser()
 
+  // Public routes (don't require authentication) - CHECK FIRST!
+  const publicPaths = ['/login', '/signup', '/forgot-password', '/quotes/view/', '/invoices/view/', '/q/', '/i/']
+  const isPublicPath = publicPaths.some(path => req.nextUrl.pathname.startsWith(path))
+
   // Protected routes (require authentication)
   const protectedPaths = ['/dashboard', '/customers', '/quotes', '/jobs', '/invoices', '/settings', '/admin']
   const isProtectedPath = protectedPaths.some(path => req.nextUrl.pathname.startsWith(path))
-
-  // Public routes (don't require authentication)
-  const publicPaths = ['/login', '/signup', '/forgot-password', '/q/', '/i/']
-  const isPublicPath = publicPaths.some(path => req.nextUrl.pathname.startsWith(path))
 
   // Billing routes (require auth but bypass subscription check)
   const billingPaths = ['/billing']
   const isBillingPath = billingPaths.some(path => req.nextUrl.pathname.startsWith(path))
 
   // If trying to access protected route without valid user, redirect to login
-  if (isProtectedPath && (!user || error)) {
+  // BUT: allow public paths even if they match protected patterns
+  if (isProtectedPath && !isPublicPath && (!user || error)) {
     const redirectUrl = req.nextUrl.clone()
     redirectUrl.pathname = '/login'
     redirectUrl.searchParams.set('redirectTo', req.nextUrl.pathname)
@@ -92,8 +93,8 @@ export async function middleware(req: NextRequest) {
   const adminPaths = ['/admin']
   const isAdminPath = adminPaths.some(path => req.nextUrl.pathname.startsWith(path))
 
-  // Check subscription status for protected routes (but not billing pages or admin pages)
-  if (user && !error && isProtectedPath && !isBillingPath && !isAdminPath) {
+  // Check subscription status for protected routes (but not billing pages, admin pages, or public pages)
+  if (user && !error && isProtectedPath && !isBillingPath && !isAdminPath && !isPublicPath) {
     // Get user's tenant and subscription status
     const { data: userData, error: userError } = await supabase
       .from('users')

@@ -2,16 +2,75 @@ import { createServerClient } from '@/lib/db/supabase-server'
 import { notFound } from 'next/navigation'
 import { InvoiceStatusBadge } from '@/components/features/invoices/InvoiceStatusBadge'
 import { PrintButton } from '@/components/features/invoices/PrintButton'
+import { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata = {
-  title: 'View Invoice | JobKaart',
-  description: 'View invoice details',
-}
-
 interface PublicInvoiceViewPageProps {
   params: Promise<{ id: string }>
+}
+
+export async function generateMetadata({ params }: PublicInvoiceViewPageProps): Promise<Metadata> {
+  const { id } = await params
+  const supabase = await createServerClient()
+
+  // Fetch invoice for metadata
+  const { data: invoice } = await supabase
+    .from('invoices')
+    .select(`
+      *,
+      customers!inner(name, phone, email, address)
+    `)
+    .eq('id', id)
+    .single()
+
+  if (!invoice) {
+    return {
+      title: 'Invoice Not Found | JobKaart',
+      description: 'The requested invoice could not be found.',
+    }
+  }
+
+  const formatCurrency = (amount: number | null) => {
+    if (!amount) return 'R0.00'
+    return `R${amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+  }
+
+  const outstandingAmount = invoice.total - invoice.amount_paid
+  const isPaid = invoice.amount_paid >= invoice.total
+
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://jobkaart.co.za'
+  const title = `Invoice ${invoice.invoice_number} for ${invoice.customers.name}`
+  const description = isPaid
+    ? `Invoice for ${formatCurrency(invoice.total)} - Paid in Full - JobKaart`
+    : `Invoice for ${formatCurrency(invoice.total)} - ${formatCurrency(outstandingAmount)} Outstanding - JobKaart`
+  const imageUrl = `${baseUrl}/icon-512.png`
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      url: `${baseUrl}/invoices/view/${id}`,
+      siteName: 'JobKaart',
+      images: [
+        {
+          url: imageUrl,
+          width: 512,
+          height: 512,
+          alt: 'JobKaart Logo',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+      images: [imageUrl],
+    },
+  }
 }
 
 export default async function PublicInvoiceViewPage({ params }: PublicInvoiceViewPageProps) {

@@ -3,16 +3,70 @@ import { QuoteLineItems } from '@/components/features/quotes/QuoteLineItems'
 import { QuoteStatusBadge } from '@/components/features/quotes/QuoteStatusBadge'
 import { PrintButton } from '@/components/features/quotes/PrintButton'
 import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata = {
-  title: 'View Quote | JobKaart',
-  description: 'View quote details',
-}
-
 interface PublicQuoteViewPageProps {
   params: Promise<{ id: string }>
+}
+
+export async function generateMetadata({ params }: PublicQuoteViewPageProps): Promise<Metadata> {
+  const { id } = await params
+  const supabase = await createServerClient()
+
+  // Fetch quote for metadata
+  const { data: quote } = await supabase
+    .from('quotes')
+    .select(`
+      *,
+      customers!inner(name, phone, email, address)
+    `)
+    .eq('id', id)
+    .single()
+
+  if (!quote) {
+    return {
+      title: 'Quote Not Found | JobKaart',
+      description: 'The requested quote could not be found.',
+    }
+  }
+
+  const formatCurrency = (amount: number | null) => {
+    if (!amount) return 'R0.00'
+    return `R${amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+  }
+
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://jobkaart.co.za'
+  const title = `Quote ${quote.quote_number} for ${quote.customers.name}`
+  const description = `Quote for ${formatCurrency(quote.total)} - JobKaart`
+  const imageUrl = `${baseUrl}/icon-512.png`
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      url: `${baseUrl}/quotes/view/${id}`,
+      siteName: 'JobKaart',
+      images: [
+        {
+          url: imageUrl,
+          width: 512,
+          height: 512,
+          alt: 'JobKaart Logo',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+      images: [imageUrl],
+    },
+  }
 }
 
 export default async function PublicQuoteViewPage({ params }: PublicQuoteViewPageProps) {

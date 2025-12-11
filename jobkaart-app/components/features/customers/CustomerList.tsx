@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { formatPhoneNumber, getRelativeTime } from '@/lib/utils'
+import { formatPhoneNumber, getRelativeTime, formatPhoneForWhatsApp } from '@/lib/utils'
 import { Customer } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -40,8 +40,8 @@ export function CustomerList({ initialCustomers, initialTotal }: CustomerListPro
 
   const handleWhatsApp = (phone: string, name: string) => {
     const message = encodeURIComponent(`Hi ${name}`)
-    const cleanPhone = phone.replace(/\D/g, '')
-    window.open(`https://wa.me/27${cleanPhone.substring(1)}?text=${message}`, '_blank')
+    const formattedPhone = formatPhoneForWhatsApp(phone)
+    window.open(`https://wa.me/${formattedPhone}?text=${message}`, '_blank')
   }
 
   const handleCall = (phone: string) => {

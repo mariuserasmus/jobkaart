@@ -34,6 +34,28 @@ export function formatPhoneNumber(phone: string): string {
 }
 
 /**
+ * Format phone number for WhatsApp with country code
+ * Converts SA phone numbers to international format (27...)
+ */
+export function formatPhoneForWhatsApp(phone: string): string {
+  // Remove all non-numeric characters
+  const cleaned = phone.replace(/\D/g, '')
+
+  // If already starts with 27, use as is
+  if (cleaned.startsWith('27')) {
+    return cleaned
+  }
+
+  // If starts with 0, replace with 27
+  if (cleaned.startsWith('0')) {
+    return `27${cleaned.slice(1)}`
+  }
+
+  // Otherwise assume it's missing country code, add 27
+  return `27${cleaned}`
+}
+
+/**
  * Generate a unique public link ID
  */
 export function generatePublicLink(prefix: string = ''): string {

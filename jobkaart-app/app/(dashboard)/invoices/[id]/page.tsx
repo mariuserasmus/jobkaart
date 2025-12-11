@@ -5,6 +5,7 @@ import { InvoiceStatusBadge } from '@/components/features/invoices/InvoiceStatus
 import { InvoiceStatusManager } from '@/components/features/invoices/InvoiceStatusManager'
 import { InvoiceActions } from './InvoiceActions'
 import { Invoice, Payment, Customer, Job } from '@/types'
+import { formatPhoneForWhatsApp } from '@/lib/utils'
 
 interface InvoiceDetailPageProps {
   params: Promise<{ id: string }>
@@ -377,7 +378,7 @@ export default async function InvoiceDetailPage({ params }: InvoiceDetailPagePro
             </div>
             <div className="mt-4 pt-4 border-t border-gray-200 space-y-2">
               <a
-                href={`https://wa.me/${typedInvoice.customers.phone?.replace(/\D/g, '')}`}
+                href={`https://wa.me/${formatPhoneForWhatsApp(typedInvoice.customers.phone || '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm font-medium"

@@ -1,6 +1,6 @@
 'use client'
 
-import { formatPhoneNumber, formatCurrency } from '@/lib/utils'
+import { formatPhoneNumber, formatCurrency, formatPhoneForWhatsApp } from '@/lib/utils'
 import { Customer, CustomerHistory } from '@/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -13,8 +13,8 @@ interface CustomerCardProps {
 export function CustomerCard({ customer, history }: CustomerCardProps) {
   const handleWhatsApp = () => {
     const message = encodeURIComponent(`Hi ${customer.name}`)
-    const cleanPhone = customer.phone.replace(/\D/g, '')
-    window.open(`https://wa.me/27${cleanPhone.substring(1)}?text=${message}`, '_blank')
+    const formattedPhone = formatPhoneForWhatsApp(customer.phone)
+    window.open(`https://wa.me/${formattedPhone}?text=${message}`, '_blank')
   }
 
   const handleCall = () => {

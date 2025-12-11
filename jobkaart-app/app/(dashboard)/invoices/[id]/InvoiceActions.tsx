@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui'
 import { InvoiceStatus } from '@/types'
+import { formatPhoneForWhatsApp } from '@/lib/utils'
 
 interface InvoiceActionsProps {
   invoiceId: string
@@ -144,8 +145,8 @@ export function InvoiceActions({
         const message = encodeURIComponent(
           `Hi! Here's your invoice ${invoiceNumber}\n\n${invoiceLink}\n\nTotal: R${totalAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}\nDue: ${formatDate(dueDate)}\n\nPlease click the link above to view your invoice and payment details.\n\nThank you!`
         )
-        const phone = customerPhone?.replace(/\D/g, '')
-        window.open(`https://wa.me/${phone}?text=${message}`, '_blank')
+        const formattedPhone = formatPhoneForWhatsApp(customerPhone || '')
+        window.open(`https://wa.me/${formattedPhone}?text=${message}`, '_blank')
 
         // Refresh page to show updated status
         setTimeout(() => window.location.reload(), 1000)
