@@ -18,7 +18,7 @@ export default function Home() {
     description: 'Job management software for South African plumbers, electricians and tradespeople. Track quotes, jobs and invoices.',
     offers: {
       '@type': 'Offer',
-      price: '299',
+      price: '0',
       priceCurrency: 'ZAR',
       priceValidUntil: '2026-12-31',
       availability: 'https://schema.org/InStock',
@@ -48,7 +48,7 @@ export default function Home() {
         name: 'How much does JobKaart cost?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'JobKaart starts at R299/month with a 14-day free trial. No credit card required to start your trial.',
+          text: 'JobKaart is FREE forever with 5 quotes, jobs, and invoices per month. Upgrade to paid plans starting at R299/month for unlimited usage. No credit card required to start.',
         },
       },
       {

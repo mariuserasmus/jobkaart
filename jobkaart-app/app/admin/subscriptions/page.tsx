@@ -48,7 +48,7 @@ async function getSubscriptionsData() {
     const stats: SubscriptionStats = {
       total_tenants: tenantsWithBilling.length,
       active_subscriptions: tenantsWithBilling.filter(t => t.subscription_status === 'active').length,
-      trial_accounts: tenantsWithBilling.filter(t => t.subscription_status === 'trial').length,
+      free_accounts: tenantsWithBilling.filter(t => t.subscription_status === 'free').length,
       estimated_mrr: tenantsWithBilling
         .filter(t => t.subscription_status === 'active')
         .reduce((sum, t) => {
@@ -69,7 +69,7 @@ async function getSubscriptionsData() {
       stats: {
         total_tenants: 0,
         active_subscriptions: 0,
-        trial_accounts: 0,
+        free_accounts: 0,
         estimated_mrr: 0,
       },
     }

@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: PublicInvoiceViewPageProps): 
     .from('invoices')
     .select(`
       *,
-      customers!inner(name, phone, email, address)
+      customers!inner(name, phone, email, address, vat_number)
     `)
     .eq('id', id)
     .single()
@@ -82,7 +82,7 @@ export default async function PublicInvoiceViewPage({ params }: PublicInvoiceVie
     .from('invoices')
     .select(`
       *,
-      customers!inner(name, phone, email, address),
+      customers!inner(name, phone, email, address, vat_number),
       payments(id, amount, payment_date, payment_method, reference, created_at)
     `)
     .eq('id', id)
@@ -206,6 +206,9 @@ export default async function PublicInvoiceViewPage({ params }: PublicInvoiceVie
             <p className="text-sm text-gray-700 mt-1">{invoice.customers.phone}</p>
             {invoice.customers.email && (
               <p className="text-sm text-gray-700">{invoice.customers.email}</p>
+            )}
+            {invoice.customers.vat_number && (
+              <p className="text-sm text-gray-700">VAT: {invoice.customers.vat_number}</p>
             )}
             {invoice.customers.address && (
               <p className="text-sm text-gray-700 mt-1">{invoice.customers.address}</p>

@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PublicQuoteViewPageProps): Pr
     .from('quotes')
     .select(`
       *,
-      customers!inner(name, phone, email, address)
+      customers!inner(name, phone, email, address, vat_number)
     `)
     .eq('id', id)
     .single()
@@ -78,7 +78,7 @@ export default async function PublicQuoteViewPage({ params }: PublicQuoteViewPag
     .from('quotes')
     .select(`
       *,
-      customers!inner(name, phone, email, address)
+      customers!inner(name, phone, email, address, vat_number)
     `)
     .eq('id', id)
     .single()
@@ -184,6 +184,9 @@ export default async function PublicQuoteViewPage({ params }: PublicQuoteViewPag
             <p className="text-sm text-gray-700 mt-1">{quote.customers.phone}</p>
             {quote.customers.email && (
               <p className="text-sm text-gray-700">{quote.customers.email}</p>
+            )}
+            {quote.customers.vat_number && (
+              <p className="text-sm text-gray-700">VAT: {quote.customers.vat_number}</p>
             )}
             {quote.customers.address && (
               <p className="text-sm text-gray-700 mt-1">{quote.customers.address}</p>

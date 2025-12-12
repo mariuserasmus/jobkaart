@@ -22,6 +22,7 @@ export function CustomerForm({ customer, mode }: CustomerFormProps) {
     name: customer?.name || '',
     phone: customer?.phone || '',
     email: customer?.email || '',
+    vat_number: customer?.vat_number || '',
     address: customer?.address || '',
     notes: customer?.notes || '',
   })
@@ -147,6 +148,24 @@ export function CustomerForm({ customer, mode }: CustomerFormProps) {
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           className="text-base"
         />
+      </div>
+
+      {/* VAT Number - Optional */}
+      <div className="space-y-2">
+        <Label htmlFor="vat_number" className="text-base">
+          VAT Number (Optional)
+        </Label>
+        <Input
+          id="vat_number"
+          type="text"
+          placeholder="e.g., 4123456789"
+          value={formData.vat_number}
+          onChange={(e) => setFormData({ ...formData, vat_number: e.target.value })}
+          className="text-base"
+        />
+        <p className="text-sm text-gray-600">
+          If customer is VAT-registered
+        </p>
       </div>
 
       {/* Address - Optional */}

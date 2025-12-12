@@ -98,28 +98,16 @@ export async function middleware(req: NextRequest) {
     // Get user's tenant and subscription status
     const { data: userData, error: userError } = await supabase
       .from('users')
-      .select('tenant_id, tenants(subscription_status, trial_ends_at)')
+      .select('tenant_id, tenants(subscription_status)')
       .eq('id', user.id)
       .single()
 
     if (!userError && userData) {
       const tenant = userData.tenants as any
       const subscriptionStatus = tenant?.subscription_status
-      const trialEndsAt = tenant?.trial_ends_at ? new Date(tenant.trial_ends_at) : null
-      const now = new Date()
 
-      // Check if trial has expired
-      const isTrialExpired = trialEndsAt && trialEndsAt < now
-
-      // Block access if subscription is cancelled (regardless of trial date)
+      // Block access if subscription is cancelled
       if (subscriptionStatus === 'cancelled') {
-        const redirectUrl = req.nextUrl.clone()
-        redirectUrl.pathname = '/billing/expired'
-        return NextResponse.redirect(redirectUrl)
-      }
-
-      // Block access if trial has expired
-      if (subscriptionStatus === 'trial' && isTrialExpired) {
         const redirectUrl = req.nextUrl.clone()
         redirectUrl.pathname = '/billing/expired'
         return NextResponse.redirect(redirectUrl)
@@ -131,6 +119,9 @@ export async function middleware(req: NextRequest) {
         redirectUrl.pathname = '/billing/overdue'
         return NextResponse.redirect(redirectUrl)
       }
+
+      // Allow 'free' and 'active' status full access
+      // Usage limits are enforced at the API level, not middleware level
     }
   }
 
