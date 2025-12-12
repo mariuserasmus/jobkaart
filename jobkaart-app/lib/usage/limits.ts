@@ -31,7 +31,7 @@ export async function checkUsageLimit(
       })
       .single()
 
-    if (error) {
+    if (error || !data) {
       console.error('Error checking usage limit:', error)
       // Fail open - allow creation if check fails
       return {
@@ -42,11 +42,19 @@ export async function checkUsageLimit(
       }
     }
 
+    // Type assertion for RPC response
+    const result = data as {
+      allowed: boolean
+      current_count: number
+      limit: number
+      message: string
+    }
+
     return {
-      allowed: data.allowed,
-      used: data.current_count,
-      limit: data.limit,
-      message: data.message,
+      allowed: result.allowed,
+      used: result.current_count,
+      limit: result.limit,
+      message: result.message,
     }
   } catch (error) {
     console.error('Unexpected error in checkUsageLimit:', error)
@@ -107,7 +115,7 @@ export async function getCurrentUsage(tenantId: string) {
       })
       .single()
 
-    if (error) {
+    if (error || !data) {
       console.error('Error getting current usage:', error)
       return {
         month: new Date().toISOString().substring(0, 7),
@@ -117,7 +125,13 @@ export async function getCurrentUsage(tenantId: string) {
       }
     }
 
-    return data
+    // Type assertion for RPC response
+    return data as {
+      month: string
+      quotes_created: number
+      jobs_created: number
+      invoices_created: number
+    }
   } catch (error) {
     console.error('Unexpected error in getCurrentUsage:', error)
     return {
