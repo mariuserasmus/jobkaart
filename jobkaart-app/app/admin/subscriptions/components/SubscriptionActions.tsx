@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import type { TenantSubscription, SubscriptionTier } from '../types'
 import { ChangePlanModal } from './ChangePlanModal'
 import { CancelModal } from './CancelModal'
@@ -21,6 +22,24 @@ export function SubscriptionActions({ tenant, onActionComplete }: SubscriptionAc
   const [showResetTrial, setShowResetTrial] = useState(false)
   const [showActivate, setShowActivate] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [mounted, setMounted] = useState(false)
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 })
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Calculate dropdown position when it opens
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect()
+      setDropdownPosition({
+        top: rect.bottom + window.scrollY + 8,
+        left: rect.right + window.scrollX - 224, // 224px = width of dropdown (w-56)
+      })
+    }
+  }, [isOpen])
 
   const handleAction = async (
     endpoint: string,
@@ -103,39 +122,31 @@ export function SubscriptionActions({ tenant, onActionComplete }: SubscriptionAc
     )
   }
 
-  const canChangePlan = ['active', 'trial'].includes(tenant.subscription_status)
+  const canChangePlan = ['active', 'trial', 'free'].includes(tenant.subscription_status)
   const canCancel = ['active', 'trial'].includes(tenant.subscription_status)
   const canExtendTrial = tenant.subscription_status === 'trial'
   const canResetTrial = ['cancelled', 'overdue'].includes(tenant.subscription_status)
   const canActivate = ['cancelled', 'overdue'].includes(tenant.subscription_status)
 
-  return (
+  // Dropdown content that will be portaled
+  const dropdownContent = isOpen && mounted && (
     <>
-      <div className="relative inline-block">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-          id={`actions-button-${tenant.tenant_id}`}
-        >
-          Actions ▾
-        </button>
+      {/* Backdrop to close dropdown */}
+      <div
+        className="fixed inset-0"
+        style={{ zIndex: 9998 }}
+        onClick={() => setIsOpen(false)}
+      />
 
-        {isOpen && (
-          <>
-            {/* Backdrop to close dropdown */}
-            <div
-              className="fixed inset-0 z-10"
-              onClick={() => setIsOpen(false)}
-            />
-
-            {/* Dropdown Menu - using fixed positioning to break out of table overflow */}
-            <div
-              className="fixed w-56 bg-white rounded-md shadow-lg border border-gray-200 z-20"
-              style={{
-                top: `${typeof document !== 'undefined' ? (document.getElementById(`actions-button-${tenant.tenant_id}`)?.getBoundingClientRect().bottom || 0) + 8 : 0}px`,
-                right: `${typeof window !== 'undefined' ? window.innerWidth - (document.getElementById(`actions-button-${tenant.tenant_id}`)?.getBoundingClientRect().right || 0) : 0}px`
-              }}
-            >
+      {/* Dropdown Menu - using fixed positioning to break out of table overflow */}
+      <div
+        className="fixed w-56 bg-white rounded-md shadow-lg border border-gray-200"
+        style={{
+          top: `${dropdownPosition.top}px`,
+          left: `${dropdownPosition.left}px`,
+          zIndex: 9999
+        }}
+      >
               <div className="py-1">
                 {canChangePlan && (
                   <button
@@ -202,8 +213,22 @@ export function SubscriptionActions({ tenant, onActionComplete }: SubscriptionAc
               </div>
             </div>
           </>
-        )}
+        )
+
+  return (
+    <>
+      <div className="relative inline-block">
+        <button
+          ref={buttonRef}
+          onClick={() => setIsOpen(!isOpen)}
+          className="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+        >
+          Actions ▾
+        </button>
       </div>
+
+      {/* Render dropdown via portal outside table DOM */}
+      {mounted && dropdownContent && createPortal(dropdownContent, document.body)}
 
       {/* Modals */}
       <ChangePlanModal

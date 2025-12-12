@@ -261,8 +261,8 @@ export function SubscriptionsClient({
           <p className="text-gray-500">No tenants found matching your filters</p>
         </div>
       ) : (
-        <div className="bg-white shadow rounded-lg">
-          <div className="overflow-x-auto overflow-y-visible">
+        <div className="bg-white shadow rounded-lg overflow-visible">
+          <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
