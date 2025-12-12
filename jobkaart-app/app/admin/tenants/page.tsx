@@ -88,7 +88,7 @@ export default async function TenantsPage({
             >
               <option value="">All Statuses</option>
               <option value="active">Active</option>
-              <option value="trial">Trial</option>
+              <option value="free">Free</option>
               <option value="cancelled">Cancelled</option>
               <option value="overdue">Overdue</option>
             </select>
@@ -152,7 +152,7 @@ export default async function TenantsPage({
                   className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
                     row.subscription_status === 'active'
                       ? 'bg-green-100 text-green-800'
-                      : row.subscription_status === 'trial'
+                      : row.subscription_status === 'free'
                       ? 'bg-blue-100 text-blue-800'
                       : row.subscription_status === 'overdue'
                       ? 'bg-red-100 text-red-800'

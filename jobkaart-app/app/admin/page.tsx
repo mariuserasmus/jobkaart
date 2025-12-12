@@ -50,7 +50,7 @@ export default async function AdminDashboardPage() {
           value={systemStats?.total_tenants || 0}
           icon="🏢"
           iconBgColor="bg-blue-500"
-          description={`${systemStats?.active_tenants || 0} active, ${systemStats?.trial_tenants || 0} trial`}
+          description={`${systemStats?.active_tenants || 0} active, ${systemStats?.free_tenants || 0} free`}
         />
 
         <StatCard
@@ -175,7 +175,7 @@ export default async function AdminDashboardPage() {
                     className={`ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
                       row.subscription_status === 'active'
                         ? 'bg-green-100 text-green-800'
-                        : row.subscription_status === 'trial'
+                        : row.subscription_status === 'free'
                         ? 'bg-blue-100 text-blue-800'
                         : 'bg-red-100 text-red-800'
                     }`}

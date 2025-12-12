@@ -278,7 +278,7 @@ export async function getAuditLogs(limit = 50, offset = 0) {
  */
 export async function updateTenantStatus(
   tenantId: string,
-  status: 'active' | 'cancelled' | 'overdue' | 'trial'
+  status: 'active' | 'cancelled' | 'overdue' | 'free'
 ) {
   const supabase = await createServerClient()
 

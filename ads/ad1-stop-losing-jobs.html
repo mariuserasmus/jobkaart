@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobKaart - Stop Losing Jobs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .ad-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '⚠️';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 60px;
+            opacity: 0.2;
+        }
+
+        .headline {
+            color: white;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .subheadline {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .pain-point {
+            background: #fef3c7;
+            border-left: 5px solid #f59e0b;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .pain-point h3 {
+            color: #92400e;
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .stat {
+            color: #dc2626;
+            font-size: 48px;
+            font-weight: 900;
+            margin: 10px 0;
+            text-shadow: 2px 2px 0 rgba(220, 38, 38, 0.1);
+        }
+
+        .stat-label {
+            color: #78350f;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .solution {
+            background: #dcfce7;
+            border-left: 5px solid #22c55e;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .solution h3 {
+            color: #14532d;
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .solution-features {
+            list-style: none;
+        }
+
+        .solution-features li {
+            color: #166534;
+            font-size: 16px;
+            margin: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .solution-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #22c55e;
+            font-weight: 900;
+            font-size: 20px;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .free-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            font-size: 24px;
+            font-weight: 900;
+            padding: 15px 40px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            font-size: 28px;
+            font-weight: 900;
+            padding: 20px 60px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 6px 30px rgba(249, 115, 22, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px rgba(249, 115, 22, 0.5);
+        }
+
+        .fine-print {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        .logo {
+            color: white;
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ad-container">
+        <div class="header">
+            <div class="logo">JobKaart</div>
+            <h1 class="headline">Stop Losing<br>R12,000/Month!</h1>
+            <p class="subheadline">Most SA tradies lose 2-3 quotes they forget to follow up</p>
+        </div>
+
+        <div class="content">
+            <div class="pain-point">
+                <h3>The Hidden Cost of "FREE"</h3>
+                <div class="stat">R144,000</div>
+                <div class="stat-label">Lost per year from forgotten quotes</div>
+            </div>
+
+            <div class="solution">
+                <h3>JobKaart Saves Every Quote</h3>
+                <ul class="solution-features">
+                    <li>Auto-remind you to follow up after 3 days</li>
+                    <li>Track which customers viewed your quotes</li>
+                    <li>Never forget to invoice completed jobs</li>
+                    <li>Professional WhatsApp quotes in 2 minutes</li>
+                    <li>Know exactly who owes you money</li>
+                </ul>
+            </div>
+
+            <div class="cta-section">
+                <div class="free-badge">✨ FREE FOREVER</div>
+                <div class="fine-print" style="margin-bottom: 20px;">5 quotes, jobs & invoices per month • No credit card required</div>
+                <a href="https://jobkaart.co.za/signup" class="cta-button">Start FREE Now →</a>
+                <p class="fine-print">Join 100+ SA tradies already using JobKaart</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

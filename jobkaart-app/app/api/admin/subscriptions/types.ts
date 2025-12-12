@@ -1,7 +1,7 @@
 // Shared types for subscription management API routes
 
-export type SubscriptionTier = 'starter' | 'pro' | 'team'
-export type SubscriptionStatus = 'active' | 'cancelled' | 'overdue' | 'trial'
+export type SubscriptionTier = 'free' | 'starter' | 'pro' | 'team'
+export type SubscriptionStatus = 'active' | 'cancelled' | 'overdue' | 'free'
 
 export interface TenantSubscriptionDetails {
   id: string

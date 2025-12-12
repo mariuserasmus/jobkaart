@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobKaart - ROI Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .ad-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '💸';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 80px;
+            opacity: 0.15;
+            transform: rotate(-20deg);
+        }
+
+        .header::after {
+            content: '📊';
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 80px;
+            opacity: 0.15;
+            transform: rotate(15deg);
+        }
+
+        .logo {
+            color: white;
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .headline {
+            color: white;
+            font-size: 38px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .subheadline {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .calculator {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 3px solid #f59e0b;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+        }
+
+        .calculator h3 {
+            color: #78350f;
+            font-size: 24px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 900;
+        }
+
+        .calc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+        }
+
+        .calc-label {
+            color: #92400e;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .calc-value {
+            color: #dc2626;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .calc-total {
+            background: #dc2626;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .calc-total-label {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .calc-total-value {
+            font-size: 48px;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .solution-box {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border: 3px solid #22c55e;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .solution-box h3 {
+            color: #14532d;
+            font-size: 26px;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+
+        .solution-stat {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .solution-stat-value {
+            color: #22c55e;
+            font-size: 40px;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        .solution-stat-label {
+            color: #166534;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .features-list {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .features-list li {
+            color: #166534;
+            font-size: 15px;
+            margin: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-weight: 600;
+            list-style: none;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #22c55e;
+            font-weight: 900;
+            font-size: 20px;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            margin: -40px -40px 0;
+            padding: 50px 40px;
+            text-align: center;
+            border-radius: 0 0 24px 24px;
+        }
+
+        .free-badge {
+            background: #22c55e;
+            color: white;
+            font-size: 28px;
+            font-weight: 900;
+            padding: 15px 50px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 30px rgba(34, 197, 94, 0.5);
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 6px 30px rgba(34, 197, 94, 0.5);
+            }
+            50% {
+                box-shadow: 0 6px 40px rgba(34, 197, 94, 0.8);
+            }
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #ea580c;
+            font-size: 30px;
+            font-weight: 900;
+            padding: 22px 65px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .cta-note {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="ad-container">
+        <div class="header">
+            <div class="logo">JobKaart</div>
+            <h1 class="headline">You're Losing<br>This Much Money!</h1>
+            <p class="subheadline">Here's what forgotten quotes cost you...</p>
+        </div>
+
+        <div class="content">
+            <div class="calculator">
+                <h3>💰 Average SA Tradie Losses</h3>
+                <div class="calc-row">
+                    <span class="calc-label">Forgotten quotes/month:</span>
+                    <span class="calc-value">2-3</span>
+                </div>
+                <div class="calc-row">
+                    <span class="calc-label">Average quote value:</span>
+                    <span class="calc-value">R4,000</span>
+                </div>
+                <div class="calc-row">
+                    <span class="calc-label">Lost per month:</span>
+                    <span class="calc-value">R12,000</span>
+                </div>
+                <div class="calc-total">
+                    <div class="calc-total-label">YEARLY LOSS:</div>
+                    <div class="calc-total-value">R144,000</div>
+                </div>
+            </div>
+
+            <div class="solution-box">
+                <h3>JobKaart Saves You Money</h3>
+
+                <div class="solution-stat">
+                    <div class="solution-stat-value">R144,000</div>
+                    <div class="solution-stat-label">Saved per year by never missing a quote</div>
+                </div>
+
+                <div class="solution-stat">
+                    <div class="solution-stat-value">R0</div>
+                    <div class="solution-stat-label">FREE forever (5 quotes/jobs/invoices per month)</div>
+                </div>
+
+                <ul class="features-list">
+                    <li>Auto-remind you to follow up after 3 days</li>
+                    <li>Track who viewed your quotes</li>
+                    <li>Never forget to invoice completed jobs</li>
+                    <li>Know exactly who owes you money</li>
+                    <li>Professional quotes in 2 minutes</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="free-badge">✨ START FREE TODAY</div>
+            <a href="https://jobkaart.co.za/signup" class="cta-button">Get JobKaart FREE →</a>
+            <p class="cta-note">
+                No credit card required • FREE forever<br>
+                Upgrade to unlimited from R299/month when you're ready
+            </p>
+        </div>
+    </div>
+</body>
+</html>
