@@ -3,8 +3,8 @@
  */
 
 // Enums
-export type SubscriptionTier = 'starter' | 'pro' | 'team'
-export type SubscriptionStatus = 'active' | 'cancelled' | 'overdue'
+export type SubscriptionTier = 'free' | 'starter' | 'pro' | 'team'
+export type SubscriptionStatus = 'free' | 'active' | 'cancelled' | 'overdue'
 export type UserRole = 'owner' | 'admin' | 'member'
 export type QuoteStatus = 'draft' | 'sent' | 'viewed' | 'accepted' | 'rejected' | 'expired'
 export type JobStatus = 'quoted' | 'scheduled' | 'in_progress' | 'complete' | 'invoiced' | 'paid'
@@ -46,6 +46,7 @@ export interface Customer {
   phone: string
   email?: string
   address?: string
+  vat_number?: string
   notes?: string
   created_at: string
 }
@@ -208,4 +209,35 @@ export interface CustomerHistory {
   invoices: Invoice[]
   total_paid: number
   total_outstanding: number
+}
+
+// Usage Tracking Types
+export interface SystemSettings {
+  id: string
+  tenant_id: string
+  free_tier_limits: {
+    jobs_per_month: number
+    quote_templates: number
+    users: number
+  }
+  created_at: string
+  updated_at: string
+}
+
+export interface MonthlyUsage {
+  id: string
+  tenant_id: string
+  month: string // Format: YYYY-MM
+  jobs_created: number
+  quotes_sent: number
+  invoices_sent: number
+  created_at: string
+  updated_at: string
+}
+
+export interface UsageLimits {
+  allowed: boolean
+  used: number
+  limit: number
+  message?: string
 }

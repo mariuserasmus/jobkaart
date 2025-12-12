@@ -16,7 +16,7 @@ interface SubscriptionStatusProps {
     id: string;
     business_name: string;
     subscription_tier: PlanType;
-    subscription_status: 'active' | 'trial' | 'cancelled' | 'overdue';
+    subscription_status: 'active' | 'free' | 'cancelled' | 'overdue';
     monthly_job_limit: number | null;
   };
   trial: {
@@ -48,7 +48,7 @@ export default function SubscriptionStatus({
 }: SubscriptionStatusProps) {
   const plan = PLAN_DETAILS[tenant.subscription_tier];
   const isActive = tenant.subscription_status === 'active';
-  const isInTrial = trial.is_in_trial;
+  const isFree = tenant.subscription_status === 'free';
   const isOverdue = tenant.subscription_status === 'overdue';
   const isCancelled = tenant.subscription_status === 'cancelled';
 
@@ -62,11 +62,11 @@ export default function SubscriptionStatus({
         </span>
       );
     }
-    if (isInTrial) {
+    if (isFree) {
       return (
         <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-          <Clock className="h-4 w-4 mr-1" />
-          Trial ({trial.days_remaining} days left)
+          <CheckCircle className="h-4 w-4 mr-1" />
+          FREE Plan
         </span>
       );
     }
@@ -114,8 +114,8 @@ export default function SubscriptionStatus({
                     : 'N/A'}
                 </>
               )}
-              {isInTrial && (
-                <>Trial ends: {trial.ends_at ? new Date(trial.ends_at).toLocaleDateString('en-ZA') : 'N/A'}</>
+              {isFree && (
+                <>Forever FREE - Upgrade anytime for unlimited quotes and jobs</>
               )}
               {isCancelled && subscription?.cancelled_at && (
                 <>Cancelled on: {new Date(subscription.cancelled_at).toLocaleDateString('en-ZA')}</>
@@ -149,18 +149,17 @@ export default function SubscriptionStatus({
         </div>
       </div>
 
-      {/* Trial Warning */}
-      {isInTrial && trial.days_remaining <= 7 && (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+      {/* FREE Tier Upgrade Prompt */}
+      {isFree && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div className="flex items-start">
-            <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5 mr-3 flex-shrink-0" />
+            <CheckCircle className="h-5 w-5 text-blue-600 mt-0.5 mr-3 flex-shrink-0" />
             <div>
-              <h4 className="text-sm font-medium text-yellow-800 mb-1">
-                Trial Ending Soon
+              <h4 className="text-sm font-medium text-blue-800 mb-1">
+                You're on the FREE Plan
               </h4>
-              <p className="text-sm text-yellow-700">
-                Your free trial ends in {trial.days_remaining} day{trial.days_remaining !== 1 ? 's' : ''}.
-                Subscribe to a plan to continue using JobKaart after your trial ends.
+              <p className="text-sm text-blue-700">
+                Enjoying JobKaart? Upgrade to a paid plan for unlimited quotes, jobs, and invoices plus additional users and premium support.
               </p>
             </div>
           </div>
@@ -184,7 +183,7 @@ export default function SubscriptionStatus({
       )}
 
       {/* Cancelled Info */}
-      {isCancelled && !isInTrial && (
+      {isCancelled && !isFree && (
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
           <div className="flex items-start">
             <AlertCircle className="h-5 w-5 text-gray-600 mt-0.5 mr-3 flex-shrink-0" />
@@ -194,7 +193,7 @@ export default function SubscriptionStatus({
               </h4>
               <p className="text-sm text-gray-700">
                 Your subscription has been cancelled. You can reactivate by selecting a plan
-                below.
+                below or continue with the FREE plan.
               </p>
             </div>
           </div>

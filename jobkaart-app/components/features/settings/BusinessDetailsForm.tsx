@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button, Input, Label, Textarea } from '@/components/ui'
 
 interface BusinessDetailsFormProps {
@@ -8,6 +9,7 @@ interface BusinessDetailsFormProps {
 }
 
 export default function BusinessDetailsForm({ tenant }: BusinessDetailsFormProps) {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     business_name: tenant.business_name || '',
     phone: tenant.phone || '',
@@ -39,6 +41,10 @@ export default function BusinessDetailsForm({ tenant }: BusinessDetailsFormProps
       }
 
       setSuccess(true)
+
+      // Refresh the page data to update the tenant prop with new values
+      router.refresh()
+
       setTimeout(() => setSuccess(false), 3000)
     } catch (err) {
       setError('An unexpected error occurred')

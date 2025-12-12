@@ -7,6 +7,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import PricingPlans from '@/components/billing/PricingPlans';
 import SubscriptionStatus from '@/components/billing/SubscriptionStatus';
@@ -15,8 +16,8 @@ interface SubscriptionData {
   tenant: {
     id: string;
     business_name: string;
-    subscription_tier: 'starter' | 'pro' | 'team';
-    subscription_status: 'active' | 'trial' | 'cancelled' | 'overdue';
+    subscription_tier: 'free' | 'starter' | 'pro' | 'team';
+    subscription_status: 'active' | 'free' | 'cancelled' | 'overdue';
     monthly_job_limit: number | null;
   };
   trial: {
@@ -26,7 +27,7 @@ interface SubscriptionData {
   };
   subscription: {
     id: string;
-    plan_type: 'starter' | 'pro' | 'team';
+    plan_type: 'free' | 'starter' | 'pro' | 'team';
     status: string;
     amount: number;
     currency: string;
@@ -112,7 +113,7 @@ export default function BillingPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="flex items-center justify-center py-20">
         <div className="text-center">
           <Loader2 className="h-8 w-8 text-orange-500 animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Loading subscription details...</p>
@@ -123,8 +124,18 @@ export default function BillingPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
+      <div>
+        <Link
+          href="/dashboard"
+          className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 mb-4"
+        >
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Dashboard
+        </Link>
+
+        <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6 mt-8">
           <div className="flex items-start mb-4">
             <AlertCircle className="h-6 w-6 text-red-500 mr-3 flex-shrink-0" />
             <div>
@@ -148,59 +159,66 @@ export default function BillingPage() {
   }
 
   const isActive = subscriptionData.tenant.subscription_status === 'active';
-  const canCancel = isActive || subscriptionData.trial.is_in_trial;
+  const isFree = subscriptionData.tenant.subscription_status === 'free';
+  const canCancel = isActive && !isFree;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Billing & Subscription</h1>
-              <p className="text-gray-600 mt-1">
-                Manage your subscription, view billing history, and upgrade your plan
-              </p>
-            </div>
-            {canCancel && (
-              <button
-                onClick={() => setShowCancelModal(true)}
-                className="px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 border border-red-300 rounded-lg transition-colors"
-              >
-                Cancel Subscription
-              </button>
-            )}
+    <div>
+      {/* Back Button & Header */}
+      <div className="mb-6">
+        <Link
+          href="/dashboard"
+          className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 mb-4"
+        >
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Dashboard
+        </Link>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Billing & Subscription</h1>
+            <p className="text-gray-600 mt-1">
+              Manage your subscription, view billing history, and upgrade your plan
+            </p>
           </div>
+          {canCancel && (
+            <button
+              onClick={() => setShowCancelModal(true)}
+              className="px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 border border-red-300 rounded-lg transition-colors"
+            >
+              Cancel Subscription
+            </button>
+          )}
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Subscription Status (Left Column) */}
-          <div className="lg:col-span-1">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Subscription Details</h2>
-            <SubscriptionStatus
-              tenant={subscriptionData.tenant}
-              trial={subscriptionData.trial}
-              subscription={subscriptionData.subscription}
-              access={subscriptionData.access}
-            />
-          </div>
+      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Subscription Status (Left Column) */}
+        <div className="lg:col-span-1">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Subscription Details</h2>
+          <SubscriptionStatus
+            tenant={subscriptionData.tenant}
+            trial={subscriptionData.trial}
+            subscription={subscriptionData.subscription}
+            access={subscriptionData.access}
+          />
+        </div>
 
-          {/* Pricing Plans (Right Column) */}
-          <div className="lg:col-span-2">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              {subscriptionData.tenant.subscription_status === 'active'
-                ? 'Upgrade Your Plan'
-                : 'Choose a Plan'}
-            </h2>
-            <PricingPlans
-              currentPlan={subscriptionData.tenant.subscription_tier}
-              isInTrial={subscriptionData.trial.is_in_trial}
-              subscriptionStatus={subscriptionData.tenant.subscription_status}
-            />
-          </div>
+        {/* Pricing Plans (Right Column) */}
+        <div className="lg:col-span-2">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            {subscriptionData.tenant.subscription_status === 'active'
+              ? 'Upgrade Your Plan'
+              : 'Choose a Plan'}
+          </h2>
+          <PricingPlans
+            currentPlan={subscriptionData.tenant.subscription_tier}
+            isInTrial={subscriptionData.trial.is_in_trial}
+            subscriptionStatus={subscriptionData.tenant.subscription_status}
+          />
         </div>
       </div>
 

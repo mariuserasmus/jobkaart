@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient, getTenantId } from '@/lib/db/supabase-server'
+import { checkUsageLimit, incrementUsage } from '@/lib/usage/limits'
 
 /**
  * POST /api/quotes/[id]/convert-to-job
@@ -47,6 +48,22 @@ export async function POST(
       )
     }
 
+    // Check FREE tier usage limits
+    const usageCheck = await checkUsageLimit(tenantId, 'job')
+    if (!usageCheck.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: usageCheck.message || `Monthly job limit reached (${usageCheck.limit}). Upgrade to create unlimited jobs.`,
+          usage: {
+            used: usageCheck.used,
+            limit: usageCheck.limit,
+          },
+        },
+        { status: 403 }
+      )
+    }
+
     // Check if job already exists for this quote
     const { data: existingJob } = await supabase
       .from('jobs')
@@ -87,6 +104,9 @@ export async function POST(
         { status: 500 }
       )
     }
+
+    // Increment usage counter for FREE tier tracking
+    await incrementUsage(tenantId, 'job')
 
     return NextResponse.json({
       success: true,

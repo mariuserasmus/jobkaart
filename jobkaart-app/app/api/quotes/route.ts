@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient, getTenantId } from '@/lib/db/supabase-server'
 import type { Quote, LineItem } from '@/types'
+import { checkUsageLimit, incrementUsage } from '@/lib/usage/limits'
 
 /**
  * GET /api/quotes
@@ -115,6 +116,22 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Check FREE tier usage limits
+    const usageCheck = await checkUsageLimit(tenantId, 'quote')
+    if (!usageCheck.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: usageCheck.message || `Monthly quote limit reached (${usageCheck.limit}). Upgrade to create unlimited quotes.`,
+          usage: {
+            used: usageCheck.used,
+            limit: usageCheck.limit,
+          },
+        },
+        { status: 403 }
+      )
+    }
+
     const body = await request.json()
     const {
       customer_id,
@@ -216,6 +233,9 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       )
     }
+
+    // Increment usage counter for FREE tier tracking
+    await incrementUsage(tenantId, 'quote')
 
     return NextResponse.json({
       success: true,

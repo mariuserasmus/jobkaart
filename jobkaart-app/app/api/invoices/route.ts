@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient, getTenantId } from '@/lib/db/supabase-server'
 import { generateInvoiceNumber } from '@/lib/invoices/generate-invoice-number'
+import { checkUsageLimit, incrementUsage } from '@/lib/usage/limits'
 
 /**
  * GET /api/invoices
@@ -94,6 +95,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
+      )
+    }
+
+    // Check FREE tier usage limits
+    const usageCheck = await checkUsageLimit(tenantId, 'invoice')
+    if (!usageCheck.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: usageCheck.message || `Monthly invoice limit reached (${usageCheck.limit}). Upgrade to create unlimited invoices.`,
+          usage: {
+            used: usageCheck.used,
+            limit: usageCheck.limit,
+          },
+        },
+        { status: 403 }
       )
     }
 
@@ -232,6 +249,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Note: Job status update is handled by database trigger for balance/full invoices
+
+    // Increment usage counter for FREE tier tracking
+    await incrementUsage(tenantId, 'invoice')
 
     return NextResponse.json({
       success: true,

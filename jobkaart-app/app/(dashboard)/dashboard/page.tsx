@@ -1,6 +1,7 @@
 import { createServerClient, getTenantId } from '@/lib/db/supabase-server'
 import Link from 'next/link'
 import { unstable_noStore as noStore } from 'next/cache'
+import UsageMeter from '@/components/dashboard/UsageMeter'
 
 // Ensure this page is never cached or statically generated
 export const dynamic = 'force-dynamic'
@@ -18,6 +19,13 @@ export default async function DashboardPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser()
+
+  // Get tenant subscription info for usage meter
+  const { data: tenant } = await supabase
+    .from('tenants')
+    .select('subscription_status, subscription_tier')
+    .eq('id', tenantId)
+    .single()
 
   // Get start and end of current month
   const now = new Date()
@@ -211,6 +219,16 @@ export default async function DashboardPage() {
           Welcome back, {user?.user_metadata?.full_name || user?.email}!
         </p>
       </div>
+
+      {/* FREE Tier Usage Meter */}
+      {tenant && (
+        <div className="mb-8">
+          <UsageMeter
+            subscriptionStatus={tenant.subscription_status}
+            subscriptionTier={tenant.subscription_tier}
+          />
+        </div>
+      )}
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">

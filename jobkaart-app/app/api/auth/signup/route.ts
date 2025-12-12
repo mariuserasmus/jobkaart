@@ -20,21 +20,17 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 1. Create tenant (business)
-    const trialStartDate = new Date()
-    const trialEndDate = new Date()
-    trialEndDate.setDate(trialEndDate.getDate() + 14) // 14-day trial
-
+    // 1. Create tenant (business) - FREE tier by default
     const { data: tenant, error: tenantError } = await supabaseAdmin
       .from('tenants')
       .insert({
         business_name,
         email, // Add tenant email from signup
         phone, // Add tenant phone from signup
-        subscription_tier: 'starter', // Default to Starter plan
-        subscription_status: 'trial', // Start with 14-day trial
-        subscription_started_at: trialStartDate.toISOString(),
-        subscription_ends_at: trialEndDate.toISOString(),
+        subscription_tier: 'free', // Start with FREE tier
+        subscription_status: 'free', // FREE tier status
+        subscription_started_at: new Date().toISOString(),
+        subscription_ends_at: null, // FREE tier never expires
       })
       .select()
       .single()

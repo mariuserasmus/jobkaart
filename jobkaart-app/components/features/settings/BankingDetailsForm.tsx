@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button, Input, Label } from '@/components/ui'
 
 interface BankingDetailsFormProps {
@@ -8,6 +9,7 @@ interface BankingDetailsFormProps {
 }
 
 export default function BankingDetailsForm({ tenant }: BankingDetailsFormProps) {
+  const router = useRouter()
   const bankingDetails = tenant.banking_details || {}
 
   const [formData, setFormData] = useState({
@@ -53,6 +55,10 @@ export default function BankingDetailsForm({ tenant }: BankingDetailsFormProps) 
       }
 
       setSuccess(true)
+
+      // Refresh the page data to update the tenant prop with new values
+      router.refresh()
+
       setTimeout(() => setSuccess(false), 3000)
     } catch (err) {
       setError('An unexpected error occurred')

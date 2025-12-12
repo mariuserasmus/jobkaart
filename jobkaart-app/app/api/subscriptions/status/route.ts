@@ -7,51 +7,17 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@supabase/ssr';
+import { createServerClient, getTenantId } from '@/lib/db/supabase-server';
 
 export async function GET(request: NextRequest) {
   try {
-    // Create Supabase client
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return request.cookies.get(name)?.value;
-          },
-          set(name: string, value: string, options: any) {
-            // Not used
-          },
-          remove(name: string, options: any) {
-            // Not used
-          }
-        }
-      }
-    );
+    const tenantId = await getTenantId();
 
-    // Get authenticated user
-    const {
-      data: { user },
-      error: authError
-    } = await supabase.auth.getUser();
-
-    if (authError || !user) {
+    if (!tenantId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Get user's tenant
-    const { data: userData, error: userError } = await supabase
-      .from('users')
-      .select('tenant_id')
-      .eq('id', user.id)
-      .single();
-
-    if (userError || !userData) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
-
-    const tenantId = userData.tenant_id;
+    const supabase = await createServerClient();
 
     // Get tenant subscription info
     const { data: tenant, error: tenantError } = await supabase
@@ -62,10 +28,8 @@ export async function GET(request: NextRequest) {
         business_name,
         subscription_tier,
         subscription_status,
-        trial_ends_at,
         subscription_started_at,
-        subscription_ends_at,
-        monthly_job_limit
+        subscription_ends_at
       `
       )
       .eq('id', tenantId)
@@ -84,13 +48,8 @@ export async function GET(request: NextRequest) {
       .limit(1)
       .single();
 
-    // Calculate trial status
-    const now = new Date();
-    const trialEndsAt = tenant.trial_ends_at ? new Date(tenant.trial_ends_at) : null;
-    const isInTrial = tenant.subscription_status === 'trial' && trialEndsAt && trialEndsAt > now;
-    const trialDaysRemaining = isInTrial
-      ? Math.ceil((trialEndsAt!.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
-      : 0;
+    // Calculate trial status (now for FREE tier system)
+    const isFree = tenant.subscription_status === 'free';
 
     // Build response
     const response = {
@@ -99,12 +58,12 @@ export async function GET(request: NextRequest) {
         business_name: tenant.business_name,
         subscription_tier: tenant.subscription_tier,
         subscription_status: tenant.subscription_status,
-        monthly_job_limit: tenant.monthly_job_limit
+        monthly_job_limit: null // Removed - now handled by monthly_usage table
       },
       trial: {
-        is_in_trial: isInTrial,
-        ends_at: tenant.trial_ends_at,
-        days_remaining: trialDaysRemaining
+        is_in_trial: false, // No more trials - everyone starts FREE
+        ends_at: null,
+        days_remaining: 0
       },
       subscription: subscription
         ? {
@@ -119,12 +78,12 @@ export async function GET(request: NextRequest) {
           }
         : null,
       access: {
-        has_access: ['active', 'trial'].includes(tenant.subscription_status),
+        has_access: ['active', 'free'].includes(tenant.subscription_status),
         reason:
           tenant.subscription_status === 'active'
             ? 'Active subscription'
-            : tenant.subscription_status === 'trial'
-            ? `Trial (${trialDaysRemaining} days remaining)`
+            : tenant.subscription_status === 'free'
+            ? 'FREE tier (5 quotes/jobs/invoices per month)'
             : tenant.subscription_status === 'overdue'
             ? 'Payment overdue'
             : 'No active subscription'

@@ -14,11 +14,11 @@ import { PLAN_DETAILS, type PlanType } from '@/lib/payfast';
 interface PricingPlansProps {
   currentPlan?: PlanType | null;
   isInTrial?: boolean;
-  subscriptionStatus?: 'trial' | 'active' | 'cancelled' | 'expired' | 'overdue' | null;
+  subscriptionStatus?: 'free' | 'active' | 'cancelled' | 'expired' | 'overdue' | null;
   onSelectPlan?: (plan: PlanType) => void;
 }
 
-const planOrder: PlanType[] = ['starter', 'pro', 'team'];
+const planOrder: PlanType[] = ['free', 'starter', 'pro', 'team'];
 
 export default function PricingPlans({ currentPlan, isInTrial, subscriptionStatus, onSelectPlan }: PricingPlansProps) {
   const [selectedPlan, setSelectedPlan] = useState<PlanType | null>(null);
@@ -73,9 +73,7 @@ export default function PricingPlans({ currentPlan, isInTrial, subscriptionStatu
             Choose Your Plan
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Start with a 14-day free trial. No credit card required.
-            <br />
-            Cancel anytime.
+            Start FREE. No credit card required. Upgrade anytime.
           </p>
         </div>
 
@@ -98,9 +96,11 @@ export default function PricingPlans({ currentPlan, isInTrial, subscriptionStatu
             const isLoadingThisPlan = isLoading && selectedPlan === planType;
 
             // Determine button text based on status
-            let buttonText = 'Start Free Trial';
-            if (isInTrial || subscriptionStatus === 'trial') {
-              buttonText = 'Upgrade to This Plan';
+            let buttonText = 'Get Started';
+            if (planType === 'free') {
+              buttonText = 'Start FREE';
+            } else if (subscriptionStatus === 'free' && planType !== 'free') {
+              buttonText = 'Upgrade Now';
             } else if (subscriptionStatus === 'active' && !isCurrentPlan) {
               buttonText = 'Switch to This Plan';
             }
@@ -197,13 +197,13 @@ export default function PricingPlans({ currentPlan, isInTrial, subscriptionStatu
           })}
         </div>
 
-        {/* Trial Notice */}
-        {isInTrial && (
+        {/* FREE Tier Notice */}
+        {subscriptionStatus === 'free' && (
           <div className="mt-12 max-w-3xl mx-auto">
             <div className="bg-blue-50 border border-blue-200 text-blue-800 px-6 py-4 rounded-lg">
-              <p className="font-medium mb-1">You're currently on a free trial</p>
+              <p className="font-medium mb-1">You're on the FREE Plan</p>
               <p className="text-sm">
-                Your trial period is active. Select a plan above to continue after your trial ends.
+                Upgrade to a paid plan for unlimited quotes, jobs, and invoices plus additional users and premium support.
               </p>
             </div>
           </div>
@@ -212,7 +212,7 @@ export default function PricingPlans({ currentPlan, isInTrial, subscriptionStatu
         {/* FAQ / Notes */}
         <div className="mt-12 max-w-3xl mx-auto text-center text-gray-600 text-sm space-y-2">
           <p>
-            <strong>14-day free trial</strong> - No payment required to start
+            <strong>Start FREE</strong> - No payment required. Upgrade anytime.
           </p>
           <p>
             All plans include: Customer database, Quote builder, Job tracker, Invoicing, Dashboard
@@ -225,7 +225,7 @@ export default function PricingPlans({ currentPlan, isInTrial, subscriptionStatu
         {/* ROI Calculator */}
         <div className="mt-16 max-w-4xl mx-auto bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl p-8">
           <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
-            The Cost of "Free"
+            Why Upgrade from FREE?
           </h3>
           <div className="grid md:grid-cols-3 gap-6 text-center">
             <div>
@@ -242,7 +242,9 @@ export default function PricingPlans({ currentPlan, isInTrial, subscriptionStatu
             </div>
           </div>
           <p className="text-center mt-6 text-gray-700">
-            <strong>If JobKaart helps you recover just ONE quote, you've paid for 13 months.</strong>
+            <strong>Start FREE. When you're ready to scale, upgrade for unlimited quotes and jobs.</strong>
+            <br />
+            <span className="text-sm">If paid plans help you recover just ONE quote, you've paid for 13 months of Starter.</span>
           </p>
         </div>
       </div>

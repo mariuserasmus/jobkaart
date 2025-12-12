@@ -179,8 +179,8 @@ export default function SignupPage() {
                 ✓
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">14-Day Free Trial</h3>
-                <p className="text-sm text-gray-600">No credit card needed. Cancel anytime.</p>
+                <h3 className="font-semibold text-gray-900">Start FREE Forever</h3>
+                <p className="text-sm text-gray-600">No credit card needed. Upgrade when you grow.</p>
               </div>
             </div>
           </div>
@@ -210,7 +210,7 @@ export default function SignupPage() {
           {/* Logo / Brand */}
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold text-blue-600">JobKaart</h1>
-            <p className="text-gray-600 mt-2">Start your 14-day free trial</p>
+            <p className="text-gray-600 mt-2">Start FREE - No Credit Card Required</p>
             <div className="flex justify-center items-center gap-2 mt-3">
               <div className="flex gap-1">
                 <div className={`w-8 h-1 rounded-full ${step >= 1 ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
@@ -357,7 +357,7 @@ export default function SignupPage() {
                   disabled={loading}
                   className="w-2/3 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  {loading ? 'Creating account...' : 'Start Free Trial'}
+                  {loading ? 'Creating account...' : 'Start FREE Account'}
                 </button>
               </div>
             </form>
@@ -387,7 +387,7 @@ export default function SignupPage() {
           <div className="md:hidden mt-6 pt-6 border-t border-gray-200">
             <p className="text-xs text-gray-600 mb-2">What you get:</p>
             <ul className="text-xs text-gray-600 space-y-1">
-              <li>✓ 14-day free trial (no card needed)</li>
+              <li>✓ FREE forever (5 quotes/jobs/invoices per month)</li>
               <li>✓ Professional quotes in 2 minutes</li>
               <li>✓ WhatsApp integration</li>
               <li>✓ Track who owes you money</li>

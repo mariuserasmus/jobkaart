@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button, Input, Label } from '@/components/ui'
 
 interface VatBrandingFormProps {
@@ -8,6 +9,7 @@ interface VatBrandingFormProps {
 }
 
 export default function VatBrandingForm({ tenant }: VatBrandingFormProps) {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     vat_registered: tenant.vat_registered || false,
     vat_number: tenant.vat_number || '',
@@ -117,6 +119,10 @@ export default function VatBrandingForm({ tenant }: VatBrandingFormProps) {
 
       setSuccess(true)
       setLogoFile(null)
+
+      // Refresh the page data to update the tenant prop with new values
+      router.refresh()
+
       setTimeout(() => setSuccess(false), 3000)
     } catch (err) {
       setError('An unexpected error occurred')

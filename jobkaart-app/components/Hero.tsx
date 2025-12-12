@@ -7,10 +7,10 @@ export default function Hero() {
     <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
         <div className="text-center">
-          {/* 14-Day Trial Badge */}
+          {/* FREE Forever Badge */}
           <div className="mb-6">
             <span className="inline-block bg-green-500 text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg">
-              ✨ 14-Day Free Trial • No Credit Card Needed
+              ✨ FREE Forever • 5 Quotes/Jobs/Invoices Per Month
             </span>
           </div>
 
@@ -48,7 +48,7 @@ export default function Hero() {
             onClick={analytics.trackSignUpClick}
             className="inline-block bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold text-xl px-12 py-5 rounded-lg shadow-2xl transform transition hover:scale-105 hover:shadow-yellow-400/50"
           >
-            Start Free Trial →
+            Start FREE Account →
           </a>
 
           {/* Login link */}
@@ -65,7 +65,7 @@ export default function Hero() {
 
           {/* Trust indicator */}
           <p className="mt-4 text-blue-200 text-sm">
-            Built for SA tradespeople • 14-Day Free Trial • No Credit Card Required
+            Built for SA tradespeople • FREE Forever • No Credit Card Required
           </p>
         </div>
       </div>

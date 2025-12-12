@@ -100,7 +100,7 @@ export default function WaitingList() {
             </p>
             <div className="mt-4 space-y-2">
               <p className="text-lg text-green-600 font-semibold">
-                ✨ 14-Day Free Trial • No credit card needed
+                ✨ FREE Forever • 5 Quotes/Jobs/Invoices Per Month
               </p>
               <p className="text-lg text-blue-600 font-semibold">
                 💬 Get answers before you commit
