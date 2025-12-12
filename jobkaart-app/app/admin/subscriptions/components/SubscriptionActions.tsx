@@ -122,9 +122,9 @@ export function SubscriptionActions({ tenant, onActionComplete }: SubscriptionAc
     )
   }
 
-  const canChangePlan = ['active', 'trial', 'free'].includes(tenant.subscription_status)
-  const canCancel = ['active', 'trial'].includes(tenant.subscription_status)
-  const canExtendTrial = tenant.subscription_status === 'trial'
+  const canChangePlan = ['active', 'free'].includes(tenant.subscription_status)
+  const canCancel = ['active'].includes(tenant.subscription_status)
+  const canExtendTrial = false // No more trial period with FREE tier
   const canResetTrial = ['cancelled', 'overdue'].includes(tenant.subscription_status)
   const canActivate = ['cancelled', 'overdue'].includes(tenant.subscription_status)
 
