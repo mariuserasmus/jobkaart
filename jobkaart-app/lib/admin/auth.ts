@@ -97,13 +97,14 @@ export async function logAdminAction({
 /**
  * Require super admin access or throw error
  * Use this in server components/actions to protect admin routes
+ * Returns the admin user object if authorized
  */
 export async function requireSuperAdmin() {
-  const isAdmin = await isSuperAdmin()
+  const adminUser = await getCurrentAdminUser()
 
-  if (!isAdmin) {
+  if (!adminUser) {
     throw new Error('Unauthorized: Super admin access required')
   }
 
-  return true
+  return adminUser
 }
