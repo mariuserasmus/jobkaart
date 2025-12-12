@@ -15,7 +15,7 @@ import crypto from 'crypto';
 // TYPES
 // ============================================================================
 
-export type PlanType = 'starter' | 'pro' | 'team';
+export type PlanType = 'free' | 'starter' | 'pro' | 'team';
 
 export interface PlanDetails {
   name: string;
@@ -93,17 +93,33 @@ export interface PayFastITNData {
 // ============================================================================
 
 export const PLAN_DETAILS: Record<PlanType, PlanDetails> = {
+  free: {
+    name: 'Free Plan',
+    price: 0,
+    billingFrequency: 3,
+    cycles: 0,
+    users: 1,
+    jobLimit: 5,
+    features: [
+      '1 user',
+      '5 quotes/month',
+      '5 jobs/month',
+      '5 invoices/month',
+      'Unlimited customers',
+      'Basic support'
+    ]
+  },
   starter: {
     name: 'Starter Plan',
     price: 299,
     billingFrequency: 3,
     cycles: 0,
     users: 2,
-    jobLimit: 50,
+    jobLimit: null,
     features: [
       '2 users included',
-      '50 jobs per month',
-      '5 quote templates',
+      'Unlimited quotes/jobs/invoices',
+      'Unlimited quote templates',
       'Email support',
       'All core features'
     ]
@@ -117,7 +133,7 @@ export const PLAN_DETAILS: Record<PlanType, PlanDetails> = {
     jobLimit: null,
     features: [
       '5 users included',
-      'Unlimited jobs',
+      'Unlimited quotes/jobs/invoices',
       'Unlimited quote templates',
       'WhatsApp support',
       'Priority support',
@@ -133,7 +149,7 @@ export const PLAN_DETAILS: Record<PlanType, PlanDetails> = {
     jobLimit: null,
     features: [
       '10 users included',
-      'Unlimited jobs',
+      'Unlimited quotes/jobs/invoices',
       'Unlimited quote templates',
       'Priority WhatsApp support',
       'Phone support',
@@ -426,5 +442,5 @@ export function getPlanDetails(planType: PlanType): PlanDetails {
  * Check if plan type is valid
  */
 export function isValidPlanType(plan: string): plan is PlanType {
-  return ['starter', 'pro', 'team'].includes(plan);
+  return ['free', 'starter', 'pro', 'team'].includes(plan);
 }
