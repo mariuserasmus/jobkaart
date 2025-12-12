@@ -214,23 +214,30 @@ export interface CustomerHistory {
 // Usage Tracking Types
 export interface SystemSettings {
   id: string
-  tenant_id: string
-  free_tier_limits: {
-    jobs_per_month: number
-    quote_templates: number
-    users: number
-  }
-  created_at: string
+  free_quotes_per_month: number
+  free_jobs_per_month: number
+  free_invoices_per_month: number
+  starter_quotes_per_month: number | null
+  starter_jobs_per_month: number | null
+  starter_invoices_per_month: number | null
+  settings_version: number
   updated_at: string
+  updated_by: string | null
+}
+
+export interface FreeTierLimitsUpdate {
+  free_quotes_per_month: number
+  free_jobs_per_month: number
+  free_invoices_per_month: number
 }
 
 export interface MonthlyUsage {
   id: string
   tenant_id: string
   month: string // Format: YYYY-MM
+  quotes_created: number
   jobs_created: number
-  quotes_sent: number
-  invoices_sent: number
+  invoices_created: number
   created_at: string
   updated_at: string
 }

@@ -9,6 +9,7 @@ const navItems = [
   { href: '/admin/tenants', label: 'Tenants' },
   { href: '/admin/subscriptions', label: 'Subscriptions' },
   { href: '/admin/analytics', label: 'Analytics' },
+  { href: '/admin/settings', label: 'Settings' },
 ]
 
 export function AdminNav() {
