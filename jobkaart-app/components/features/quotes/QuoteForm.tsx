@@ -317,7 +317,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
         {loadingCustomers ? (
           <div className="text-sm text-gray-600">Loading customers...</div>
         ) : (
-          <Select value={customerId} onValueChange={setCustomerId}>
+          <Select value={customerId} onValueChange={setCustomerId} disabled={loading}>
             <SelectTrigger>
               <SelectValue placeholder="Select a customer" />
             </SelectTrigger>
@@ -348,7 +348,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
             <div className="text-sm text-gray-600">Loading templates...</div>
           ) : (
             <>
-              <Select value={selectedTemplateId || undefined} onValueChange={handleLoadTemplate}>
+              <Select value={selectedTemplateId || undefined} onValueChange={handleLoadTemplate} disabled={loading}>
                 <SelectTrigger>
                   <SelectValue placeholder="Choose a template to load..." />
                 </SelectTrigger>
@@ -388,7 +388,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
           <Label className="text-base">
             Line Items <span className="text-red-600">*</span>
           </Label>
-          <Button type="button" variant="outline" size="sm" onClick={addLineItem}>
+          <Button type="button" variant="outline" size="sm" onClick={addLineItem} disabled={loading}>
             + Add Line Item
           </Button>
         </div>
@@ -409,6 +409,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
                 placeholder="e.g., Plumbing repair, parts included"
                 value={item.description}
                 onChange={(e) => updateLineItem(index, 'description', e.target.value)}
+                disabled={loading}
                 required
               />
             </div>
@@ -426,6 +427,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
                 placeholder="1"
                 value={item.quantity}
                 onChange={(e) => updateLineItem(index, 'quantity', e.target.value)}
+                disabled={loading}
                 required
               />
             </div>
@@ -443,6 +445,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
                 placeholder="0.00"
                 value={item.unit_price}
                 onChange={(e) => updateLineItem(index, 'unit_price', e.target.value)}
+                disabled={loading}
                 required
               />
             </div>
@@ -454,7 +457,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
                 variant="ghost"
                 size="sm"
                 onClick={() => removeLineItem(index)}
-                disabled={lineItems.length === 1}
+                disabled={lineItems.length === 1 || loading}
                 className="text-red-600 hover:text-red-800 hover:bg-red-50"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -478,6 +481,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
           id="includeVat"
           checked={includeVat}
           onChange={(e) => setIncludeVat(e.target.checked)}
+          disabled={loading}
           className="w-5 h-5 rounded"
         />
         <Label htmlFor="includeVat" className="text-base cursor-pointer">
@@ -513,6 +517,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
           type="date"
           value={validUntil}
           onChange={(e) => setValidUntil(e.target.value)}
+          disabled={loading}
           required
         />
         <p className="text-sm text-gray-600">
@@ -530,6 +535,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
           placeholder="e.g., Additional work details, special requirements"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
+          disabled={loading}
           className="min-h-[100px]"
         />
         <p className="text-sm text-gray-600">
@@ -547,6 +553,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
           placeholder="e.g., 50% deposit required, final payment on completion"
           value={termsAndConditions}
           onChange={(e) => setTermsAndConditions(e.target.value)}
+          disabled={loading}
           className="min-h-[100px]"
         />
         <p className="text-sm text-gray-600">

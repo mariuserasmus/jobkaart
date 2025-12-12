@@ -202,6 +202,7 @@ export function QuoteTemplateForm({ template, mode }: QuoteTemplateFormProps) {
           placeholder="e.g., Standard Bathroom Repair, 3-Bedroom House COC"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          disabled={loading}
           required
         />
         <p className="text-sm text-gray-600">
@@ -219,6 +220,7 @@ export function QuoteTemplateForm({ template, mode }: QuoteTemplateFormProps) {
           placeholder="e.g., Standard repair job for bathroom plumbing issues"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          disabled={loading}
           className="min-h-[80px]"
         />
         <p className="text-sm text-gray-600">
@@ -232,7 +234,7 @@ export function QuoteTemplateForm({ template, mode }: QuoteTemplateFormProps) {
           <Label className="text-base">
             Line Items <span className="text-red-600">*</span>
           </Label>
-          <Button type="button" variant="outline" size="sm" onClick={addLineItem}>
+          <Button type="button" variant="outline" size="sm" onClick={addLineItem} disabled={loading}>
             + Add Line Item
           </Button>
         </div>
@@ -253,6 +255,7 @@ export function QuoteTemplateForm({ template, mode }: QuoteTemplateFormProps) {
                 placeholder="e.g., Labour, Parts, Materials"
                 value={item.description}
                 onChange={(e) => updateLineItem(index, 'description', e.target.value)}
+                disabled={loading}
                 required
               />
             </div>
@@ -270,6 +273,7 @@ export function QuoteTemplateForm({ template, mode }: QuoteTemplateFormProps) {
                 placeholder="1"
                 value={item.quantity}
                 onChange={(e) => updateLineItem(index, 'quantity', e.target.value)}
+                disabled={loading}
                 required
               />
             </div>
@@ -287,6 +291,7 @@ export function QuoteTemplateForm({ template, mode }: QuoteTemplateFormProps) {
                 placeholder="0.00"
                 value={item.unit_price}
                 onChange={(e) => updateLineItem(index, 'unit_price', e.target.value)}
+                disabled={loading}
                 required
               />
             </div>
@@ -298,7 +303,7 @@ export function QuoteTemplateForm({ template, mode }: QuoteTemplateFormProps) {
                 variant="ghost"
                 size="sm"
                 onClick={() => removeLineItem(index)}
-                disabled={lineItems.length === 1}
+                disabled={lineItems.length === 1 || loading}
                 className="text-red-600 hover:text-red-800 hover:bg-red-50"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -322,6 +327,7 @@ export function QuoteTemplateForm({ template, mode }: QuoteTemplateFormProps) {
           id="includeVat"
           checked={includeVat}
           onChange={(e) => setIncludeVat(e.target.checked)}
+          disabled={loading}
           className="w-5 h-5 rounded"
         />
         <Label htmlFor="includeVat" className="text-base cursor-pointer">
@@ -357,6 +363,7 @@ export function QuoteTemplateForm({ template, mode }: QuoteTemplateFormProps) {
           placeholder="e.g., Default notes that will appear on quotes using this template"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
+          disabled={loading}
           className="min-h-[100px]"
         />
         <p className="text-sm text-gray-600">
@@ -374,6 +381,7 @@ export function QuoteTemplateForm({ template, mode }: QuoteTemplateFormProps) {
           placeholder="e.g., 50% deposit required, final payment on completion"
           value={terms}
           onChange={(e) => setTerms(e.target.value)}
+          disabled={loading}
           className="min-h-[100px]"
         />
         <p className="text-sm text-gray-600">

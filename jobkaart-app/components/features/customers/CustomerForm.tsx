@@ -112,6 +112,7 @@ export function CustomerForm({ customer, mode }: CustomerFormProps) {
           placeholder="e.g., Tannie Maria van der Merwe"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          disabled={loading}
           className="text-base"
         />
       </div>
@@ -128,6 +129,7 @@ export function CustomerForm({ customer, mode }: CustomerFormProps) {
           placeholder="e.g., 082 123 4567"
           value={formData.phone}
           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+          disabled={loading}
           className="text-base"
         />
         <p className="text-sm text-gray-600">
@@ -146,6 +148,7 @@ export function CustomerForm({ customer, mode }: CustomerFormProps) {
           placeholder="e.g., maria@example.com"
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          disabled={loading}
           className="text-base"
         />
       </div>
@@ -161,6 +164,7 @@ export function CustomerForm({ customer, mode }: CustomerFormProps) {
           placeholder="e.g., 4123456789"
           value={formData.vat_number}
           onChange={(e) => setFormData({ ...formData, vat_number: e.target.value })}
+          disabled={loading}
           className="text-base"
         />
         <p className="text-sm text-gray-600">
@@ -179,6 +183,7 @@ export function CustomerForm({ customer, mode }: CustomerFormProps) {
           placeholder="e.g., 123 Main Street, Pretoria, 0001"
           value={formData.address}
           onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+          disabled={loading}
           className="text-base"
         />
         <p className="text-sm text-gray-600">
@@ -196,6 +201,7 @@ export function CustomerForm({ customer, mode }: CustomerFormProps) {
           placeholder="e.g., Prefers morning appointments. Has two dogs."
           value={formData.notes}
           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+          disabled={loading}
           className="text-base min-h-[120px]"
         />
         <p className="text-sm text-gray-600">
