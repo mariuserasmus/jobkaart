@@ -10,6 +10,7 @@ interface SubscriptionsClientProps {
 }
 
 const tierColors = {
+  free: 'bg-green-100 text-green-800',
   starter: 'bg-gray-100 text-gray-800',
   pro: 'bg-blue-100 text-blue-800',
   team: 'bg-purple-100 text-purple-800',
@@ -17,6 +18,7 @@ const tierColors = {
 
 const statusColors = {
   active: 'bg-green-100 text-green-800',
+  free: 'bg-green-100 text-green-800',
   trial: 'bg-blue-100 text-blue-800',
   cancelled: 'bg-gray-100 text-gray-800',
   overdue: 'bg-red-100 text-red-800',
@@ -209,6 +211,7 @@ export function SubscriptionsClient({
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All Tiers</option>
+              <option value="free">FREE</option>
               <option value="starter">Starter</option>
               <option value="pro">Pro</option>
               <option value="team">Team</option>

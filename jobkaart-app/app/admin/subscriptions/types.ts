@@ -1,5 +1,5 @@
-export type SubscriptionTier = 'starter' | 'pro' | 'team'
-export type SubscriptionStatus = 'active' | 'trial' | 'cancelled' | 'overdue'
+export type SubscriptionTier = 'free' | 'starter' | 'pro' | 'team'
+export type SubscriptionStatus = 'active' | 'free' | 'cancelled' | 'overdue'
 
 export interface TenantSubscription {
   tenant_id: string
@@ -15,7 +15,7 @@ export interface TenantSubscription {
 export interface SubscriptionStats {
   total_tenants: number
   active_subscriptions: number
-  trial_accounts: number
+  free_accounts: number
   estimated_mrr: number
 }
 

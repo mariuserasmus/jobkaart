@@ -24,10 +24,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate tier
-    const validTiers: SubscriptionTier[] = ['starter', 'pro', 'team']
+    const validTiers: SubscriptionTier[] = ['free', 'starter', 'pro', 'team']
     if (!validTiers.includes(newTier)) {
       return NextResponse.json(
-        { success: false, error: 'Invalid tier. Must be starter, pro, or team' },
+        { success: false, error: 'Invalid tier. Must be free, starter, pro, or team' },
         { status: 400 }
       )
     }
@@ -50,11 +50,15 @@ export async function POST(request: NextRequest) {
 
     const oldTier = tenant.subscription_tier
 
-    // Update tenant subscription tier
+    // Determine new subscription status
+    const newStatus = newTier === 'free' ? 'free' : 'active'
+
+    // Update tenant subscription tier and status
     const { error: updateError } = await supabase
       .from('tenants')
       .update({
         subscription_tier: newTier,
+        subscription_status: newStatus,
         updated_at: new Date().toISOString(),
       })
       .eq('id', tenantId)
@@ -71,6 +75,7 @@ export async function POST(request: NextRequest) {
     if (tenant.current_subscription_id) {
       // Get plan amounts
       const planAmounts: Record<SubscriptionTier, number> = {
+        free: 0,
         starter: 299,
         pro: 499,
         team: 799,

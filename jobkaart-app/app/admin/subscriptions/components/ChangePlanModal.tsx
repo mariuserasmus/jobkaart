@@ -13,6 +13,7 @@ interface ChangePlanModalProps {
 }
 
 const tierDetails = {
+  free: { name: 'FREE', price: 'R0', color: 'bg-green-100 text-green-800' },
   starter: { name: 'Starter', price: 'R299', color: 'bg-gray-100 text-gray-800' },
   pro: { name: 'Pro', price: 'R499', color: 'bg-blue-100 text-blue-800' },
   team: { name: 'Team', price: 'R799', color: 'bg-purple-100 text-purple-800' },
