@@ -99,7 +99,7 @@ export default function PricingPlans({ currentPlan, isInTrial, subscriptionStatu
             let buttonText = 'Get Started';
             if (planType === 'free') {
               buttonText = 'Start FREE';
-            } else if (subscriptionStatus === 'free' && planType !== 'free') {
+            } else if (subscriptionStatus === 'free') {
               buttonText = 'Upgrade Now';
             } else if (subscriptionStatus === 'active' && !isCurrentPlan) {
               buttonText = 'Switch to This Plan';
