@@ -1,22 +1,43 @@
-import { logAdminAction } from '@/lib/admin/auth'
+import { requireSuperAdmin, logAdminAction } from '@/lib/admin/auth'
+import { createServerClient } from '@/lib/db/supabase-server'
 import { FreeTierLimitsForm } from './components/FreeTierLimitsForm'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+const SYSTEM_SETTINGS_ID = '00000000-0000-0000-0000-000000000001'
+
 async function getSystemSettings() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/admin/settings/free-tier-limits`, {
-      cache: 'no-store',
-    })
+    // Verify super admin access
+    await requireSuperAdmin()
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch system settings')
+    const supabase = await createServerClient()
+
+    // Get current system settings
+    const { data: settings, error } = await supabase
+      .from('system_settings')
+      .select('*')
+      .eq('id', SYSTEM_SETTINGS_ID)
+      .single()
+
+    if (error) {
+      console.error('Error fetching system settings:', error)
+      return null
     }
 
-    const result = await response.json()
-    return result.data
+    if (!settings) {
+      console.error('System settings not found')
+      return null
+    }
+
+    return {
+      free_quotes_per_month: settings.free_quotes_per_month,
+      free_jobs_per_month: settings.free_jobs_per_month,
+      free_invoices_per_month: settings.free_invoices_per_month,
+      updated_at: settings.updated_at,
+      updated_by: settings.updated_by,
+    }
   } catch (error) {
     console.error('Error fetching system settings:', error)
     return null
