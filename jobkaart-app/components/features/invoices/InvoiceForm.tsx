@@ -459,6 +459,7 @@ export function InvoiceForm({ jobId, mode }: InvoiceFormProps) {
                 placeholder="1"
                 value={item.quantity}
                 onChange={(e) => updateLineItem(index, 'quantity', e.target.value)}
+                onWheel={(e) => e.currentTarget.blur()}
                 required
                 disabled={loading}
                 readOnly={!!infoMessage}
@@ -477,6 +478,7 @@ export function InvoiceForm({ jobId, mode }: InvoiceFormProps) {
                 placeholder="0.00"
                 value={item.unit_price}
                 onChange={(e) => updateLineItem(index, 'unit_price', e.target.value)}
+                onWheel={(e) => e.currentTarget.blur()}
                 required
                 disabled={loading}
                 readOnly={!!infoMessage}

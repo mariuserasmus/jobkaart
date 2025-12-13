@@ -427,6 +427,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
                 placeholder="1"
                 value={item.quantity}
                 onChange={(e) => updateLineItem(index, 'quantity', e.target.value)}
+                onWheel={(e) => e.currentTarget.blur()}
                 disabled={loading}
                 required
               />
@@ -445,6 +446,7 @@ export function QuoteForm({ quote, mode, preselectedCustomerId }: QuoteFormProps
                 placeholder="0.00"
                 value={item.unit_price}
                 onChange={(e) => updateLineItem(index, 'unit_price', e.target.value)}
+                onWheel={(e) => e.currentTarget.blur()}
                 disabled={loading}
                 required
               />
