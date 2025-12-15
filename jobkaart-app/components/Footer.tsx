@@ -14,7 +14,7 @@ export default function Footer() {
             </p>
             <div className="mt-4">
               <span className="inline-block bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">
-                14-Day Free Trial
+                FREE Forever
               </span>
             </div>
           </div>
@@ -28,7 +28,7 @@ export default function Footer() {
                   hello@jobkaart.co.za
                 </a>
               </li>
-              <li>Launching Soon</li>
+              <li>Now Live & Ready to Use</li>
               <li className="mt-4">
                 <a href="#" className="text-blue-400 hover:text-blue-300 transition text-sm">
                   Privacy Policy

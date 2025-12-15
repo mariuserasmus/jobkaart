@@ -336,6 +336,175 @@ Enable automated recurring payments for paid tiers (Starter R299, Pro R499, Team
 
 ---
 
+### 💡 IDEA #3: Video Tutorial Library
+
+**Added**: December 2025
+**Status**: 🎯 Plan for Q1 2026 (After first 5-10 customers)
+**Priority**: MEDIUM (Improves onboarding & reduces support)
+
+#### The Need
+Create video tutorials to help new users get started faster and reduce support burden. Complement the existing in-app onboarding tour with visual, step-by-step guides.
+
+#### Current State
+- ✅ In-app onboarding tour (Driver.js)
+- ✅ Feature tooltips and help text
+- ❌ No video tutorials
+- ❌ No visual learning resources
+
+#### Video Tutorial Roadmap
+
+**Phase 1: Quick Start Series (Loom - FREE)**
+Create 5 core tutorials (2-3 mins each):
+1. "How to create your first quote" (2 mins)
+2. "How to convert a quote to a job" (1 min)
+3. "How to create an invoice" (2 mins)
+4. "How to track outstanding payments" (2 mins)
+5. "Dashboard overview" (3 mins)
+
+**Phase 2: Feature Deep Dives (Tella - $20/month)**
+Create polished tutorials for advanced features:
+- Quote templates setup
+- Job photo uploads
+- Multi-user management
+- Payment tracking
+- Customer management
+
+**Phase 3: Marketing Explainer (Renderforest - $14/month)**
+Create animated explainer video for:
+- Landing page hero section
+- Facebook ads
+- Email campaigns
+- "What is JobKaart?" in 60 seconds
+
+#### Tools & Budget
+
+**FREE Tier (Recommended Start):**
+- **Loom** - Screen recording, instant sharing
+- **DaVinci Resolve** - Free video editing (if needed)
+- **YouTube** - Free hosting & embedding
+
+**Paid Tier ($20-50/month after 10 customers):**
+- **Tella Pro** ($20/month) - Polished screen recordings
+- **Renderforest** ($14/month) - Animated explainers
+- **Epidemic Sound** ($15/month) - Royalty-free music
+
+**Professional Tier ($169-299 one-time):**
+- **ScreenFlow** (Mac - $169) - Pro screen recording
+- **Camtasia** (Win/Mac - $299) - Full editing suite
+
+#### Implementation Checklist
+
+**Video Production:**
+- [ ] Sign up for Loom (FREE)
+- [ ] Create sample data for demos (customer "Tannie Maria")
+- [ ] Write scripts for 5 core videos
+- [ ] Record Phase 1 videos (5 x 2-3 mins)
+- [ ] Add subtitles (many watch without sound)
+- [ ] Upload to YouTube (unlisted or public)
+
+**Integration into JobKaart:**
+- [ ] Add "Video Tutorials" section to help page
+- [ ] Embed videos in relevant help sections
+- [ ] Link from onboarding tour steps
+- [ ] Add "Watch video" links in empty states
+- [ ] Include in welcome email sequence
+
+**Marketing Use:**
+- [ ] Create landing page explainer video
+- [ ] Extract 30-second clips for Facebook ads
+- [ ] Use in email nurture sequences
+- [ ] Share on social media
+
+#### Video Best Practices
+
+**Keep it Short:**
+- Maximum 3 minutes per video
+- Focus on ONE task per video
+- No long intros (get straight to it)
+
+**Make it Clear:**
+- Highlight mouse clicks
+- Zoom in on important areas
+- Add text annotations
+- Use simple language (like talking to a mate)
+
+**Make it Actionable:**
+- Start with outcome: "In 2 minutes, you'll create your first quote"
+- Show every step clearly
+- End with call-to-action: "Now try it yourself!"
+
+**Make it Accessible:**
+- Add subtitles (for sound-off viewing)
+- Use clear audio (or voiceover)
+- Keep UI elements large enough to see
+
+#### Sample Video Scripts
+
+**Video 1: "Create Your First Quote in 2 Minutes"**
+```
+[0:00] "Hi, I'm going to show you how to create a professional quote in JobKaart"
+[0:05] "First, click Quotes in the sidebar"
+[0:10] "Click New Quote"
+[0:15] "Select your customer - I'll choose Tannie Maria"
+[0:20] "Add your line items - description, quantity, and price"
+[0:30] "JobKaart calculates the total automatically"
+[0:35] "Add any notes for the customer"
+[0:40] "Click Create Quote"
+[0:45] "Now you can send it via WhatsApp with one click"
+[0:50] "You'll see when Tannie Maria views it"
+[0:55] "That's it - professional quote in under 2 minutes"
+[1:00] "Now try creating your first quote!"
+```
+
+#### Where to Use Videos
+
+**In-App:**
+- Help section video library
+- Tooltips with "Watch tutorial" links
+- Empty states ("No quotes yet? Watch how")
+- Onboarding tour step links
+
+**Marketing:**
+- Landing page hero video
+- Facebook ad demos
+- Email sequences
+- Support responses
+
+#### Success Metrics
+
+**Engagement:**
+- Video completion rate >70%
+- Average watch time >80% of video length
+- Video views per new user
+
+**Business Impact:**
+- Reduced support tickets by 30%
+- Faster time-to-first-quote
+- Higher feature adoption rates
+- Better onboarding completion
+
+#### Inspiration Resources
+
+**Tools to Research:**
+- loom.com - Screen recording
+- tella.tv - Polished screen recordings
+- renderforest.com - Animated explainers
+- vyond.com - Character animations
+
+**Great Examples:**
+- Notion tutorials (notion.so)
+- Linear demos (linear.app)
+- Airtable guides (airtable.com)
+- Loom product videos (loom.com)
+
+#### Next Steps
+- [ ] Validate need (do users request video help?)
+- [ ] Create first video as test (5 mins with Loom)
+- [ ] Measure engagement before investing in full library
+- [ ] Decide: Create in-house or hire freelancer?
+
+---
+
 *Section reserved for additional JobKaart core feature enhancements*
 
 ---
@@ -359,6 +528,6 @@ Enable automated recurring payments for paid tiers (Starter R299, Pro R499, Team
 ---
 
 **Last Updated**: December 2025
-**Total Ideas**: 2
+**Total Ideas**: 3
 **In Progress**: 0
 **Completed**: 0
