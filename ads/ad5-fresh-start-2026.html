@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobKaart - Fresh Start 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .ad-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.3;
+        }
+
+        .confetti-1 { top: 10px; left: 50px; }
+        .confetti-2 { top: 30px; right: 60px; }
+        .confetti-3 { bottom: 20px; left: 80px; }
+        .confetti-4 { bottom: 40px; right: 40px; }
+
+        .logo {
+            color: white;
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .headline {
+            color: white;
+            font-size: 52px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .year-stat {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 3px solid #f59e0b;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .stat-label {
+            color: #92400e;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-number {
+            color: #dc2626;
+            font-size: 64px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0 rgba(220, 38, 38, 0.1);
+        }
+
+        .stat-subtitle {
+            color: #78350f;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .promise-section {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .promise-section h3 {
+            color: #1e3a8a;
+            font-size: 26px;
+            margin-bottom: 25px;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .promise-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .promise-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .promise-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .promise-text {
+            color: #1e40af;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .free-section {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .free-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .free-badge {
+            background: white;
+            color: #059669;
+            font-size: 48px;
+            font-weight: 900;
+            padding: 20px 40px;
+            border-radius: 15px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .free-details {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            margin: -40px -40px 0;
+            padding: 50px 40px;
+            border-radius: 0 0 24px 24px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #ea580c;
+            font-size: 32px;
+            font-weight: 900;
+            padding: 25px 70px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        .cta-fine-print {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="ad-container">
+        <div class="header">
+            <div class="confetti confetti-1">🎉</div>
+            <div class="confetti confetti-2">✨</div>
+            <div class="confetti confetti-3">🎊</div>
+            <div class="confetti confetti-4">⭐</div>
+            <div class="logo">JobKaart</div>
+            <h1 class="headline">Leave The<br>Chaos Behind</h1>
+            <div class="year-stat">Fresh Start for 2026</div>
+        </div>
+
+        <div class="content">
+            <div class="stat-box">
+                <div class="stat-label">How much did you lose?</div>
+                <div class="stat-number">R144k</div>
+                <div class="stat-subtitle">Average lost per year from forgotten quotes & invoices</div>
+            </div>
+
+            <div class="promise-section">
+                <h3>Your 2026 Promise to Yourself</h3>
+                <div class="promise-grid">
+                    <div class="promise-card">
+                        <div class="promise-icon">📝</div>
+                        <div class="promise-text">Never lose a quote again</div>
+                    </div>
+                    <div class="promise-card">
+                        <div class="promise-icon">💰</div>
+                        <div class="promise-text">Invoice every job done</div>
+                    </div>
+                    <div class="promise-card">
+                        <div class="promise-icon">📱</div>
+                        <div class="promise-text">Track all customers</div>
+                    </div>
+                    <div class="promise-card">
+                        <div class="promise-icon">✅</div>
+                        <div class="promise-text">Get paid on time</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="free-section">
+                <div class="free-title">Start 2026 RIGHT</div>
+                <div class="free-badge">FREE FOREVER</div>
+                <div class="free-details">5 quotes • 5 jobs • 5 invoices/month • Unlimited customers</div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <a href="https://jobkaart.co.za/signup" class="cta-button">Start FREE Today →</a>
+            <p class="cta-fine-print">No credit card • 5 minute setup • FREE forever</p>
+            <p class="cta-fine-print">Join 100+ SA tradies already organized for 2026</p>
+        </div>
+    </div>
+</body>
+</html>

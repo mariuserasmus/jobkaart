@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobKaart - No More Excuses</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .ad-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            color: white;
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .year-end-badge {
+            background: rgba(239, 68, 68, 0.2);
+            backdrop-filter: blur(10px);
+            color: #fca5a5;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 10px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .headline {
+            color: white;
+            font-size: 46px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .subheadline {
+            color: #fca5a5;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .truth-bomb {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 4px solid #dc2626;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .truth-bomb h3 {
+            color: #991b1b;
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .excuse-list {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .excuse-item {
+            color: #7f1d1d;
+            font-size: 18px;
+            margin: 15px 0;
+            padding-left: 35px;
+            position: relative;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .excuse-item::before {
+            content: '❌';
+            position: absolute;
+            left: 0;
+            font-size: 24px;
+        }
+
+        .reality-check {
+            color: #991b1b;
+            font-size: 20px;
+            font-weight: 900;
+            margin-top: 15px;
+        }
+
+        .solution-banner {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .solution-banner h3 {
+            color: white;
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .feature-text {
+            color: #065f46;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .free-callout {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4);
+        }
+
+        .free-text {
+            color: #78350f;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .free-badge {
+            background: white;
+            color: #92400e;
+            font-size: 42px;
+            font-weight: 900;
+            padding: 15px 40px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            margin: -40px -40px 0;
+            padding: 50px 40px;
+            border-radius: 0 0 24px 24px;
+        }
+
+        .cta-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #ea580c;
+            font-size: 32px;
+            font-weight: 900;
+            padding: 25px 70px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        .cta-fine-print {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="ad-container">
+        <div class="header">
+            <div class="logo">JobKaart</div>
+            <div class="year-end-badge">2025'S OVER</div>
+            <h1 class="headline">The Excuses<br>Aren't</h1>
+            <p class="subheadline">How many quotes did you lose in 2025?</p>
+        </div>
+
+        <div class="content">
+            <div class="truth-bomb">
+                <h3>Heard These Before?</h3>
+                <div class="excuse-list">
+                    <div class="excuse-item">"I'm too busy to follow up on quotes"</div>
+                    <div class="excuse-item">"I can't remember everyone I need to invoice"</div>
+                    <div class="excuse-item">"WhatsApp works fine for me"</div>
+                    <div class="excuse-item">"I don't have time to learn new software"</div>
+                </div>
+                <div class="reality-check">Every excuse costs you R8,000+ per month</div>
+            </div>
+
+            <div class="solution-banner">
+                <h3>JobKaart = No More Excuses</h3>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">⏰</div>
+                        <div class="feature-text">Auto-reminds you to follow up</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💡</div>
+                        <div class="feature-text">Shows unbilled jobs</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📱</div>
+                        <div class="feature-text">Easier than WhatsApp</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-text">5 minute setup</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="free-callout">
+                <div class="free-text">Start fixing your business TODAY</div>
+                <div class="free-badge">100% FREE</div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="cta-title">Stop Losing Money in 2026</div>
+            <a href="https://jobkaart.co.za/signup" class="cta-button">Start FREE Now →</a>
+            <p class="cta-fine-print">No credit card • No excuses • FREE forever</p>
+            <p class="cta-fine-print">5 quotes, jobs & invoices per month • Unlimited customers</p>
+        </div>
+    </div>
+</body>
+</html>

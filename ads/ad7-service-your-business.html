@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobKaart - Service Your Business</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #57534e 0%, #292524 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .ad-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '🚗';
+            position: absolute;
+            top: 10px;
+            right: 30px;
+            font-size: 100px;
+            opacity: 0.2;
+        }
+
+        .logo {
+            color: white;
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .headline {
+            color: white;
+            font-size: 44px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .subheadline {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .comparison-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 3px solid #f59e0b;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .comparison-title {
+            color: #92400e;
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .comparison-text {
+            color: #78350f;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .equals-sign {
+            color: #f59e0b;
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .logic-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 5px solid #0284c7;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .logic-box h3 {
+            color: #1e40af;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .logic-points {
+            list-style: none;
+        }
+
+        .logic-points li {
+            color: #1e3a8a;
+            font-size: 17px;
+            margin: 15px 0;
+            padding-left: 35px;
+            position: relative;
+            font-weight: 600;
+        }
+
+        .logic-points li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #0284c7;
+            font-weight: 900;
+            font-size: 24px;
+        }
+
+        .value-prop {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .value-prop h3 {
+            color: #065f46;
+            font-size: 26px;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .value-stat {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            display: inline-block;
+        }
+
+        .value-number {
+            color: #10b981;
+            font-size: 52px;
+            font-weight: 900;
+        }
+
+        .value-label {
+            color: #065f46;
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            margin: -40px -40px 0;
+            padding: 50px 40px;
+            border-radius: 0 0 24px 24px;
+        }
+
+        .free-badge {
+            background: white;
+            color: #ea580c;
+            font-size: 36px;
+            font-weight: 900;
+            padding: 20px 50px;
+            border-radius: 15px;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #ea580c;
+            font-size: 32px;
+            font-weight: 900;
+            padding: 25px 70px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        .cta-fine-print {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="ad-container">
+        <div class="header">
+            <div class="logo">JobKaart</div>
+            <h1 class="headline">Your Bakkie Got You<br>Through 2025</h1>
+            <p class="subheadline">Now get a system that works just as hard</p>
+        </div>
+
+        <div class="content">
+            <div class="comparison-card">
+                <div class="comparison-title">You Know This Makes Sense</div>
+                <div class="comparison-row">
+                    <div class="comparison-item">
+                        <div class="comparison-icon">🔧</div>
+                        <div class="comparison-text">Service your<br>bakkie</div>
+                    </div>
+                    <div class="equals-sign">=</div>
+                    <div class="comparison-item">
+                        <div class="comparison-icon">🚗</div>
+                        <div class="comparison-text">Keeps running<br>smoothly</div>
+                    </div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-item">
+                        <div class="comparison-icon">📱</div>
+                        <div class="comparison-text">Service your<br>business</div>
+                    </div>
+                    <div class="equals-sign">=</div>
+                    <div class="comparison-item">
+                        <div class="comparison-icon">💰</div>
+                        <div class="comparison-text">Makes more<br>money</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="logic-box">
+                <h3>Simple Logic for Tradies</h3>
+                <ul class="logic-points">
+                    <li>You service your tools so they don't break</li>
+                    <li>You maintain your bakkie so it stays reliable</li>
+                    <li>Why run your business on WhatsApp chaos?</li>
+                    <li>JobKaart keeps your business running smooth</li>
+                </ul>
+            </div>
+
+            <div class="value-prop">
+                <h3>FREE Forever Tier</h3>
+                <div class="value-stat">
+                    <div class="value-number">R0</div>
+                    <div class="value-label">per month • 5 quotes, jobs & invoices</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="free-badge">START FREE</div>
+            <a href="https://jobkaart.co.za/signup" class="cta-button">Get Organized →</a>
+            <p class="cta-fine-print">No credit card • 5 minute setup</p>
+            <p class="cta-fine-print">Make 2026 your most organized year yet</p>
+        </div>
+    </div>
+</body>
+</html>

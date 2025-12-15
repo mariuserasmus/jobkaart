@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobKaart - New Year, New System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .ad-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '2026';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            font-size: 200px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.1);
+            transform: rotate(-10deg);
+        }
+
+        .logo {
+            color: white;
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .year-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 10px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .headline {
+            color: white;
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .subheadline {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .problem-box {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 3px solid #dc2626;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .problem-badge {
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background: #dc2626;
+            color: white;
+            font-size: 14px;
+            font-weight: 900;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .problem-box h3 {
+            color: #991b1b;
+            font-size: 24px;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            font-weight: 700;
+        }
+
+        .problem-list {
+            list-style: none;
+        }
+
+        .problem-list li {
+            color: #7f1d1d;
+            font-size: 16px;
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-weight: 600;
+        }
+
+        .problem-list li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #dc2626;
+            font-weight: 900;
+            font-size: 20px;
+        }
+
+        .solution-box {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 3px solid #10b981;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .solution-badge {
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background: #10b981;
+            color: white;
+            font-size: 14px;
+            font-weight: 900;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .solution-box h3 {
+            color: #065f46;
+            font-size: 24px;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            font-weight: 700;
+        }
+
+        .solution-list {
+            list-style: none;
+        }
+
+        .solution-list li {
+            color: #064e3b;
+            font-size: 16px;
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-weight: 600;
+        }
+
+        .solution-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 900;
+            font-size: 20px;
+        }
+
+        .free-badge-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .free-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #78350f;
+            font-size: 32px;
+            font-weight: 900;
+            padding: 20px 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(251, 191, 36, 0.4);
+            animation: shine 3s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes shine {
+            0%, 100% {
+                box-shadow: 0 10px 40px rgba(251, 191, 36, 0.4);
+            }
+            50% {
+                box-shadow: 0 10px 50px rgba(251, 191, 36, 0.6);
+            }
+        }
+
+        .free-details {
+            color: #78350f;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            margin: -40px -40px 0;
+            padding: 50px 40px;
+            border-radius: 0 0 24px 24px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #ea580c;
+            font-size: 32px;
+            font-weight: 900;
+            padding: 25px 70px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        .cta-subtitle {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .cta-fine-print {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="ad-container">
+        <div class="header">
+            <div class="logo">JobKaart</div>
+            <div class="year-badge">🎯 START 2026 RIGHT</div>
+            <h1 class="headline">New Year,<br>New System</h1>
+            <p class="subheadline">Stop starting every year with the same WhatsApp mess</p>
+        </div>
+
+        <div class="content">
+            <div class="problem-box">
+                <div class="problem-badge">2025 WAS CHAOS</div>
+                <h3>Still Doing This?</h3>
+                <ul class="problem-list">
+                    <li>WhatsApp chats full of quotes you forgot</li>
+                    <li>Customer numbers buried somewhere</li>
+                    <li>Jobs done but not invoiced</li>
+                    <li>No idea who owes you money</li>
+                </ul>
+            </div>
+
+            <div class="solution-box">
+                <div class="solution-badge">2026 IS ORGANIZED</div>
+                <h3>JobKaart Keeps Everything</h3>
+                <ul class="solution-list">
+                    <li>All quotes saved & tracked forever</li>
+                    <li>Customer database always accessible</li>
+                    <li>Never forget to invoice again</li>
+                    <li>See exactly who owes you - R23,400</li>
+                </ul>
+            </div>
+
+            <div class="free-badge-section">
+                <div class="free-badge">100% FREE FOREVER</div>
+                <div class="free-details">5 quotes • 5 jobs • 5 invoices per month</div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <p class="cta-subtitle">Make 2026 different. Start organized.</p>
+            <a href="https://jobkaart.co.za/signup" class="cta-button">Start FREE Now →</a>
+            <p class="cta-fine-print">No credit card • Setup in 5 minutes</p>
+            <p class="cta-fine-print">Upgrade anytime to unlimited for R299/month</p>
+        </div>
+    </div>
+</body>
+</html>
