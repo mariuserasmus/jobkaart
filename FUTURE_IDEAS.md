@@ -221,7 +221,122 @@ Create a public-facing marketplace where customers can find and book JobKaart tr
 
 ## Feature Enhancements
 
-*Section reserved for future JobKaart core feature enhancements*
+### 💡 IDEA #2: PayFast Payment Integration
+
+**Added**: December 2025
+**Status**: 🎯 Planned for Q1 2026
+**Priority**: HIGH (when first paid customer arrives)
+
+#### The Need
+Enable automated recurring payments for paid tiers (Starter R299, Pro R499, Team R799) instead of manual EFT invoicing.
+
+#### Current State
+- ✅ Subscription tiers defined in database
+- ✅ Usage tracking implemented
+- ✅ Admin can manually activate subscriptions
+- ❌ No automated payment collection
+- ❌ Manual EFT invoicing only
+
+#### Implementation Trigger Points
+
+**Option 1: Wait for Demand (Conservative)**
+- Implement when first customer says "I want to upgrade"
+- Use manual EFT for customer #1
+- Build PayFast integration immediately after
+- Ready for customer #2
+
+**Option 2: Proactive (Recommended)**
+- Wait for 3-5 active FREE tier users
+- Implement PayFast before they want to upgrade
+- Professional experience from day one
+- No scrambling when upgrades happen
+
+**Option 3: Build Now**
+- If ads launch soon and dev time available
+- Have everything ready for new year signups
+- Test thoroughly before customers arrive
+
+#### Implementation Estimate
+- **PayFast account setup**: 1-2 hours
+- **Integration coding**: 4-6 hours
+- **Testing & refinement**: 1-2 hours
+- **Total**: ~8 hours of focused work
+
+#### What Needs to Be Built
+
+**Frontend:**
+- Upgrade flow in /billing page
+- Card payment form
+- Subscription management UI
+- Payment history view
+
+**Backend:**
+- PayFast webhook handler
+- Subscription activation on payment
+- Failed payment handling
+- Cancellation flow
+- Refund support (if needed)
+
+**Admin:**
+- View payment status
+- Manual subscription override (for special cases)
+- Failed payment alerts
+
+#### PayFast Specifics (South Africa)
+
+**Features Needed:**
+- One-time payments (for setup/annual)
+- Recurring subscriptions (monthly billing)
+- Webhook notifications (payment success/failure)
+- Subscription cancellation
+- Card storage for recurring
+
+**Pricing:**
+- PayFast fee: ~2.9% + R2.00 per transaction
+- Example: R299 subscription = R8.67 + R2 = R10.67 fee (3.6%)
+- Your revenue: R288.33 per R299 subscription
+
+#### User Experience Flow
+
+**Upgrade Path:**
+1. User clicks "Upgrade to Pro" in billing page
+2. Redirected to PayFast payment page
+3. Enters card details (stored by PayFast)
+4. Payment processed
+5. Webhook confirms → Subscription activated
+6. User sees "Upgrade successful" confirmation
+7. Next month: Auto-charged on same day
+
+**Downgrade/Cancel Path:**
+1. User clicks "Cancel subscription"
+2. Confirmation modal: "Cancel at end of billing period or immediately?"
+3. If canceled: Access remains until period end
+4. No refunds for partial months
+
+#### Risk Mitigation
+
+**Failed Payment Handling:**
+- Retry payment 3 times (day 1, 3, 7)
+- Email notifications on each failure
+- Downgrade to FREE tier after 7 days
+- Keep data safe for 30 days (in case they return)
+
+**Migration from Manual EFT:**
+- Early customers on manual EFT can stay on it
+- Offer optional migration to PayFast
+- Or: Grandfather them in at special rate
+
+#### Next Steps
+- [ ] Create PayFast merchant account
+- [ ] Design upgrade flow UI
+- [ ] Implement payment webhook handler
+- [ ] Test with sandbox mode
+- [ ] Document for support queries
+- [ ] Create "How to upgrade" help article
+
+---
+
+*Section reserved for additional JobKaart core feature enhancements*
 
 ---
 
@@ -244,6 +359,6 @@ Create a public-facing marketplace where customers can find and book JobKaart tr
 ---
 
 **Last Updated**: December 2025
-**Total Ideas**: 1
+**Total Ideas**: 2
 **In Progress**: 0
 **Completed**: 0
