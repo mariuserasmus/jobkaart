@@ -11,12 +11,14 @@ export default async function JobsPage({
   const tenantId = await getTenantId()
   const supabase = await createServerClient()
 
-  // Fetch all jobs
+  // Fetch all jobs with quotes and invoices for invoice progress tracking
   const { data: jobs } = await supabase
     .from('jobs')
     .select(`
       *,
-      customers!inner(id, name, phone, address)
+      customers!inner(id, name, phone, address),
+      quotes(id, total),
+      invoices(total)
     `)
     .eq('tenant_id', tenantId)
     .order('created_at', { ascending: false })
@@ -34,6 +36,26 @@ export default async function JobsPage({
       month: 'short',
       day: 'numeric',
     })
+  }
+
+  // Calculate invoice progress for a job
+  const calculateInvoiceProgress = (job: any) => {
+    const quoteTotal = job.quotes?.total || 0
+    const invoices = job.invoices || []
+    const totalInvoiced = invoices.reduce((sum: number, inv: any) => sum + inv.total, 0)
+
+    if (quoteTotal === 0) return null
+
+    const percentage = Math.round((totalInvoiced / quoteTotal) * 100)
+    const remaining = quoteTotal - totalInvoiced
+
+    return {
+      quoteTotal,
+      totalInvoiced,
+      remaining,
+      percentage,
+      hasInvoices: invoices.length > 0,
+    }
   }
 
   // Group jobs by status for pipeline view
@@ -208,6 +230,37 @@ export default async function JobsPage({
                                 <span>Completed: {formatDate(job.completed_date)}</span>
                               )}
                             </div>
+                            {(() => {
+                              const progress = calculateInvoiceProgress(job)
+                              if (progress && progress.hasInvoices) {
+                                return (
+                                  <div className="mt-2">
+                                    <div className="flex items-center gap-2 text-xs">
+                                      <span className="text-gray-600">Invoice Progress:</span>
+                                      <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden max-w-[120px]">
+                                        <div
+                                          className={`h-full ${
+                                            progress.percentage === 100
+                                              ? 'bg-green-500'
+                                              : progress.percentage >= 50
+                                              ? 'bg-blue-500'
+                                              : 'bg-orange-500'
+                                          }`}
+                                          style={{ width: `${progress.percentage}%` }}
+                                        />
+                                      </div>
+                                      <span className="font-medium text-gray-700">{progress.percentage}%</span>
+                                    </div>
+                                    {progress.remaining > 0 && (
+                                      <div className="text-xs text-orange-600 mt-1">
+                                        ⚠️ {formatCurrency(progress.remaining)} not yet invoiced
+                                      </div>
+                                    )}
+                                  </div>
+                                )
+                              }
+                              return null
+                            })()}
                           </div>
                           <div className="ml-4 flex flex-col items-end gap-2">
                             {job.total && (

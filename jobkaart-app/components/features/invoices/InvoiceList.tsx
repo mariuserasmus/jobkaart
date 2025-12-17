@@ -30,6 +30,7 @@ export function InvoiceList({ initialInvoices, initialTotal }: InvoiceListProps)
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [loading, setLoading] = useState(false)
+  const [viewMode, setViewMode] = useState<'date' | 'job'>('date')
 
   // Auto-search as user types (with 300ms debounce)
   useEffect(() => {
@@ -92,6 +93,26 @@ export function InvoiceList({ initialInvoices, initialTotal }: InvoiceListProps)
     }
   }
 
+  // Group invoices by job
+  const groupedByJob = () => {
+    const grouped = new Map<string, InvoiceWithCustomer[]>()
+    const standalone: InvoiceWithCustomer[] = []
+
+    invoices.forEach((invoice) => {
+      if (invoice.job_id && invoice.jobs) {
+        const jobKey = invoice.job_id
+        if (!grouped.has(jobKey)) {
+          grouped.set(jobKey, [])
+        }
+        grouped.get(jobKey)!.push(invoice)
+      } else {
+        standalone.push(invoice)
+      }
+    })
+
+    return { grouped, standalone }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header Actions */}
@@ -112,26 +133,52 @@ export function InvoiceList({ initialInvoices, initialTotal }: InvoiceListProps)
         </Link>
       </div>
 
-      {/* Filters */}
-      <div className="flex items-center gap-4">
-        <span className="text-sm font-medium text-gray-700">Filter by status:</span>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="All statuses" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="draft">Draft</SelectItem>
-            <SelectItem value="sent">Sent</SelectItem>
-            <SelectItem value="viewed">Viewed</SelectItem>
-            <SelectItem value="partially_paid">Partially Paid</SelectItem>
-            <SelectItem value="paid">Paid</SelectItem>
-            <SelectItem value="overdue">Overdue</SelectItem>
-          </SelectContent>
-        </Select>
-        <span className="text-sm text-gray-600">
-          {total} {total === 1 ? 'invoice' : 'invoices'} found
-        </span>
+      {/* Filters and View Toggle */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between">
+        <div className="flex items-center gap-4">
+          <span className="text-sm font-medium text-gray-700">Filter by status:</span>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="All statuses" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Statuses</SelectItem>
+              <SelectItem value="draft">Draft</SelectItem>
+              <SelectItem value="sent">Sent</SelectItem>
+              <SelectItem value="viewed">Viewed</SelectItem>
+              <SelectItem value="partially_paid">Partially Paid</SelectItem>
+              <SelectItem value="paid">Paid</SelectItem>
+              <SelectItem value="overdue">Overdue</SelectItem>
+            </SelectContent>
+          </Select>
+          <span className="text-sm text-gray-600">
+            {total} {total === 1 ? 'invoice' : 'invoices'} found
+          </span>
+        </div>
+
+        {/* View Toggle */}
+        <div className="flex items-center gap-2 bg-gray-100 p-1 rounded-lg">
+          <button
+            onClick={() => setViewMode('date')}
+            className={`px-4 py-2 text-sm font-medium rounded transition-colors ${
+              viewMode === 'date'
+                ? 'bg-white text-blue-600 shadow-sm'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            By Date
+          </button>
+          <button
+            onClick={() => setViewMode('job')}
+            className={`px-4 py-2 text-sm font-medium rounded transition-colors ${
+              viewMode === 'job'
+                ? 'bg-white text-blue-600 shadow-sm'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            By Job
+          </button>
+        </div>
       </div>
 
       {/* Invoices List */}
@@ -165,7 +212,7 @@ export function InvoiceList({ initialInvoices, initialTotal }: InvoiceListProps)
             </Link>
           </div>
         </div>
-      ) : (
+      ) : viewMode === 'date' ? (
         <div className="grid gap-4">
           {invoices.map((invoice) => {
             const displayStatus = getInvoiceStatus(invoice)
@@ -208,6 +255,11 @@ export function InvoiceList({ initialInvoices, initialTotal }: InvoiceListProps)
                           </span>
                         )}
                       </div>
+                      {invoice.jobs && (
+                        <p className="text-sm text-blue-600 mb-1 font-medium">
+                          Job: {invoice.jobs.job_number}
+                        </p>
+                      )}
                       <p className="text-sm text-gray-600 mb-1">
                         <span className="font-medium">Customer:</span> {invoice.customers.name}
                       </p>
@@ -251,6 +303,188 @@ export function InvoiceList({ initialInvoices, initialTotal }: InvoiceListProps)
               </Link>
             )
           })}
+        </div>
+      ) : (
+        // Grouped by Job View
+        <div className="space-y-6">
+          {(() => {
+            const { grouped, standalone } = groupedByJob()
+
+            return (
+              <>
+                {/* Job-grouped invoices */}
+                {Array.from(grouped.entries()).map(([jobId, jobInvoices]) => {
+                  const firstInvoice = jobInvoices[0]
+                  const job = firstInvoice.jobs!
+                  const totalInvoiced = jobInvoices.reduce((sum, inv) => sum + inv.total, 0)
+                  const totalPaid = jobInvoices.reduce((sum, inv) => sum + inv.amount_paid, 0)
+                  const totalOutstanding = totalInvoiced - totalPaid
+
+                  return (
+                    <div key={jobId} className="bg-white border-2 border-gray-300 rounded-lg overflow-hidden">
+                      {/* Job Header */}
+                      <div className="bg-blue-50 border-b border-blue-200 p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="text-lg font-bold text-blue-900">
+                              Job {job.job_number}
+                            </h3>
+                            <p className="text-sm text-blue-700 mt-1">
+                              Customer: {firstInvoice.customers.name}
+                            </p>
+                            {job.title && (
+                              <p className="text-sm text-gray-600 mt-1">
+                                {job.title}
+                              </p>
+                            )}
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm text-gray-600">Total Invoiced</p>
+                            <p className="text-2xl font-bold text-gray-900">{formatCurrency(totalInvoiced)}</p>
+                            {totalPaid > 0 && (
+                              <p className="text-xs text-green-600 mt-1">
+                                Paid: {formatCurrency(totalPaid)}
+                              </p>
+                            )}
+                            {totalOutstanding > 0 && (
+                              <p className="text-xs text-orange-600 font-medium mt-1">
+                                Outstanding: {formatCurrency(totalOutstanding)}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Job Invoices */}
+                      <div className="divide-y divide-gray-200">
+                        {jobInvoices.map((invoice) => {
+                          const displayStatus = getInvoiceStatus(invoice)
+                          const overdueFlag = isOverdue(invoice)
+                          const amountOutstanding = invoice.total - invoice.amount_paid
+
+                          return (
+                            <Link
+                              key={invoice.id}
+                              href={`/invoices/${invoice.id}`}
+                              className="block p-4 hover:bg-gray-50 transition-colors"
+                            >
+                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                    <h4 className="text-base font-semibold text-gray-900">
+                                      {invoice.invoice_number}
+                                    </h4>
+                                    <InvoiceStatusBadge status={displayStatus} />
+                                    {invoice.invoice_type === 'deposit' && (
+                                      <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                                        Deposit {invoice.deposit_percentage && `(${invoice.deposit_percentage}%)`}
+                                      </span>
+                                    )}
+                                    {invoice.invoice_type === 'progress' && (
+                                      <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800">
+                                        Progress {invoice.deposit_percentage && `(${invoice.deposit_percentage}%)`}
+                                      </span>
+                                    )}
+                                    {invoice.invoice_type === 'balance' && (
+                                      <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                                        Final Balance
+                                      </span>
+                                    )}
+                                  </div>
+                                  <p className="text-sm text-gray-600">
+                                    Due: {formatDate(invoice.due_date)}
+                                    {overdueFlag && (
+                                      <span className="ml-2 text-red-600 font-medium">(OVERDUE)</span>
+                                    )}
+                                  </p>
+                                  {invoice.amount_paid > 0 && invoice.status !== 'paid' && (
+                                    <p className="text-sm text-gray-600 mt-1">
+                                      Paid: {formatCurrency(invoice.amount_paid)} / {formatCurrency(invoice.total)}
+                                    </p>
+                                  )}
+                                </div>
+                                <div className="text-right">
+                                  <p className={`text-xl font-bold ${overdueFlag ? 'text-red-600' : 'text-blue-600'}`}>
+                                    {invoice.status === 'paid'
+                                      ? formatCurrency(invoice.total)
+                                      : formatCurrency(amountOutstanding)
+                                    }
+                                  </p>
+                                  {invoice.status === 'paid' && (
+                                    <p className="text-xs text-green-600 mt-1 font-medium">PAID</p>
+                                  )}
+                                </div>
+                              </div>
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                })}
+
+                {/* Standalone invoices (no job) */}
+                {standalone.length > 0 && (
+                  <div className="bg-white border-2 border-gray-300 rounded-lg overflow-hidden">
+                    <div className="bg-gray-50 border-b border-gray-200 p-4">
+                      <h3 className="text-lg font-bold text-gray-900">
+                        Invoices Without Jobs
+                      </h3>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {standalone.length} {standalone.length === 1 ? 'invoice' : 'invoices'}
+                      </p>
+                    </div>
+                    <div className="divide-y divide-gray-200">
+                      {standalone.map((invoice) => {
+                        const displayStatus = getInvoiceStatus(invoice)
+                        const overdueFlag = isOverdue(invoice)
+                        const amountOutstanding = invoice.total - invoice.amount_paid
+
+                        return (
+                          <Link
+                            key={invoice.id}
+                            href={`/invoices/${invoice.id}`}
+                            className="block p-4 hover:bg-gray-50 transition-colors"
+                          >
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                  <h4 className="text-base font-semibold text-gray-900">
+                                    {invoice.invoice_number}
+                                  </h4>
+                                  <InvoiceStatusBadge status={displayStatus} />
+                                </div>
+                                <p className="text-sm text-gray-600 mb-1">
+                                  Customer: {invoice.customers.name}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                  Due: {formatDate(invoice.due_date)}
+                                  {overdueFlag && (
+                                    <span className="ml-2 text-red-600 font-medium">(OVERDUE)</span>
+                                  )}
+                                </p>
+                              </div>
+                              <div className="text-right">
+                                <p className={`text-xl font-bold ${overdueFlag ? 'text-red-600' : 'text-blue-600'}`}>
+                                  {invoice.status === 'paid'
+                                    ? formatCurrency(invoice.total)
+                                    : formatCurrency(amountOutstanding)
+                                  }
+                                </p>
+                                {invoice.status === 'paid' && (
+                                  <p className="text-xs text-green-600 mt-1 font-medium">PAID</p>
+                                )}
+                              </div>
+                            </div>
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+              </>
+            )
+          })()}
         </div>
       )}
     </div>

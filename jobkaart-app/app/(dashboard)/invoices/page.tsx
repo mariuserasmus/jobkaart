@@ -23,13 +23,13 @@ export default async function InvoicesPage({
 
   const supabase = await createServerClient()
 
-  // Fetch initial invoices with customer data
+  // Fetch initial invoices with customer data and job details
   const { data: invoices, error, count } = await supabase
     .from('invoices')
     .select(`
       *,
       customers!inner(id, name, phone, email),
-      jobs(id, job_number)
+      jobs(id, job_number, title)
     `, { count: 'exact' })
     .eq('tenant_id', tenantId)
     .order('created_at', { ascending: false })

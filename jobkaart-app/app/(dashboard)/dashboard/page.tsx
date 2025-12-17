@@ -181,6 +181,38 @@ export default async function DashboardPage() {
     .order('due_date', { ascending: true })
     .limit(5)
 
+  // Jobs with outstanding balance (partially invoiced)
+  const { data: jobsWithQuotes } = await supabase
+    .from('jobs')
+    .select(`
+      id,
+      job_number,
+      quotes!inner(id, total),
+      invoices(total),
+      customers!inner(id, name)
+    `)
+    .eq('tenant_id', tenantId)
+    .not('quotes', 'is', null)
+
+  const partiallyInvoicedJobs = jobsWithQuotes
+    ?.map((job: any) => {
+      const quoteTotal = job.quotes?.total || 0
+      const totalInvoiced = job.invoices?.reduce((sum: number, inv: any) => sum + inv.total, 0) || 0
+      const remaining = quoteTotal - totalInvoiced
+
+      return {
+        id: job.id,
+        job_number: job.job_number,
+        customer_name: job.customers?.name,
+        quote_total: quoteTotal,
+        total_invoiced: totalInvoiced,
+        remaining,
+      }
+    })
+    .filter((job: any) => job.remaining > 0 && job.total_invoiced > 0) // Has invoices but not fully invoiced
+    .sort((a: any, b: any) => b.remaining - a.remaining) // Sort by highest remaining first
+    .slice(0, 5) || []
+
   const formatCurrency = (amount: number) => {
     return `R${amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
   }
@@ -205,7 +237,8 @@ export default async function DashboardPage() {
   const hasActionItems =
     (quotesAwaitingResponse?.length || 0) > 0 ||
     (jobsToInvoice?.length || 0) > 0 ||
-    (overdueInvoices?.length || 0) > 0
+    (overdueInvoices?.length || 0) > 0 ||
+    (partiallyInvoicedJobs?.length || 0) > 0
 
   const hasTodaysJobs = (todaysJobs?.length || 0) > 0
   const hasThisWeeksJobs = (thisWeeksJobs?.length || 0) > 0
@@ -571,6 +604,46 @@ export default async function DashboardPage() {
                             strokeLinejoin="round"
                             strokeWidth={2}
                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                          />
+                        </svg>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Partially Invoiced Jobs */}
+              {partiallyInvoicedJobs && partiallyInvoicedJobs.length > 0 && (
+                <div className="px-6 py-4">
+                  <h3 className="text-sm font-medium text-gray-900 mb-3">
+                    Jobs with Outstanding Balance ({partiallyInvoicedJobs.length})
+                  </h3>
+                  <div className="space-y-2">
+                    {partiallyInvoicedJobs.map((job: any) => (
+                      <Link
+                        key={job.id}
+                        href={`/jobs/${job.id}`}
+                        className="flex items-center justify-between p-3 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                      >
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            {job.job_number} - {job.customer_name}
+                          </p>
+                          <p className="text-xs text-orange-600 mt-1">
+                            {formatCurrency(job.remaining)} not yet invoiced ({formatCurrency(job.total_invoiced)} of {formatCurrency(job.quote_total)} invoiced)
+                          </p>
+                        </div>
+                        <svg
+                          className="w-5 h-5 text-orange-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
                       </Link>

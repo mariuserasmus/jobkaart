@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
         `
         *,
         customers!inner(id, name, phone, email),
-        jobs(id, job_number)
+        jobs(id, job_number, title)
       `,
         { count: 'exact' }
       )
