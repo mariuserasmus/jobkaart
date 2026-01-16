@@ -1,9 +1,42 @@
 # JobKaart - Project Status
 
-**Last Updated**: December 3, 2025
-**Status**: MVP Development - 85% Complete (10/12 tasks)
-**Supabase**: ✅ Live and configured
-**Dev Server**: ✅ Running at http://localhost:3000
+**Last Updated**: January 8, 2026
+**Status**: ✅ LIVE IN PRODUCTION at jobkaart.co.za
+**Platform**: Vercel (production) + Supabase (database)
+**Current Users**: 0 subscribers (launched Jan 1, 2026)
+**Recent Activity**: See RECENT_DISCUSSIONS.md for detailed updates
+
+---
+
+## 🚨 **CURRENT FOCUS (Week of Jan 6-12, 2026)**
+
+### ⏸️ **Facebook Ads - PAUSED**
+- Account compromised via phishing attack (Jan 6-7)
+- R4,350 in fraudulent charges (blocked by Facebook fraud detection ✅)
+- Awaiting Facebook response to disputes (7-14 days expected)
+- **Learning:** Original targeting was wrong (50% women, too broad)
+- **Next:** Will restart with proper targeting (men only, trade-specific interests)
+
+### 🎯 **NEW PRIORITY: QR Code Campaign**
+**Status:** ⏳ Planning (build this weekend)
+- Guerrilla marketing at hardware stores
+- Trackable QR codes per location
+- Expected: 5-15 signups in first 2 weeks
+- Cost: R200-500 vs R100+/day for Facebook
+
+### 📧 **Email Notifications**
+**Status:** ⏳ Ready to build (30 mins)
+- Admin notification on signup (using Resend)
+- Waiting for user to provide API key
+
+### 🛒 **Personal Price Catalog**
+**Status:** 💡 Designed, not yet built
+- Alternative to hardware store API integration
+- Tradies build their own item catalog
+- Voice input + photo capture
+- Effort: 2-3 hours when ready
+
+---
 
 ## 📁 Project Organization
 
@@ -392,7 +425,57 @@ SUPABASE_SERVICE_ROLE_KEY=sb_secret_pZ_3hAFhIkAiVnM4h65BhQ_mTiuwnEw
 8. **FULLY FUNCTIONAL JOB MANAGEMENT SYSTEM!**
 
 **Next Priorities:**
-1. Test full workflow end-to-end
-2. Server-side PDF generation
-3. PayFast integration for subscriptions
-4. Production deployment
+1. ✅ ~~Production deployment~~ (DONE - Live at jobkaart.co.za)
+2. ✅ ~~PayFast integration~~ (DONE - Subscriptions working)
+3. ✅ ~~FREE tier implementation~~ (DONE - 5 quotes/jobs/invoices per month)
+4. 🎯 QR code marketing campaign (THIS WEEKEND)
+5. 📧 Email notifications setup (THIS WEEKEND)
+6. 🛒 Personal price catalog (OPTIONAL - when ready)
+
+---
+
+## 📅 Recent Major Updates
+
+### January 2026 - Production Launch
+- ✅ **Jan 1:** Launched at jobkaart.co.za
+- ✅ **Jan 5:** Added partially invoiced jobs visibility
+- ✅ **Jan 5:** Invoice grouping by job feature
+- ✅ **Jan 6:** Started first Facebook ad campaign
+- ✅ **Jan 7:** Facebook account hacked (resolved, no money lost)
+- ✅ **Jan 8:** Fixed Google Search Console FAQ schema error
+- 📋 **Jan 8:** Planning QR code guerrilla marketing campaign
+
+### December 2025 - Final MVP Development
+- ✅ PayFast subscription integration
+- ✅ FREE tier with usage limits (5/month)
+- ✅ Super admin settings page
+- ✅ Admin panel for user management
+- ✅ Progressive Web App (PWA) features
+- ✅ Google Analytics integration
+
+### Key Metrics (as of Jan 8, 2026):
+- **Subscribers:** 0 (launched 7 days ago)
+- **Facebook Ad Spend:** R24 (before hack, 0 conversions)
+- **Website Traffic:** Low (no active marketing)
+- **Product Completeness:** 95% (fully functional)
+- **Next Goal:** First subscriber by Jan 17, 2026
+
+---
+
+## 📚 Documentation Files
+
+**For Quick Context Recovery:**
+- **[RECENT_DISCUSSIONS.md](RECENT_DISCUSSIONS.md)** ⭐ READ THIS FIRST - Latest discussions, decisions, action items
+- **[PROJECT_STATUS.md](PROJECT_STATUS.md)** - This file - Overall project status
+- **[CLAUDE.md](claude.md)** - Complete project documentation and vision
+- **[FUTURE_IDEAS.md](FUTURE_IDEAS.md)** - Feature ideas and future roadmap
+- **[DEPLOYMENT_STRATEGY.md](DEPLOYMENT_STRATEGY.md)** - Production deployment guide
+
+**Technical Documentation:**
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture
+- **[PAYFAST_IMPLEMENTATION_SUMMARY.md](jobkaart-app/PAYFAST_IMPLEMENTATION_SUMMARY.md)** - Payment integration
+- **[ADMIN_SUMMARY.md](jobkaart-app/ADMIN_SUMMARY.md)** - Admin panel features
+
+---
+
+**Last Session:** Jan 8, 2026 - Discussed Facebook hack recovery, email setup, QR campaign planning, hardware catalog ideas
